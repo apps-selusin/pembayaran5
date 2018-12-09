@@ -251,8 +251,6 @@ class ct04_siswa_delete extends ct04_siswa {
 	function Page_Init() {
 		global $gsExport, $gsCustomExport, $gsExportFile, $UserProfile, $Language, $Security, $objForm;
 		$this->CurrentAction = (@$_GET["a"] <> "") ? $_GET["a"] : @$_POST["a_list"]; // Set up current action
-		$this->id->SetVisibility();
-		$this->id->Visible = !$this->IsAdd() && !$this->IsCopy() && !$this->IsGridAdd();
 		$this->sekolah_id->SetVisibility();
 		$this->kelas_id->SetVisibility();
 		$this->NIS->SetVisibility();
@@ -486,11 +484,6 @@ class ct04_siswa_delete extends ct04_siswa {
 		// Nama
 		$this->Nama->ViewValue = $this->Nama->CurrentValue;
 		$this->Nama->ViewCustomAttributes = "";
-
-			// id
-			$this->id->LinkCustomAttributes = "";
-			$this->id->HrefValue = "";
-			$this->id->TooltipValue = "";
 
 			// sekolah_id
 			$this->sekolah_id->LinkCustomAttributes = "";
@@ -757,9 +750,6 @@ $t04_siswa_delete->ShowMessage();
 <?php echo $t04_siswa->TableCustomInnerHtml ?>
 	<thead>
 	<tr class="ewTableHeader">
-<?php if ($t04_siswa->id->Visible) { // id ?>
-		<th><span id="elh_t04_siswa_id" class="t04_siswa_id"><?php echo $t04_siswa->id->FldCaption() ?></span></th>
-<?php } ?>
 <?php if ($t04_siswa->sekolah_id->Visible) { // sekolah_id ?>
 		<th><span id="elh_t04_siswa_sekolah_id" class="t04_siswa_sekolah_id"><?php echo $t04_siswa->sekolah_id->FldCaption() ?></span></th>
 <?php } ?>
@@ -793,14 +783,6 @@ while (!$t04_siswa_delete->Recordset->EOF) {
 	$t04_siswa_delete->RenderRow();
 ?>
 	<tr<?php echo $t04_siswa->RowAttributes() ?>>
-<?php if ($t04_siswa->id->Visible) { // id ?>
-		<td<?php echo $t04_siswa->id->CellAttributes() ?>>
-<span id="el<?php echo $t04_siswa_delete->RowCnt ?>_t04_siswa_id" class="t04_siswa_id">
-<span<?php echo $t04_siswa->id->ViewAttributes() ?>>
-<?php echo $t04_siswa->id->ListViewValue() ?></span>
-</span>
-</td>
-<?php } ?>
 <?php if ($t04_siswa->sekolah_id->Visible) { // sekolah_id ?>
 		<td<?php echo $t04_siswa->sekolah_id->CellAttributes() ?>>
 <span id="el<?php echo $t04_siswa_delete->RowCnt ?>_t04_siswa_sekolah_id" class="t04_siswa_sekolah_id">
