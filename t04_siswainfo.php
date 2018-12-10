@@ -733,7 +733,6 @@ class ct04_siswa extends cTable {
 			if ($Doc->Horizontal) { // Horizontal format, write header
 				$Doc->BeginExportRow();
 				if ($ExportPageType == "view") {
-					if ($this->id->Exportable) $Doc->ExportCaption($this->id);
 					if ($this->sekolah_id->Exportable) $Doc->ExportCaption($this->sekolah_id);
 					if ($this->kelas_id->Exportable) $Doc->ExportCaption($this->kelas_id);
 					if ($this->NIS->Exportable) $Doc->ExportCaption($this->NIS);
@@ -775,7 +774,6 @@ class ct04_siswa extends cTable {
 				if (!$Doc->ExportCustom) {
 					$Doc->BeginExportRow($RowCnt); // Allow CSS styles if enabled
 					if ($ExportPageType == "view") {
-						if ($this->id->Exportable) $Doc->ExportField($this->id);
 						if ($this->sekolah_id->Exportable) $Doc->ExportField($this->sekolah_id);
 						if ($this->kelas_id->Exportable) $Doc->ExportField($this->kelas_id);
 						if ($this->NIS->Exportable) $Doc->ExportField($this->NIS);

@@ -254,8 +254,6 @@ class ct04_siswa_edit extends ct04_siswa {
 		// Create form object
 		$objForm = new cFormObj();
 		$this->CurrentAction = (@$_GET["a"] <> "") ? $_GET["a"] : @$_POST["a_list"]; // Set up current action
-		$this->id->SetVisibility();
-		$this->id->Visible = !$this->IsAdd() && !$this->IsCopy() && !$this->IsGridAdd();
 		$this->sekolah_id->SetVisibility();
 		$this->kelas_id->SetVisibility();
 		$this->NIS->SetVisibility();
@@ -467,8 +465,6 @@ class ct04_siswa_edit extends ct04_siswa {
 
 		// Load from form
 		global $objForm;
-		if (!$this->id->FldIsDetailKey)
-			$this->id->setFormValue($objForm->GetValue("x_id"));
 		if (!$this->sekolah_id->FldIsDetailKey) {
 			$this->sekolah_id->setFormValue($objForm->GetValue("x_sekolah_id"));
 		}
@@ -481,6 +477,8 @@ class ct04_siswa_edit extends ct04_siswa {
 		if (!$this->Nama->FldIsDetailKey) {
 			$this->Nama->setFormValue($objForm->GetValue("x_Nama"));
 		}
+		if (!$this->id->FldIsDetailKey)
+			$this->id->setFormValue($objForm->GetValue("x_id"));
 	}
 
 	// Restore form values
@@ -617,11 +615,6 @@ class ct04_siswa_edit extends ct04_siswa {
 		$this->Nama->ViewValue = $this->Nama->CurrentValue;
 		$this->Nama->ViewCustomAttributes = "";
 
-			// id
-			$this->id->LinkCustomAttributes = "";
-			$this->id->HrefValue = "";
-			$this->id->TooltipValue = "";
-
 			// sekolah_id
 			$this->sekolah_id->LinkCustomAttributes = "";
 			$this->sekolah_id->HrefValue = "";
@@ -642,12 +635,6 @@ class ct04_siswa_edit extends ct04_siswa {
 			$this->Nama->HrefValue = "";
 			$this->Nama->TooltipValue = "";
 		} elseif ($this->RowType == EW_ROWTYPE_EDIT) { // Edit row
-
-			// id
-			$this->id->EditAttrs["class"] = "form-control";
-			$this->id->EditCustomAttributes = "";
-			$this->id->EditValue = $this->id->CurrentValue;
-			$this->id->ViewCustomAttributes = "";
 
 			// sekolah_id
 			$this->sekolah_id->EditAttrs["class"] = "form-control";
@@ -700,12 +687,8 @@ class ct04_siswa_edit extends ct04_siswa {
 			$this->Nama->PlaceHolder = ew_RemoveHtml($this->Nama->FldCaption());
 
 			// Edit refer script
-			// id
-
-			$this->id->LinkCustomAttributes = "";
-			$this->id->HrefValue = "";
-
 			// sekolah_id
+
 			$this->sekolah_id->LinkCustomAttributes = "";
 			$this->sekolah_id->HrefValue = "";
 
@@ -1067,18 +1050,6 @@ $t04_siswa_edit->ShowMessage();
 <input type="hidden" name="modal" value="1">
 <?php } ?>
 <div>
-<?php if ($t04_siswa->id->Visible) { // id ?>
-	<div id="r_id" class="form-group">
-		<label id="elh_t04_siswa_id" class="col-sm-2 control-label ewLabel"><?php echo $t04_siswa->id->FldCaption() ?></label>
-		<div class="col-sm-10"><div<?php echo $t04_siswa->id->CellAttributes() ?>>
-<span id="el_t04_siswa_id">
-<span<?php echo $t04_siswa->id->ViewAttributes() ?>>
-<p class="form-control-static"><?php echo $t04_siswa->id->EditValue ?></p></span>
-</span>
-<input type="hidden" data-table="t04_siswa" data-field="x_id" name="x_id" id="x_id" value="<?php echo ew_HtmlEncode($t04_siswa->id->CurrentValue) ?>">
-<?php echo $t04_siswa->id->CustomMsg ?></div></div>
-	</div>
-<?php } ?>
 <?php if ($t04_siswa->sekolah_id->Visible) { // sekolah_id ?>
 	<div id="r_sekolah_id" class="form-group">
 		<label id="elh_t04_siswa_sekolah_id" for="x_sekolah_id" class="col-sm-2 control-label ewLabel"><?php echo $t04_siswa->sekolah_id->FldCaption() ?><?php echo $Language->Phrase("FieldRequiredIndicator") ?></label>
@@ -1126,6 +1097,7 @@ $t04_siswa_edit->ShowMessage();
 	</div>
 <?php } ?>
 </div>
+<input type="hidden" data-table="t04_siswa" data-field="x_id" name="x_id" id="x_id" value="<?php echo ew_HtmlEncode($t04_siswa->id->CurrentValue) ?>">
 <?php if (!$t04_siswa_edit->IsModal) { ?>
 <div class="form-group">
 	<div class="col-sm-offset-2 col-sm-10">

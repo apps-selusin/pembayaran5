@@ -308,8 +308,6 @@ class ct04_siswa_view extends ct04_siswa {
 	function Page_Init() {
 		global $gsExport, $gsCustomExport, $gsExportFile, $UserProfile, $Language, $Security, $objForm;
 		$this->CurrentAction = (@$_GET["a"] <> "") ? $_GET["a"] : @$_POST["a_list"]; // Set up current action
-		$this->id->SetVisibility();
-		$this->id->Visible = !$this->IsAdd() && !$this->IsCopy() && !$this->IsGridAdd();
 		$this->sekolah_id->SetVisibility();
 		$this->kelas_id->SetVisibility();
 		$this->NIS->SetVisibility();
@@ -663,11 +661,6 @@ class ct04_siswa_view extends ct04_siswa {
 		$this->Nama->ViewValue = $this->Nama->CurrentValue;
 		$this->Nama->ViewCustomAttributes = "";
 
-			// id
-			$this->id->LinkCustomAttributes = "";
-			$this->id->HrefValue = "";
-			$this->id->TooltipValue = "";
-
 			// sekolah_id
 			$this->sekolah_id->LinkCustomAttributes = "";
 			$this->sekolah_id->HrefValue = "";
@@ -884,17 +877,6 @@ $t04_siswa_view->ShowMessage();
 <input type="hidden" name="modal" value="1">
 <?php } ?>
 <table class="table table-bordered table-striped ewViewTable">
-<?php if ($t04_siswa->id->Visible) { // id ?>
-	<tr id="r_id">
-		<td><span id="elh_t04_siswa_id"><?php echo $t04_siswa->id->FldCaption() ?></span></td>
-		<td data-name="id"<?php echo $t04_siswa->id->CellAttributes() ?>>
-<span id="el_t04_siswa_id">
-<span<?php echo $t04_siswa->id->ViewAttributes() ?>>
-<?php echo $t04_siswa->id->ViewValue ?></span>
-</span>
-</td>
-	</tr>
-<?php } ?>
 <?php if ($t04_siswa->sekolah_id->Visible) { // sekolah_id ?>
 	<tr id="r_sekolah_id">
 		<td><span id="elh_t04_siswa_sekolah_id"><?php echo $t04_siswa->sekolah_id->FldCaption() ?></span></td>
