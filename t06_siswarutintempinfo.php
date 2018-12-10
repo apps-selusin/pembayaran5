@@ -1169,8 +1169,12 @@ class ct06_siswarutintemp extends cTable {
 	function Row_Rendered() {
 
 		// To view properties of field class, use:
-		//var_dump($this-><FieldName>); 
+		//var_dump($this-><FieldName>);
 
+		if (CurrentPageID() == "edit" && $this->CurrentAction != "F") {
+			echo $this->id->CurrentValue;
+			echo $this->id->ViewValue;
+		}
 	}
 
 	// User ID Filtering event

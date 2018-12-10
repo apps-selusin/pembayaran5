@@ -588,14 +588,17 @@
     <menu id="1">
       <phrase id="menutext" value="t 01 tahunajaran" />
     </menu>
+    <menu id="4">
+      <phrase id="menutext" value="Siswa" />
+    </menu>
     <menu id="2">
       <phrase id="menutext" value="t 02 sekolah" />
     </menu>
+    <menu id="16">
+      <phrase id="menutext" value="Bayar" />
+    </menu>
     <menu id="3">
       <phrase id="menutext" value="t 03 kelas" />
-    </menu>
-    <menu id="4">
-      <phrase id="menutext" value="Siswa" />
     </menu>
     <menu id="5">
       <phrase id="menutext" value="t 05 rutin" />
@@ -629,9 +632,6 @@
     </menu>
     <menu id="15">
       <phrase id="menutext" value="t 99 audittrail" />
-    </menu>
-    <menu id="16">
-      <phrase id="menutext" value="Bayar" />
     </menu>
     <menu id="17">
       <phrase id="menutext" value="v 02 siswa" />
