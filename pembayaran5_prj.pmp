@@ -728,7 +728,13 @@ function Row_Rendered() {
 		//echo $this->id->ViewValue;
 		//echo $_SESSION["siswa_id"];
 		//echo $this->siswarutin_id->EditValue;
-		var_dump($this->siswarutin_id);
+		//var_dump($this->siswarutin_id);
+		$siswarutin_id = $this->siswarutin_id->CurrentValue;
+		$q = "select Periode_Tahun_Bulan, Periode_Text from t07_siswarutinbayar
+			where siswarutin_id = ".$siswarutin_id." and Tanggal_Bayar is null";
+		$r = ew_ExecuteRow($q);
+		$this->Periode_Awal->ViewValue = $r["Periode_Text"];
+		$this->Periode_Awal->CurrentValue = $r["Periode_Tahun_Bulan"];
 	}
 }
 ]]></CustomScript>
