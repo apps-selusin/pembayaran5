@@ -1812,7 +1812,7 @@ class cv01_siswa_list extends cv01_siswa {
 		//$this->ListOptions->Items["new"]->Body = "xxx";
 
 		$this->ListOptions->Items["rincian_pembayaran"]->Body = "<a class=\"ewAddEdit ewAdd\" title=\"Rincian Pembayaran\" data-caption=\"Rincian Pembayaran\" href=\"#\">Rincian Pembayaran</a>"; // definisikan link, style, dan caption tombol //"xxx";
-		$this->ListOptions->Items["pembayaran"]->Body = "<a class=\"ewAddEdit ewAdd\" title=\"Pembayaran\" data-caption=\"Pembayaran\" href=\"v01_siswaedit.php?showdetail=t06_siswarutintemp,t09_siswanonrutintemp&id=".CurrentPage->id."\">Pembayaran</a>"; // definisikan link, style, dan caption tombol //"xxx";
+		$this->ListOptions->Items["pembayaran"]->Body = "<a class=\"ewAddEdit ewAdd\" title=\"Pembayaran\" data-caption=\"Pembayaran\" href=\"v01_siswaedit.php?showdetail=t06_siswarutintemp,t09_siswanonrutintemp&id=".CurrentPage()->id."\">Pembayaran</a>"; // definisikan link, style, dan caption tombol //"xxx";
 
 		//v01_siswaedit.php?showdetail=t06_siswarutintemp,t09_siswanonrutintemp&id=2
 	}
