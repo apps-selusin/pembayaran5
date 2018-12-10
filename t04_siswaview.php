@@ -610,11 +610,49 @@ class ct04_siswa_view extends ct04_siswa {
 		$this->id->ViewCustomAttributes = "";
 
 		// sekolah_id
-		$this->sekolah_id->ViewValue = $this->sekolah_id->CurrentValue;
+		if (strval($this->sekolah_id->CurrentValue) <> "") {
+			$sFilterWrk = "`id`" . ew_SearchString("=", $this->sekolah_id->CurrentValue, EW_DATATYPE_NUMBER, "");
+		$sSqlWrk = "SELECT `id`, `Sekolah` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t02_sekolah`";
+		$sWhereWrk = "";
+		$this->sekolah_id->LookupFilters = array();
+		ew_AddFilter($sWhereWrk, $sFilterWrk);
+		$this->Lookup_Selecting($this->sekolah_id, $sWhereWrk); // Call Lookup selecting
+		if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
+			$rswrk = Conn()->Execute($sSqlWrk);
+			if ($rswrk && !$rswrk->EOF) { // Lookup values found
+				$arwrk = array();
+				$arwrk[1] = $rswrk->fields('DispFld');
+				$this->sekolah_id->ViewValue = $this->sekolah_id->DisplayValue($arwrk);
+				$rswrk->Close();
+			} else {
+				$this->sekolah_id->ViewValue = $this->sekolah_id->CurrentValue;
+			}
+		} else {
+			$this->sekolah_id->ViewValue = NULL;
+		}
 		$this->sekolah_id->ViewCustomAttributes = "";
 
 		// kelas_id
-		$this->kelas_id->ViewValue = $this->kelas_id->CurrentValue;
+		if (strval($this->kelas_id->CurrentValue) <> "") {
+			$sFilterWrk = "`id`" . ew_SearchString("=", $this->kelas_id->CurrentValue, EW_DATATYPE_NUMBER, "");
+		$sSqlWrk = "SELECT `id`, `Kelas` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t03_kelas`";
+		$sWhereWrk = "";
+		$this->kelas_id->LookupFilters = array();
+		ew_AddFilter($sWhereWrk, $sFilterWrk);
+		$this->Lookup_Selecting($this->kelas_id, $sWhereWrk); // Call Lookup selecting
+		if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
+			$rswrk = Conn()->Execute($sSqlWrk);
+			if ($rswrk && !$rswrk->EOF) { // Lookup values found
+				$arwrk = array();
+				$arwrk[1] = $rswrk->fields('DispFld');
+				$this->kelas_id->ViewValue = $this->kelas_id->DisplayValue($arwrk);
+				$rswrk->Close();
+			} else {
+				$this->kelas_id->ViewValue = $this->kelas_id->CurrentValue;
+			}
+		} else {
+			$this->kelas_id->ViewValue = NULL;
+		}
 		$this->kelas_id->ViewCustomAttributes = "";
 
 		// NIS
@@ -810,8 +848,10 @@ ft04_siswaview.ValidateRequired = false;
 <?php } ?>
 
 // Dynamic selection lists
-// Form object for search
+ft04_siswaview.Lists["x_sekolah_id"] = {"LinkField":"x_id","Ajax":true,"AutoFill":false,"DisplayFields":["x_Sekolah","","",""],"ParentFields":[],"ChildFields":[],"FilterFields":[],"Options":[],"Template":"","LinkTable":"t02_sekolah"};
+ft04_siswaview.Lists["x_kelas_id"] = {"LinkField":"x_id","Ajax":true,"AutoFill":false,"DisplayFields":["x_Kelas","","",""],"ParentFields":[],"ChildFields":[],"FilterFields":[],"Options":[],"Template":"","LinkTable":"t03_kelas"};
 
+// Form object for search
 </script>
 <script type="text/javascript">
 

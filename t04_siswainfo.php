@@ -50,14 +50,18 @@ class ct04_siswa extends cTable {
 		$this->fields['id'] = &$this->id;
 
 		// sekolah_id
-		$this->sekolah_id = new cField('t04_siswa', 't04_siswa', 'x_sekolah_id', 'sekolah_id', '`sekolah_id`', '`sekolah_id`', 3, -1, FALSE, '`sekolah_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->sekolah_id = new cField('t04_siswa', 't04_siswa', 'x_sekolah_id', 'sekolah_id', '`sekolah_id`', '`sekolah_id`', 3, -1, FALSE, '`sekolah_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
 		$this->sekolah_id->Sortable = TRUE; // Allow sort
+		$this->sekolah_id->UsePleaseSelect = TRUE; // Use PleaseSelect by default
+		$this->sekolah_id->PleaseSelectText = $Language->Phrase("PleaseSelect"); // PleaseSelect text
 		$this->sekolah_id->FldDefaultErrMsg = $Language->Phrase("IncorrectInteger");
 		$this->fields['sekolah_id'] = &$this->sekolah_id;
 
 		// kelas_id
-		$this->kelas_id = new cField('t04_siswa', 't04_siswa', 'x_kelas_id', 'kelas_id', '`kelas_id`', '`kelas_id`', 3, -1, FALSE, '`kelas_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
+		$this->kelas_id = new cField('t04_siswa', 't04_siswa', 'x_kelas_id', 'kelas_id', '`kelas_id`', '`kelas_id`', 3, -1, FALSE, '`kelas_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
 		$this->kelas_id->Sortable = TRUE; // Allow sort
+		$this->kelas_id->UsePleaseSelect = TRUE; // Use PleaseSelect by default
+		$this->kelas_id->PleaseSelectText = $Language->Phrase("PleaseSelect"); // PleaseSelect text
 		$this->kelas_id->FldDefaultErrMsg = $Language->Phrase("IncorrectInteger");
 		$this->fields['kelas_id'] = &$this->kelas_id;
 
@@ -587,11 +591,49 @@ class ct04_siswa extends cTable {
 		$this->id->ViewCustomAttributes = "";
 
 		// sekolah_id
-		$this->sekolah_id->ViewValue = $this->sekolah_id->CurrentValue;
+		if (strval($this->sekolah_id->CurrentValue) <> "") {
+			$sFilterWrk = "`id`" . ew_SearchString("=", $this->sekolah_id->CurrentValue, EW_DATATYPE_NUMBER, "");
+		$sSqlWrk = "SELECT `id`, `Sekolah` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t02_sekolah`";
+		$sWhereWrk = "";
+		$this->sekolah_id->LookupFilters = array();
+		ew_AddFilter($sWhereWrk, $sFilterWrk);
+		$this->Lookup_Selecting($this->sekolah_id, $sWhereWrk); // Call Lookup selecting
+		if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
+			$rswrk = Conn()->Execute($sSqlWrk);
+			if ($rswrk && !$rswrk->EOF) { // Lookup values found
+				$arwrk = array();
+				$arwrk[1] = $rswrk->fields('DispFld');
+				$this->sekolah_id->ViewValue = $this->sekolah_id->DisplayValue($arwrk);
+				$rswrk->Close();
+			} else {
+				$this->sekolah_id->ViewValue = $this->sekolah_id->CurrentValue;
+			}
+		} else {
+			$this->sekolah_id->ViewValue = NULL;
+		}
 		$this->sekolah_id->ViewCustomAttributes = "";
 
 		// kelas_id
-		$this->kelas_id->ViewValue = $this->kelas_id->CurrentValue;
+		if (strval($this->kelas_id->CurrentValue) <> "") {
+			$sFilterWrk = "`id`" . ew_SearchString("=", $this->kelas_id->CurrentValue, EW_DATATYPE_NUMBER, "");
+		$sSqlWrk = "SELECT `id`, `Kelas` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t03_kelas`";
+		$sWhereWrk = "";
+		$this->kelas_id->LookupFilters = array();
+		ew_AddFilter($sWhereWrk, $sFilterWrk);
+		$this->Lookup_Selecting($this->kelas_id, $sWhereWrk); // Call Lookup selecting
+		if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
+			$rswrk = Conn()->Execute($sSqlWrk);
+			if ($rswrk && !$rswrk->EOF) { // Lookup values found
+				$arwrk = array();
+				$arwrk[1] = $rswrk->fields('DispFld');
+				$this->kelas_id->ViewValue = $this->kelas_id->DisplayValue($arwrk);
+				$rswrk->Close();
+			} else {
+				$this->kelas_id->ViewValue = $this->kelas_id->CurrentValue;
+			}
+		} else {
+			$this->kelas_id->ViewValue = NULL;
+		}
 		$this->kelas_id->ViewCustomAttributes = "";
 
 		// NIS
@@ -647,14 +689,10 @@ class ct04_siswa extends cTable {
 		// sekolah_id
 		$this->sekolah_id->EditAttrs["class"] = "form-control";
 		$this->sekolah_id->EditCustomAttributes = "";
-		$this->sekolah_id->EditValue = $this->sekolah_id->CurrentValue;
-		$this->sekolah_id->PlaceHolder = ew_RemoveHtml($this->sekolah_id->FldCaption());
 
 		// kelas_id
 		$this->kelas_id->EditAttrs["class"] = "form-control";
 		$this->kelas_id->EditCustomAttributes = "";
-		$this->kelas_id->EditValue = $this->kelas_id->CurrentValue;
-		$this->kelas_id->PlaceHolder = ew_RemoveHtml($this->kelas_id->FldCaption());
 
 		// NIS
 		$this->NIS->EditAttrs["class"] = "form-control";
