@@ -13,7 +13,7 @@
 
 - setup - periode
   - apabila dirasa setup periode membuat rancu :: lebih baik dihilangkan
-  - istilah periode terkesan rancu dengan istilah ajaran
+  - istilah periode terkesan rancu dengan istilah tahun ajaran
 
 - laporan uang masuk
   - dibutuhkan inputan range tanggal untuk laporan uang masuk
