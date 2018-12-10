@@ -10,10 +10,10 @@ class ct09_siswanonrutintemp extends cTable {
 	var $id;
 	var $siswa_id;
 	var $nonrutin_id;
-	var $siswanonrutin_id;
 	var $Nilai;
 	var $Bayar;
 	var $Sisa;
+	var $siswanonrutin_id;
 
 	//
 	// Table class constructor
@@ -36,9 +36,9 @@ class ct09_siswanonrutintemp extends cTable {
 		$this->ExportPageSize = "a4"; // Page size (PDF only)
 		$this->ExportExcelPageOrientation = ""; // Page orientation (PHPExcel only)
 		$this->ExportExcelPageSize = ""; // Page size (PHPExcel only)
-		$this->DetailAdd = TRUE; // Allow detail add
+		$this->DetailAdd = FALSE; // Allow detail add
 		$this->DetailEdit = TRUE; // Allow detail edit
-		$this->DetailView = TRUE; // Allow detail view
+		$this->DetailView = FALSE; // Allow detail view
 		$this->ShowMultipleDetails = FALSE; // Show multiple details
 		$this->GridAddRowCount = 1;
 		$this->AllowAddDeleteRow = ew_AllowAddDeleteRow(); // Allow add/delete row
@@ -63,12 +63,6 @@ class ct09_siswanonrutintemp extends cTable {
 		$this->nonrutin_id->FldDefaultErrMsg = $Language->Phrase("IncorrectInteger");
 		$this->fields['nonrutin_id'] = &$this->nonrutin_id;
 
-		// siswanonrutin_id
-		$this->siswanonrutin_id = new cField('t09_siswanonrutintemp', 't09_siswanonrutintemp', 'x_siswanonrutin_id', 'siswanonrutin_id', '`siswanonrutin_id`', '`siswanonrutin_id`', 3, -1, FALSE, '`siswanonrutin_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
-		$this->siswanonrutin_id->Sortable = TRUE; // Allow sort
-		$this->siswanonrutin_id->FldDefaultErrMsg = $Language->Phrase("IncorrectInteger");
-		$this->fields['siswanonrutin_id'] = &$this->siswanonrutin_id;
-
 		// Nilai
 		$this->Nilai = new cField('t09_siswanonrutintemp', 't09_siswanonrutintemp', 'x_Nilai', 'Nilai', '`Nilai`', '`Nilai`', 4, -1, FALSE, '`Nilai`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->Nilai->Sortable = TRUE; // Allow sort
@@ -86,6 +80,12 @@ class ct09_siswanonrutintemp extends cTable {
 		$this->Sisa->Sortable = TRUE; // Allow sort
 		$this->Sisa->FldDefaultErrMsg = $Language->Phrase("IncorrectFloat");
 		$this->fields['Sisa'] = &$this->Sisa;
+
+		// siswanonrutin_id
+		$this->siswanonrutin_id = new cField('t09_siswanonrutintemp', 't09_siswanonrutintemp', 'x_siswanonrutin_id', 'siswanonrutin_id', '`siswanonrutin_id`', '`siswanonrutin_id`', 3, -1, FALSE, '`siswanonrutin_id`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'HIDDEN');
+		$this->siswanonrutin_id->Sortable = TRUE; // Allow sort
+		$this->siswanonrutin_id->FldDefaultErrMsg = $Language->Phrase("IncorrectInteger");
+		$this->fields['siswanonrutin_id'] = &$this->siswanonrutin_id;
 	}
 
 	// Set Field Visibility
@@ -642,10 +642,10 @@ class ct09_siswanonrutintemp extends cTable {
 		$this->id->setDbValue($rs->fields('id'));
 		$this->siswa_id->setDbValue($rs->fields('siswa_id'));
 		$this->nonrutin_id->setDbValue($rs->fields('nonrutin_id'));
-		$this->siswanonrutin_id->setDbValue($rs->fields('siswanonrutin_id'));
 		$this->Nilai->setDbValue($rs->fields('Nilai'));
 		$this->Bayar->setDbValue($rs->fields('Bayar'));
 		$this->Sisa->setDbValue($rs->fields('Sisa'));
+		$this->siswanonrutin_id->setDbValue($rs->fields('siswanonrutin_id'));
 	}
 
 	// Render list row values
@@ -659,10 +659,10 @@ class ct09_siswanonrutintemp extends cTable {
 		// id
 		// siswa_id
 		// nonrutin_id
-		// siswanonrutin_id
 		// Nilai
 		// Bayar
 		// Sisa
+		// siswanonrutin_id
 		// id
 
 		$this->id->ViewValue = $this->id->CurrentValue;
@@ -674,23 +674,49 @@ class ct09_siswanonrutintemp extends cTable {
 
 		// nonrutin_id
 		$this->nonrutin_id->ViewValue = $this->nonrutin_id->CurrentValue;
+		if (strval($this->nonrutin_id->CurrentValue) <> "") {
+			$sFilterWrk = "`id`" . ew_SearchString("=", $this->nonrutin_id->CurrentValue, EW_DATATYPE_NUMBER, "");
+		$sSqlWrk = "SELECT `id`, `Jenis` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t08_nonrutin`";
+		$sWhereWrk = "";
+		$this->nonrutin_id->LookupFilters = array();
+		ew_AddFilter($sWhereWrk, $sFilterWrk);
+		$this->Lookup_Selecting($this->nonrutin_id, $sWhereWrk); // Call Lookup selecting
+		if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
+			$rswrk = Conn()->Execute($sSqlWrk);
+			if ($rswrk && !$rswrk->EOF) { // Lookup values found
+				$arwrk = array();
+				$arwrk[1] = $rswrk->fields('DispFld');
+				$this->nonrutin_id->ViewValue = $this->nonrutin_id->DisplayValue($arwrk);
+				$rswrk->Close();
+			} else {
+				$this->nonrutin_id->ViewValue = $this->nonrutin_id->CurrentValue;
+			}
+		} else {
+			$this->nonrutin_id->ViewValue = NULL;
+		}
 		$this->nonrutin_id->ViewCustomAttributes = "";
-
-		// siswanonrutin_id
-		$this->siswanonrutin_id->ViewValue = $this->siswanonrutin_id->CurrentValue;
-		$this->siswanonrutin_id->ViewCustomAttributes = "";
 
 		// Nilai
 		$this->Nilai->ViewValue = $this->Nilai->CurrentValue;
+		$this->Nilai->ViewValue = ew_FormatNumber($this->Nilai->ViewValue, 2, -2, -2, -2);
+		$this->Nilai->CellCssStyle .= "text-align: right;";
 		$this->Nilai->ViewCustomAttributes = "";
 
 		// Bayar
 		$this->Bayar->ViewValue = $this->Bayar->CurrentValue;
+		$this->Bayar->ViewValue = ew_FormatNumber($this->Bayar->ViewValue, 2, -2, -2, -2);
+		$this->Bayar->CellCssStyle .= "text-align: right;";
 		$this->Bayar->ViewCustomAttributes = "";
 
 		// Sisa
 		$this->Sisa->ViewValue = $this->Sisa->CurrentValue;
+		$this->Sisa->ViewValue = ew_FormatNumber($this->Sisa->ViewValue, 2, -2, -2, -2);
+		$this->Sisa->CellCssStyle .= "text-align: right;";
 		$this->Sisa->ViewCustomAttributes = "";
+
+		// siswanonrutin_id
+		$this->siswanonrutin_id->ViewValue = $this->siswanonrutin_id->CurrentValue;
+		$this->siswanonrutin_id->ViewCustomAttributes = "";
 
 		// id
 		$this->id->LinkCustomAttributes = "";
@@ -707,11 +733,6 @@ class ct09_siswanonrutintemp extends cTable {
 		$this->nonrutin_id->HrefValue = "";
 		$this->nonrutin_id->TooltipValue = "";
 
-		// siswanonrutin_id
-		$this->siswanonrutin_id->LinkCustomAttributes = "";
-		$this->siswanonrutin_id->HrefValue = "";
-		$this->siswanonrutin_id->TooltipValue = "";
-
 		// Nilai
 		$this->Nilai->LinkCustomAttributes = "";
 		$this->Nilai->HrefValue = "";
@@ -726,6 +747,11 @@ class ct09_siswanonrutintemp extends cTable {
 		$this->Sisa->LinkCustomAttributes = "";
 		$this->Sisa->HrefValue = "";
 		$this->Sisa->TooltipValue = "";
+
+		// siswanonrutin_id
+		$this->siswanonrutin_id->LinkCustomAttributes = "";
+		$this->siswanonrutin_id->HrefValue = "";
+		$this->siswanonrutin_id->TooltipValue = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -760,34 +786,53 @@ class ct09_siswanonrutintemp extends cTable {
 		$this->nonrutin_id->EditAttrs["class"] = "form-control";
 		$this->nonrutin_id->EditCustomAttributes = "";
 		$this->nonrutin_id->EditValue = $this->nonrutin_id->CurrentValue;
-		$this->nonrutin_id->PlaceHolder = ew_RemoveHtml($this->nonrutin_id->FldCaption());
-
-		// siswanonrutin_id
-		$this->siswanonrutin_id->EditAttrs["class"] = "form-control";
-		$this->siswanonrutin_id->EditCustomAttributes = "";
-		$this->siswanonrutin_id->EditValue = $this->siswanonrutin_id->CurrentValue;
-		$this->siswanonrutin_id->PlaceHolder = ew_RemoveHtml($this->siswanonrutin_id->FldCaption());
+		if (strval($this->nonrutin_id->CurrentValue) <> "") {
+			$sFilterWrk = "`id`" . ew_SearchString("=", $this->nonrutin_id->CurrentValue, EW_DATATYPE_NUMBER, "");
+		$sSqlWrk = "SELECT `id`, `Jenis` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t08_nonrutin`";
+		$sWhereWrk = "";
+		$this->nonrutin_id->LookupFilters = array();
+		ew_AddFilter($sWhereWrk, $sFilterWrk);
+		$this->Lookup_Selecting($this->nonrutin_id, $sWhereWrk); // Call Lookup selecting
+		if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
+			$rswrk = Conn()->Execute($sSqlWrk);
+			if ($rswrk && !$rswrk->EOF) { // Lookup values found
+				$arwrk = array();
+				$arwrk[1] = $rswrk->fields('DispFld');
+				$this->nonrutin_id->EditValue = $this->nonrutin_id->DisplayValue($arwrk);
+				$rswrk->Close();
+			} else {
+				$this->nonrutin_id->EditValue = $this->nonrutin_id->CurrentValue;
+			}
+		} else {
+			$this->nonrutin_id->EditValue = NULL;
+		}
+		$this->nonrutin_id->ViewCustomAttributes = "";
 
 		// Nilai
 		$this->Nilai->EditAttrs["class"] = "form-control";
 		$this->Nilai->EditCustomAttributes = "";
 		$this->Nilai->EditValue = $this->Nilai->CurrentValue;
-		$this->Nilai->PlaceHolder = ew_RemoveHtml($this->Nilai->FldCaption());
-		if (strval($this->Nilai->EditValue) <> "" && is_numeric($this->Nilai->EditValue)) $this->Nilai->EditValue = ew_FormatNumber($this->Nilai->EditValue, -2, -1, -2, 0);
+		$this->Nilai->EditValue = ew_FormatNumber($this->Nilai->EditValue, 2, -2, -2, -2);
+		$this->Nilai->CellCssStyle .= "text-align: right;";
+		$this->Nilai->ViewCustomAttributes = "";
 
 		// Bayar
 		$this->Bayar->EditAttrs["class"] = "form-control";
 		$this->Bayar->EditCustomAttributes = "";
 		$this->Bayar->EditValue = $this->Bayar->CurrentValue;
 		$this->Bayar->PlaceHolder = ew_RemoveHtml($this->Bayar->FldCaption());
-		if (strval($this->Bayar->EditValue) <> "" && is_numeric($this->Bayar->EditValue)) $this->Bayar->EditValue = ew_FormatNumber($this->Bayar->EditValue, -2, -1, -2, 0);
+		if (strval($this->Bayar->EditValue) <> "" && is_numeric($this->Bayar->EditValue)) $this->Bayar->EditValue = ew_FormatNumber($this->Bayar->EditValue, -2, -2, -2, -2);
 
 		// Sisa
 		$this->Sisa->EditAttrs["class"] = "form-control";
 		$this->Sisa->EditCustomAttributes = "";
 		$this->Sisa->EditValue = $this->Sisa->CurrentValue;
 		$this->Sisa->PlaceHolder = ew_RemoveHtml($this->Sisa->FldCaption());
-		if (strval($this->Sisa->EditValue) <> "" && is_numeric($this->Sisa->EditValue)) $this->Sisa->EditValue = ew_FormatNumber($this->Sisa->EditValue, -2, -1, -2, 0);
+		if (strval($this->Sisa->EditValue) <> "" && is_numeric($this->Sisa->EditValue)) $this->Sisa->EditValue = ew_FormatNumber($this->Sisa->EditValue, -2, -2, -2, -2);
+
+		// siswanonrutin_id
+		$this->siswanonrutin_id->EditAttrs["class"] = "form-control";
+		$this->siswanonrutin_id->EditCustomAttributes = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();
@@ -819,18 +864,18 @@ class ct09_siswanonrutintemp extends cTable {
 					if ($this->id->Exportable) $Doc->ExportCaption($this->id);
 					if ($this->siswa_id->Exportable) $Doc->ExportCaption($this->siswa_id);
 					if ($this->nonrutin_id->Exportable) $Doc->ExportCaption($this->nonrutin_id);
-					if ($this->siswanonrutin_id->Exportable) $Doc->ExportCaption($this->siswanonrutin_id);
 					if ($this->Nilai->Exportable) $Doc->ExportCaption($this->Nilai);
 					if ($this->Bayar->Exportable) $Doc->ExportCaption($this->Bayar);
 					if ($this->Sisa->Exportable) $Doc->ExportCaption($this->Sisa);
+					if ($this->siswanonrutin_id->Exportable) $Doc->ExportCaption($this->siswanonrutin_id);
 				} else {
 					if ($this->id->Exportable) $Doc->ExportCaption($this->id);
 					if ($this->siswa_id->Exportable) $Doc->ExportCaption($this->siswa_id);
 					if ($this->nonrutin_id->Exportable) $Doc->ExportCaption($this->nonrutin_id);
-					if ($this->siswanonrutin_id->Exportable) $Doc->ExportCaption($this->siswanonrutin_id);
 					if ($this->Nilai->Exportable) $Doc->ExportCaption($this->Nilai);
 					if ($this->Bayar->Exportable) $Doc->ExportCaption($this->Bayar);
 					if ($this->Sisa->Exportable) $Doc->ExportCaption($this->Sisa);
+					if ($this->siswanonrutin_id->Exportable) $Doc->ExportCaption($this->siswanonrutin_id);
 				}
 				$Doc->EndExportRow();
 			}
@@ -865,18 +910,18 @@ class ct09_siswanonrutintemp extends cTable {
 						if ($this->id->Exportable) $Doc->ExportField($this->id);
 						if ($this->siswa_id->Exportable) $Doc->ExportField($this->siswa_id);
 						if ($this->nonrutin_id->Exportable) $Doc->ExportField($this->nonrutin_id);
-						if ($this->siswanonrutin_id->Exportable) $Doc->ExportField($this->siswanonrutin_id);
 						if ($this->Nilai->Exportable) $Doc->ExportField($this->Nilai);
 						if ($this->Bayar->Exportable) $Doc->ExportField($this->Bayar);
 						if ($this->Sisa->Exportable) $Doc->ExportField($this->Sisa);
+						if ($this->siswanonrutin_id->Exportable) $Doc->ExportField($this->siswanonrutin_id);
 					} else {
 						if ($this->id->Exportable) $Doc->ExportField($this->id);
 						if ($this->siswa_id->Exportable) $Doc->ExportField($this->siswa_id);
 						if ($this->nonrutin_id->Exportable) $Doc->ExportField($this->nonrutin_id);
-						if ($this->siswanonrutin_id->Exportable) $Doc->ExportField($this->siswanonrutin_id);
 						if ($this->Nilai->Exportable) $Doc->ExportField($this->Nilai);
 						if ($this->Bayar->Exportable) $Doc->ExportField($this->Bayar);
 						if ($this->Sisa->Exportable) $Doc->ExportField($this->Sisa);
+						if ($this->siswanonrutin_id->Exportable) $Doc->ExportField($this->siswanonrutin_id);
 					}
 					$Doc->EndExportRow();
 				}
@@ -978,6 +1023,14 @@ class ct09_siswanonrutintemp extends cTable {
 		// Enter your code here
 		// To cancel, set return value to FALSE
 
+		$_SESSION["nonrutin_Nilai"] = $rsold["Nilai"];
+		$_SESSION["nonrutin_Bayar"] = $rsnew["Bayar"];
+		$_SESSION["nonrutin_Sisa"] = $rsnew["Sisa"];
+		if ($_SESSION["nonrutin_Bayar"] != 0) {
+			$rsnew["Nilai"] = $rsnew["Sisa"];
+			$rsnew["Bayar"] = 0;
+			$rsnew["Sisa"] = $rsnew["Sisa"];
+		}
 		return TRUE;
 	}
 
@@ -985,6 +1038,9 @@ class ct09_siswanonrutintemp extends cTable {
 	function Row_Updated($rsold, &$rsnew) {
 
 		//echo "Row Updated";
+		if ($_SESSION["nonrutin_Bayar"] != 0) {
+			f_update_bayar_nonrutin($rsold, $rsnew);
+		}
 	}
 
 	// Row Update Conflict event

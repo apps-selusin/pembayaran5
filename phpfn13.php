@@ -4590,6 +4590,20 @@ function Database_Connecting(&$info) {
 	//	$info["pass"] = "";
 	//}
 
+	if (ew_CurrentUserIP () == "127.0.0.1"  || ew_CurrentUserIP () == ":: 1"  || ew_CurrentHost () == "localhost" ) { // testing on local PC
+		$info["host"] = "localhost";
+		$info["user"] = "root"; // sesuaikan dengan username database di komputer localhost
+		$info["pass"] = "admin"; // sesuaikan dengan password database di komputer localhost
+		$info["db"] = "db_pembayaran5"; // sesuaikan dengan nama database di komputer localhost
+		$lines=file('dbport.txt');foreach ($lines as $line_num => $line){$port = $line;}
+		$info["port"] = $port; //$info["port"] = "3306";
+	} elseif (ew_CurrentHost () == "pembayaran5.nma-indonesia.com") { // setting koneksi database untuk komputer server
+		$info["host"] = "mysql.hostinger.co.id";  // sesuaikan dengan ip address atau hostname komputer server
+		$info["user"] = "u945388674_pemb4"; // sesuaikan dengan username database di komputer server
+		$info["pass"] = "PresarioCQ43"; // sesuaikan deengan password database di komputer server
+		$info["db"] = "u945388674_pemb5"; // sesuaikan dengan nama database di komputer server
+		$info["port"] = "3306";
+	}
 }
 
 // Database Connected event

@@ -903,6 +903,11 @@ class ct09_siswanonrutin extends cTable {
 	function Row_Inserted($rsold, &$rsnew) {
 
 		//echo "Row Inserted"
+		// buat rincian pembayaran PER PERIODE di tabel t10_siswanonrutinbayar
+		// dan
+		// buat rincian INPUT PEMBAYARAN di tabel t09_siswanonrutintemp
+
+		f_buat_rincian_pembayaran_non_rutin($rsold, $rsnew);
 	}
 
 	// Row Updating event

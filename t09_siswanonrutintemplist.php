@@ -346,14 +346,12 @@ class ct09_siswanonrutintemp_list extends ct09_siswanonrutintemp {
 
 		// Set up list options
 		$this->SetupListOptions();
-		$this->id->SetVisibility();
-		$this->id->Visible = !$this->IsAdd() && !$this->IsCopy() && !$this->IsGridAdd();
 		$this->siswa_id->SetVisibility();
 		$this->nonrutin_id->SetVisibility();
-		$this->siswanonrutin_id->SetVisibility();
 		$this->Nilai->SetVisibility();
 		$this->Bayar->SetVisibility();
 		$this->Sisa->SetVisibility();
+		$this->siswanonrutin_id->SetVisibility();
 
 		// Global Page Loading event (in userfn*.php)
 		Page_Loading();
@@ -645,13 +643,12 @@ class ct09_siswanonrutintemp_list extends ct09_siswanonrutintemp {
 		if (@$_GET["order"] <> "") {
 			$this->CurrentOrder = ew_StripSlashes(@$_GET["order"]);
 			$this->CurrentOrderType = @$_GET["ordertype"];
-			$this->UpdateSort($this->id, $bCtrl); // id
 			$this->UpdateSort($this->siswa_id, $bCtrl); // siswa_id
 			$this->UpdateSort($this->nonrutin_id, $bCtrl); // nonrutin_id
-			$this->UpdateSort($this->siswanonrutin_id, $bCtrl); // siswanonrutin_id
 			$this->UpdateSort($this->Nilai, $bCtrl); // Nilai
 			$this->UpdateSort($this->Bayar, $bCtrl); // Bayar
 			$this->UpdateSort($this->Sisa, $bCtrl); // Sisa
+			$this->UpdateSort($this->siswanonrutin_id, $bCtrl); // siswanonrutin_id
 			$this->setStartRecordNumber(1); // Reset start position
 		}
 	}
@@ -688,13 +685,12 @@ class ct09_siswanonrutintemp_list extends ct09_siswanonrutintemp {
 			if ($this->Command == "resetsort") {
 				$sOrderBy = "";
 				$this->setSessionOrderBy($sOrderBy);
-				$this->id->setSort("");
 				$this->siswa_id->setSort("");
 				$this->nonrutin_id->setSort("");
-				$this->siswanonrutin_id->setSort("");
 				$this->Nilai->setSort("");
 				$this->Bayar->setSort("");
 				$this->Sisa->setSort("");
+				$this->siswanonrutin_id->setSort("");
 			}
 
 			// Reset start position
@@ -713,26 +709,8 @@ class ct09_siswanonrutintemp_list extends ct09_siswanonrutintemp {
 		$item->OnLeft = FALSE;
 		$item->Visible = FALSE;
 
-		// "view"
-		$item = &$this->ListOptions->Add("view");
-		$item->CssStyle = "white-space: nowrap;";
-		$item->Visible = TRUE;
-		$item->OnLeft = FALSE;
-
 		// "edit"
 		$item = &$this->ListOptions->Add("edit");
-		$item->CssStyle = "white-space: nowrap;";
-		$item->Visible = TRUE;
-		$item->OnLeft = FALSE;
-
-		// "copy"
-		$item = &$this->ListOptions->Add("copy");
-		$item->CssStyle = "white-space: nowrap;";
-		$item->Visible = TRUE;
-		$item->OnLeft = FALSE;
-
-		// "delete"
-		$item = &$this->ListOptions->Add("delete");
 		$item->CssStyle = "white-space: nowrap;";
 		$item->Visible = TRUE;
 		$item->OnLeft = FALSE;
@@ -786,15 +764,6 @@ class ct09_siswanonrutintemp_list extends ct09_siswanonrutintemp {
 		$oListOpt = &$this->ListOptions->Items["sequence"];
 		$oListOpt->Body = ew_FormatSeqNo($this->RecCnt);
 
-		// "view"
-		$oListOpt = &$this->ListOptions->Items["view"];
-		$viewcaption = ew_HtmlTitle($Language->Phrase("ViewLink"));
-		if (TRUE) {
-			$oListOpt->Body = "<a class=\"ewRowLink ewView\" title=\"" . $viewcaption . "\" data-caption=\"" . $viewcaption . "\" href=\"" . ew_HtmlEncode($this->ViewUrl) . "\">" . $Language->Phrase("ViewLink") . "</a>";
-		} else {
-			$oListOpt->Body = "";
-		}
-
 		// "edit"
 		$oListOpt = &$this->ListOptions->Items["edit"];
 		$editcaption = ew_HtmlTitle($Language->Phrase("EditLink"));
@@ -803,22 +772,6 @@ class ct09_siswanonrutintemp_list extends ct09_siswanonrutintemp {
 		} else {
 			$oListOpt->Body = "";
 		}
-
-		// "copy"
-		$oListOpt = &$this->ListOptions->Items["copy"];
-		$copycaption = ew_HtmlTitle($Language->Phrase("CopyLink"));
-		if (TRUE) {
-			$oListOpt->Body = "<a class=\"ewRowLink ewCopy\" title=\"" . $copycaption . "\" data-caption=\"" . $copycaption . "\" href=\"" . ew_HtmlEncode($this->CopyUrl) . "\">" . $Language->Phrase("CopyLink") . "</a>";
-		} else {
-			$oListOpt->Body = "";
-		}
-
-		// "delete"
-		$oListOpt = &$this->ListOptions->Items["delete"];
-		if (TRUE)
-			$oListOpt->Body = "<a class=\"ewRowLink ewDelete\"" . "" . " title=\"" . ew_HtmlTitle($Language->Phrase("DeleteLink")) . "\" data-caption=\"" . ew_HtmlTitle($Language->Phrase("DeleteLink")) . "\" href=\"" . ew_HtmlEncode($this->DeleteUrl) . "\">" . $Language->Phrase("DeleteLink") . "</a>";
-		else
-			$oListOpt->Body = "";
 
 		// Set up list action buttons
 		$oListOpt = &$this->ListOptions->GetItem("listactions");
@@ -862,13 +815,6 @@ class ct09_siswanonrutintemp_list extends ct09_siswanonrutintemp {
 	function SetupOtherOptions() {
 		global $Language, $Security;
 		$options = &$this->OtherOptions;
-		$option = $options["addedit"];
-
-		// Add
-		$item = &$option->Add("add");
-		$addcaption = ew_HtmlTitle($Language->Phrase("AddLink"));
-		$item->Body = "<a class=\"ewAddEdit ewAdd\" title=\"" . $addcaption . "\" data-caption=\"" . $addcaption . "\" href=\"" . ew_HtmlEncode($this->AddUrl) . "\">" . $Language->Phrase("AddLink") . "</a>";
-		$item->Visible = ($this->AddUrl <> "");
 		$option = $options["action"];
 
 		// Set up options default
@@ -1133,10 +1079,10 @@ class ct09_siswanonrutintemp_list extends ct09_siswanonrutintemp {
 		$this->id->setDbValue($rs->fields('id'));
 		$this->siswa_id->setDbValue($rs->fields('siswa_id'));
 		$this->nonrutin_id->setDbValue($rs->fields('nonrutin_id'));
-		$this->siswanonrutin_id->setDbValue($rs->fields('siswanonrutin_id'));
 		$this->Nilai->setDbValue($rs->fields('Nilai'));
 		$this->Bayar->setDbValue($rs->fields('Bayar'));
 		$this->Sisa->setDbValue($rs->fields('Sisa'));
+		$this->siswanonrutin_id->setDbValue($rs->fields('siswanonrutin_id'));
 	}
 
 	// Load DbValue from recordset
@@ -1146,10 +1092,10 @@ class ct09_siswanonrutintemp_list extends ct09_siswanonrutintemp {
 		$this->id->DbValue = $row['id'];
 		$this->siswa_id->DbValue = $row['siswa_id'];
 		$this->nonrutin_id->DbValue = $row['nonrutin_id'];
-		$this->siswanonrutin_id->DbValue = $row['siswanonrutin_id'];
 		$this->Nilai->DbValue = $row['Nilai'];
 		$this->Bayar->DbValue = $row['Bayar'];
 		$this->Sisa->DbValue = $row['Sisa'];
+		$this->siswanonrutin_id->DbValue = $row['siswanonrutin_id'];
 	}
 
 	// Load old record
@@ -1206,10 +1152,10 @@ class ct09_siswanonrutintemp_list extends ct09_siswanonrutintemp {
 		// id
 		// siswa_id
 		// nonrutin_id
-		// siswanonrutin_id
 		// Nilai
 		// Bayar
 		// Sisa
+		// siswanonrutin_id
 
 		if ($this->RowType == EW_ROWTYPE_VIEW) { // View row
 
@@ -1223,28 +1169,49 @@ class ct09_siswanonrutintemp_list extends ct09_siswanonrutintemp {
 
 		// nonrutin_id
 		$this->nonrutin_id->ViewValue = $this->nonrutin_id->CurrentValue;
+		if (strval($this->nonrutin_id->CurrentValue) <> "") {
+			$sFilterWrk = "`id`" . ew_SearchString("=", $this->nonrutin_id->CurrentValue, EW_DATATYPE_NUMBER, "");
+		$sSqlWrk = "SELECT `id`, `Jenis` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t08_nonrutin`";
+		$sWhereWrk = "";
+		$this->nonrutin_id->LookupFilters = array();
+		ew_AddFilter($sWhereWrk, $sFilterWrk);
+		$this->Lookup_Selecting($this->nonrutin_id, $sWhereWrk); // Call Lookup selecting
+		if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
+			$rswrk = Conn()->Execute($sSqlWrk);
+			if ($rswrk && !$rswrk->EOF) { // Lookup values found
+				$arwrk = array();
+				$arwrk[1] = $rswrk->fields('DispFld');
+				$this->nonrutin_id->ViewValue = $this->nonrutin_id->DisplayValue($arwrk);
+				$rswrk->Close();
+			} else {
+				$this->nonrutin_id->ViewValue = $this->nonrutin_id->CurrentValue;
+			}
+		} else {
+			$this->nonrutin_id->ViewValue = NULL;
+		}
 		$this->nonrutin_id->ViewCustomAttributes = "";
-
-		// siswanonrutin_id
-		$this->siswanonrutin_id->ViewValue = $this->siswanonrutin_id->CurrentValue;
-		$this->siswanonrutin_id->ViewCustomAttributes = "";
 
 		// Nilai
 		$this->Nilai->ViewValue = $this->Nilai->CurrentValue;
+		$this->Nilai->ViewValue = ew_FormatNumber($this->Nilai->ViewValue, 2, -2, -2, -2);
+		$this->Nilai->CellCssStyle .= "text-align: right;";
 		$this->Nilai->ViewCustomAttributes = "";
 
 		// Bayar
 		$this->Bayar->ViewValue = $this->Bayar->CurrentValue;
+		$this->Bayar->ViewValue = ew_FormatNumber($this->Bayar->ViewValue, 2, -2, -2, -2);
+		$this->Bayar->CellCssStyle .= "text-align: right;";
 		$this->Bayar->ViewCustomAttributes = "";
 
 		// Sisa
 		$this->Sisa->ViewValue = $this->Sisa->CurrentValue;
+		$this->Sisa->ViewValue = ew_FormatNumber($this->Sisa->ViewValue, 2, -2, -2, -2);
+		$this->Sisa->CellCssStyle .= "text-align: right;";
 		$this->Sisa->ViewCustomAttributes = "";
 
-			// id
-			$this->id->LinkCustomAttributes = "";
-			$this->id->HrefValue = "";
-			$this->id->TooltipValue = "";
+		// siswanonrutin_id
+		$this->siswanonrutin_id->ViewValue = $this->siswanonrutin_id->CurrentValue;
+		$this->siswanonrutin_id->ViewCustomAttributes = "";
 
 			// siswa_id
 			$this->siswa_id->LinkCustomAttributes = "";
@@ -1255,11 +1222,6 @@ class ct09_siswanonrutintemp_list extends ct09_siswanonrutintemp {
 			$this->nonrutin_id->LinkCustomAttributes = "";
 			$this->nonrutin_id->HrefValue = "";
 			$this->nonrutin_id->TooltipValue = "";
-
-			// siswanonrutin_id
-			$this->siswanonrutin_id->LinkCustomAttributes = "";
-			$this->siswanonrutin_id->HrefValue = "";
-			$this->siswanonrutin_id->TooltipValue = "";
 
 			// Nilai
 			$this->Nilai->LinkCustomAttributes = "";
@@ -1275,6 +1237,11 @@ class ct09_siswanonrutintemp_list extends ct09_siswanonrutintemp {
 			$this->Sisa->LinkCustomAttributes = "";
 			$this->Sisa->HrefValue = "";
 			$this->Sisa->TooltipValue = "";
+
+			// siswanonrutin_id
+			$this->siswanonrutin_id->LinkCustomAttributes = "";
+			$this->siswanonrutin_id->HrefValue = "";
+			$this->siswanonrutin_id->TooltipValue = "";
 		}
 
 		// Call Row Rendered event
@@ -1535,8 +1502,9 @@ ft09_siswanonrutintemplist.ValidateRequired = false;
 <?php } ?>
 
 // Dynamic selection lists
-// Form object for search
+ft09_siswanonrutintemplist.Lists["x_nonrutin_id"] = {"LinkField":"x_id","Ajax":true,"AutoFill":false,"DisplayFields":["x_Jenis","","",""],"ParentFields":[],"ChildFields":[],"FilterFields":[],"Options":[],"Template":"","LinkTable":"t08_nonrutin"};
 
+// Form object for search
 </script>
 <script type="text/javascript">
 
@@ -1619,15 +1587,6 @@ $t09_siswanonrutintemp_list->RenderListOptions();
 // Render list options (header, left)
 $t09_siswanonrutintemp_list->ListOptions->Render("header", "left");
 ?>
-<?php if ($t09_siswanonrutintemp->id->Visible) { // id ?>
-	<?php if ($t09_siswanonrutintemp->SortUrl($t09_siswanonrutintemp->id) == "") { ?>
-		<th data-name="id"><div id="elh_t09_siswanonrutintemp_id" class="t09_siswanonrutintemp_id"><div class="ewTableHeaderCaption"><?php echo $t09_siswanonrutintemp->id->FldCaption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="id"><div class="ewPointer" onclick="ew_Sort(event,'<?php echo $t09_siswanonrutintemp->SortUrl($t09_siswanonrutintemp->id) ?>',2);"><div id="elh_t09_siswanonrutintemp_id" class="t09_siswanonrutintemp_id">
-			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption"><?php echo $t09_siswanonrutintemp->id->FldCaption() ?></span><span class="ewTableHeaderSort"><?php if ($t09_siswanonrutintemp->id->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($t09_siswanonrutintemp->id->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span></div>
-        </div></div></th>
-	<?php } ?>
-<?php } ?>		
 <?php if ($t09_siswanonrutintemp->siswa_id->Visible) { // siswa_id ?>
 	<?php if ($t09_siswanonrutintemp->SortUrl($t09_siswanonrutintemp->siswa_id) == "") { ?>
 		<th data-name="siswa_id"><div id="elh_t09_siswanonrutintemp_siswa_id" class="t09_siswanonrutintemp_siswa_id"><div class="ewTableHeaderCaption"><?php echo $t09_siswanonrutintemp->siswa_id->FldCaption() ?></div></div></th>
@@ -1643,15 +1602,6 @@ $t09_siswanonrutintemp_list->ListOptions->Render("header", "left");
 	<?php } else { ?>
 		<th data-name="nonrutin_id"><div class="ewPointer" onclick="ew_Sort(event,'<?php echo $t09_siswanonrutintemp->SortUrl($t09_siswanonrutintemp->nonrutin_id) ?>',2);"><div id="elh_t09_siswanonrutintemp_nonrutin_id" class="t09_siswanonrutintemp_nonrutin_id">
 			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption"><?php echo $t09_siswanonrutintemp->nonrutin_id->FldCaption() ?></span><span class="ewTableHeaderSort"><?php if ($t09_siswanonrutintemp->nonrutin_id->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($t09_siswanonrutintemp->nonrutin_id->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span></div>
-        </div></div></th>
-	<?php } ?>
-<?php } ?>		
-<?php if ($t09_siswanonrutintemp->siswanonrutin_id->Visible) { // siswanonrutin_id ?>
-	<?php if ($t09_siswanonrutintemp->SortUrl($t09_siswanonrutintemp->siswanonrutin_id) == "") { ?>
-		<th data-name="siswanonrutin_id"><div id="elh_t09_siswanonrutintemp_siswanonrutin_id" class="t09_siswanonrutintemp_siswanonrutin_id"><div class="ewTableHeaderCaption"><?php echo $t09_siswanonrutintemp->siswanonrutin_id->FldCaption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="siswanonrutin_id"><div class="ewPointer" onclick="ew_Sort(event,'<?php echo $t09_siswanonrutintemp->SortUrl($t09_siswanonrutintemp->siswanonrutin_id) ?>',2);"><div id="elh_t09_siswanonrutintemp_siswanonrutin_id" class="t09_siswanonrutintemp_siswanonrutin_id">
-			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption"><?php echo $t09_siswanonrutintemp->siswanonrutin_id->FldCaption() ?></span><span class="ewTableHeaderSort"><?php if ($t09_siswanonrutintemp->siswanonrutin_id->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($t09_siswanonrutintemp->siswanonrutin_id->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span></div>
         </div></div></th>
 	<?php } ?>
 <?php } ?>		
@@ -1679,6 +1629,15 @@ $t09_siswanonrutintemp_list->ListOptions->Render("header", "left");
 	<?php } else { ?>
 		<th data-name="Sisa"><div class="ewPointer" onclick="ew_Sort(event,'<?php echo $t09_siswanonrutintemp->SortUrl($t09_siswanonrutintemp->Sisa) ?>',2);"><div id="elh_t09_siswanonrutintemp_Sisa" class="t09_siswanonrutintemp_Sisa">
 			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption"><?php echo $t09_siswanonrutintemp->Sisa->FldCaption() ?></span><span class="ewTableHeaderSort"><?php if ($t09_siswanonrutintemp->Sisa->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($t09_siswanonrutintemp->Sisa->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span></div>
+        </div></div></th>
+	<?php } ?>
+<?php } ?>		
+<?php if ($t09_siswanonrutintemp->siswanonrutin_id->Visible) { // siswanonrutin_id ?>
+	<?php if ($t09_siswanonrutintemp->SortUrl($t09_siswanonrutintemp->siswanonrutin_id) == "") { ?>
+		<th data-name="siswanonrutin_id"><div id="elh_t09_siswanonrutintemp_siswanonrutin_id" class="t09_siswanonrutintemp_siswanonrutin_id"><div class="ewTableHeaderCaption"><?php echo $t09_siswanonrutintemp->siswanonrutin_id->FldCaption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="siswanonrutin_id"><div class="ewPointer" onclick="ew_Sort(event,'<?php echo $t09_siswanonrutintemp->SortUrl($t09_siswanonrutintemp->siswanonrutin_id) ?>',2);"><div id="elh_t09_siswanonrutintemp_siswanonrutin_id" class="t09_siswanonrutintemp_siswanonrutin_id">
+			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption"><?php echo $t09_siswanonrutintemp->siswanonrutin_id->FldCaption() ?></span><span class="ewTableHeaderSort"><?php if ($t09_siswanonrutintemp->siswanonrutin_id->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($t09_siswanonrutintemp->siswanonrutin_id->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span></div>
         </div></div></th>
 	<?php } ?>
 <?php } ?>		
@@ -1747,35 +1706,19 @@ while ($t09_siswanonrutintemp_list->RecCnt < $t09_siswanonrutintemp_list->StopRe
 // Render list options (body, left)
 $t09_siswanonrutintemp_list->ListOptions->Render("body", "left", $t09_siswanonrutintemp_list->RowCnt);
 ?>
-	<?php if ($t09_siswanonrutintemp->id->Visible) { // id ?>
-		<td data-name="id"<?php echo $t09_siswanonrutintemp->id->CellAttributes() ?>>
-<span id="el<?php echo $t09_siswanonrutintemp_list->RowCnt ?>_t09_siswanonrutintemp_id" class="t09_siswanonrutintemp_id">
-<span<?php echo $t09_siswanonrutintemp->id->ViewAttributes() ?>>
-<?php echo $t09_siswanonrutintemp->id->ListViewValue() ?></span>
-</span>
-<a id="<?php echo $t09_siswanonrutintemp_list->PageObjName . "_row_" . $t09_siswanonrutintemp_list->RowCnt ?>"></a></td>
-	<?php } ?>
 	<?php if ($t09_siswanonrutintemp->siswa_id->Visible) { // siswa_id ?>
 		<td data-name="siswa_id"<?php echo $t09_siswanonrutintemp->siswa_id->CellAttributes() ?>>
 <span id="el<?php echo $t09_siswanonrutintemp_list->RowCnt ?>_t09_siswanonrutintemp_siswa_id" class="t09_siswanonrutintemp_siswa_id">
 <span<?php echo $t09_siswanonrutintemp->siswa_id->ViewAttributes() ?>>
 <?php echo $t09_siswanonrutintemp->siswa_id->ListViewValue() ?></span>
 </span>
-</td>
+<a id="<?php echo $t09_siswanonrutintemp_list->PageObjName . "_row_" . $t09_siswanonrutintemp_list->RowCnt ?>"></a></td>
 	<?php } ?>
 	<?php if ($t09_siswanonrutintemp->nonrutin_id->Visible) { // nonrutin_id ?>
 		<td data-name="nonrutin_id"<?php echo $t09_siswanonrutintemp->nonrutin_id->CellAttributes() ?>>
 <span id="el<?php echo $t09_siswanonrutintemp_list->RowCnt ?>_t09_siswanonrutintemp_nonrutin_id" class="t09_siswanonrutintemp_nonrutin_id">
 <span<?php echo $t09_siswanonrutintemp->nonrutin_id->ViewAttributes() ?>>
 <?php echo $t09_siswanonrutintemp->nonrutin_id->ListViewValue() ?></span>
-</span>
-</td>
-	<?php } ?>
-	<?php if ($t09_siswanonrutintemp->siswanonrutin_id->Visible) { // siswanonrutin_id ?>
-		<td data-name="siswanonrutin_id"<?php echo $t09_siswanonrutintemp->siswanonrutin_id->CellAttributes() ?>>
-<span id="el<?php echo $t09_siswanonrutintemp_list->RowCnt ?>_t09_siswanonrutintemp_siswanonrutin_id" class="t09_siswanonrutintemp_siswanonrutin_id">
-<span<?php echo $t09_siswanonrutintemp->siswanonrutin_id->ViewAttributes() ?>>
-<?php echo $t09_siswanonrutintemp->siswanonrutin_id->ListViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>
@@ -1800,6 +1743,14 @@ $t09_siswanonrutintemp_list->ListOptions->Render("body", "left", $t09_siswanonru
 <span id="el<?php echo $t09_siswanonrutintemp_list->RowCnt ?>_t09_siswanonrutintemp_Sisa" class="t09_siswanonrutintemp_Sisa">
 <span<?php echo $t09_siswanonrutintemp->Sisa->ViewAttributes() ?>>
 <?php echo $t09_siswanonrutintemp->Sisa->ListViewValue() ?></span>
+</span>
+</td>
+	<?php } ?>
+	<?php if ($t09_siswanonrutintemp->siswanonrutin_id->Visible) { // siswanonrutin_id ?>
+		<td data-name="siswanonrutin_id"<?php echo $t09_siswanonrutintemp->siswanonrutin_id->CellAttributes() ?>>
+<span id="el<?php echo $t09_siswanonrutintemp_list->RowCnt ?>_t09_siswanonrutintemp_siswanonrutin_id" class="t09_siswanonrutintemp_siswanonrutin_id">
+<span<?php echo $t09_siswanonrutintemp->siswanonrutin_id->ViewAttributes() ?>>
+<?php echo $t09_siswanonrutintemp->siswanonrutin_id->ListViewValue() ?></span>
 </span>
 </td>
 	<?php } ?>

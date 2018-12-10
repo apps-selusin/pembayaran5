@@ -255,14 +255,12 @@ class ct09_siswanonrutintemp_delete extends ct09_siswanonrutintemp {
 	function Page_Init() {
 		global $gsExport, $gsCustomExport, $gsExportFile, $UserProfile, $Language, $Security, $objForm;
 		$this->CurrentAction = (@$_GET["a"] <> "") ? $_GET["a"] : @$_POST["a_list"]; // Set up current action
-		$this->id->SetVisibility();
-		$this->id->Visible = !$this->IsAdd() && !$this->IsCopy() && !$this->IsGridAdd();
 		$this->siswa_id->SetVisibility();
 		$this->nonrutin_id->SetVisibility();
-		$this->siswanonrutin_id->SetVisibility();
 		$this->Nilai->SetVisibility();
 		$this->Bayar->SetVisibility();
 		$this->Sisa->SetVisibility();
+		$this->siswanonrutin_id->SetVisibility();
 
 		// Global Page Loading event (in userfn*.php)
 		Page_Loading();
@@ -443,10 +441,10 @@ class ct09_siswanonrutintemp_delete extends ct09_siswanonrutintemp {
 		$this->id->setDbValue($rs->fields('id'));
 		$this->siswa_id->setDbValue($rs->fields('siswa_id'));
 		$this->nonrutin_id->setDbValue($rs->fields('nonrutin_id'));
-		$this->siswanonrutin_id->setDbValue($rs->fields('siswanonrutin_id'));
 		$this->Nilai->setDbValue($rs->fields('Nilai'));
 		$this->Bayar->setDbValue($rs->fields('Bayar'));
 		$this->Sisa->setDbValue($rs->fields('Sisa'));
+		$this->siswanonrutin_id->setDbValue($rs->fields('siswanonrutin_id'));
 	}
 
 	// Load DbValue from recordset
@@ -456,10 +454,10 @@ class ct09_siswanonrutintemp_delete extends ct09_siswanonrutintemp {
 		$this->id->DbValue = $row['id'];
 		$this->siswa_id->DbValue = $row['siswa_id'];
 		$this->nonrutin_id->DbValue = $row['nonrutin_id'];
-		$this->siswanonrutin_id->DbValue = $row['siswanonrutin_id'];
 		$this->Nilai->DbValue = $row['Nilai'];
 		$this->Bayar->DbValue = $row['Bayar'];
 		$this->Sisa->DbValue = $row['Sisa'];
+		$this->siswanonrutin_id->DbValue = $row['siswanonrutin_id'];
 	}
 
 	// Render row values based on field settings
@@ -487,10 +485,10 @@ class ct09_siswanonrutintemp_delete extends ct09_siswanonrutintemp {
 		// id
 		// siswa_id
 		// nonrutin_id
-		// siswanonrutin_id
 		// Nilai
 		// Bayar
 		// Sisa
+		// siswanonrutin_id
 
 		if ($this->RowType == EW_ROWTYPE_VIEW) { // View row
 
@@ -504,11 +502,27 @@ class ct09_siswanonrutintemp_delete extends ct09_siswanonrutintemp {
 
 		// nonrutin_id
 		$this->nonrutin_id->ViewValue = $this->nonrutin_id->CurrentValue;
+		if (strval($this->nonrutin_id->CurrentValue) <> "") {
+			$sFilterWrk = "`id`" . ew_SearchString("=", $this->nonrutin_id->CurrentValue, EW_DATATYPE_NUMBER, "");
+		$sSqlWrk = "SELECT `id`, `Jenis` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t08_nonrutin`";
+		$sWhereWrk = "";
+		$this->nonrutin_id->LookupFilters = array();
+		ew_AddFilter($sWhereWrk, $sFilterWrk);
+		$this->Lookup_Selecting($this->nonrutin_id, $sWhereWrk); // Call Lookup selecting
+		if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
+			$rswrk = Conn()->Execute($sSqlWrk);
+			if ($rswrk && !$rswrk->EOF) { // Lookup values found
+				$arwrk = array();
+				$arwrk[1] = $rswrk->fields('DispFld');
+				$this->nonrutin_id->ViewValue = $this->nonrutin_id->DisplayValue($arwrk);
+				$rswrk->Close();
+			} else {
+				$this->nonrutin_id->ViewValue = $this->nonrutin_id->CurrentValue;
+			}
+		} else {
+			$this->nonrutin_id->ViewValue = NULL;
+		}
 		$this->nonrutin_id->ViewCustomAttributes = "";
-
-		// siswanonrutin_id
-		$this->siswanonrutin_id->ViewValue = $this->siswanonrutin_id->CurrentValue;
-		$this->siswanonrutin_id->ViewCustomAttributes = "";
 
 		// Nilai
 		$this->Nilai->ViewValue = $this->Nilai->CurrentValue;
@@ -522,10 +536,9 @@ class ct09_siswanonrutintemp_delete extends ct09_siswanonrutintemp {
 		$this->Sisa->ViewValue = $this->Sisa->CurrentValue;
 		$this->Sisa->ViewCustomAttributes = "";
 
-			// id
-			$this->id->LinkCustomAttributes = "";
-			$this->id->HrefValue = "";
-			$this->id->TooltipValue = "";
+		// siswanonrutin_id
+		$this->siswanonrutin_id->ViewValue = $this->siswanonrutin_id->CurrentValue;
+		$this->siswanonrutin_id->ViewCustomAttributes = "";
 
 			// siswa_id
 			$this->siswa_id->LinkCustomAttributes = "";
@@ -536,11 +549,6 @@ class ct09_siswanonrutintemp_delete extends ct09_siswanonrutintemp {
 			$this->nonrutin_id->LinkCustomAttributes = "";
 			$this->nonrutin_id->HrefValue = "";
 			$this->nonrutin_id->TooltipValue = "";
-
-			// siswanonrutin_id
-			$this->siswanonrutin_id->LinkCustomAttributes = "";
-			$this->siswanonrutin_id->HrefValue = "";
-			$this->siswanonrutin_id->TooltipValue = "";
 
 			// Nilai
 			$this->Nilai->LinkCustomAttributes = "";
@@ -556,6 +564,11 @@ class ct09_siswanonrutintemp_delete extends ct09_siswanonrutintemp {
 			$this->Sisa->LinkCustomAttributes = "";
 			$this->Sisa->HrefValue = "";
 			$this->Sisa->TooltipValue = "";
+
+			// siswanonrutin_id
+			$this->siswanonrutin_id->LinkCustomAttributes = "";
+			$this->siswanonrutin_id->HrefValue = "";
+			$this->siswanonrutin_id->TooltipValue = "";
 		}
 
 		// Call Row Rendered event
@@ -830,8 +843,9 @@ ft09_siswanonrutintempdelete.ValidateRequired = false;
 <?php } ?>
 
 // Dynamic selection lists
-// Form object for search
+ft09_siswanonrutintempdelete.Lists["x_nonrutin_id"] = {"LinkField":"x_id","Ajax":true,"AutoFill":false,"DisplayFields":["x_Jenis","","",""],"ParentFields":[],"ChildFields":[],"FilterFields":[],"Options":[],"Template":"","LinkTable":"t08_nonrutin"};
 
+// Form object for search
 </script>
 <script type="text/javascript">
 
@@ -862,17 +876,11 @@ $t09_siswanonrutintemp_delete->ShowMessage();
 <?php echo $t09_siswanonrutintemp->TableCustomInnerHtml ?>
 	<thead>
 	<tr class="ewTableHeader">
-<?php if ($t09_siswanonrutintemp->id->Visible) { // id ?>
-		<th><span id="elh_t09_siswanonrutintemp_id" class="t09_siswanonrutintemp_id"><?php echo $t09_siswanonrutintemp->id->FldCaption() ?></span></th>
-<?php } ?>
 <?php if ($t09_siswanonrutintemp->siswa_id->Visible) { // siswa_id ?>
 		<th><span id="elh_t09_siswanonrutintemp_siswa_id" class="t09_siswanonrutintemp_siswa_id"><?php echo $t09_siswanonrutintemp->siswa_id->FldCaption() ?></span></th>
 <?php } ?>
 <?php if ($t09_siswanonrutintemp->nonrutin_id->Visible) { // nonrutin_id ?>
 		<th><span id="elh_t09_siswanonrutintemp_nonrutin_id" class="t09_siswanonrutintemp_nonrutin_id"><?php echo $t09_siswanonrutintemp->nonrutin_id->FldCaption() ?></span></th>
-<?php } ?>
-<?php if ($t09_siswanonrutintemp->siswanonrutin_id->Visible) { // siswanonrutin_id ?>
-		<th><span id="elh_t09_siswanonrutintemp_siswanonrutin_id" class="t09_siswanonrutintemp_siswanonrutin_id"><?php echo $t09_siswanonrutintemp->siswanonrutin_id->FldCaption() ?></span></th>
 <?php } ?>
 <?php if ($t09_siswanonrutintemp->Nilai->Visible) { // Nilai ?>
 		<th><span id="elh_t09_siswanonrutintemp_Nilai" class="t09_siswanonrutintemp_Nilai"><?php echo $t09_siswanonrutintemp->Nilai->FldCaption() ?></span></th>
@@ -882,6 +890,9 @@ $t09_siswanonrutintemp_delete->ShowMessage();
 <?php } ?>
 <?php if ($t09_siswanonrutintemp->Sisa->Visible) { // Sisa ?>
 		<th><span id="elh_t09_siswanonrutintemp_Sisa" class="t09_siswanonrutintemp_Sisa"><?php echo $t09_siswanonrutintemp->Sisa->FldCaption() ?></span></th>
+<?php } ?>
+<?php if ($t09_siswanonrutintemp->siswanonrutin_id->Visible) { // siswanonrutin_id ?>
+		<th><span id="elh_t09_siswanonrutintemp_siswanonrutin_id" class="t09_siswanonrutintemp_siswanonrutin_id"><?php echo $t09_siswanonrutintemp->siswanonrutin_id->FldCaption() ?></span></th>
 <?php } ?>
 	</tr>
 	</thead>
@@ -904,14 +915,6 @@ while (!$t09_siswanonrutintemp_delete->Recordset->EOF) {
 	$t09_siswanonrutintemp_delete->RenderRow();
 ?>
 	<tr<?php echo $t09_siswanonrutintemp->RowAttributes() ?>>
-<?php if ($t09_siswanonrutintemp->id->Visible) { // id ?>
-		<td<?php echo $t09_siswanonrutintemp->id->CellAttributes() ?>>
-<span id="el<?php echo $t09_siswanonrutintemp_delete->RowCnt ?>_t09_siswanonrutintemp_id" class="t09_siswanonrutintemp_id">
-<span<?php echo $t09_siswanonrutintemp->id->ViewAttributes() ?>>
-<?php echo $t09_siswanonrutintemp->id->ListViewValue() ?></span>
-</span>
-</td>
-<?php } ?>
 <?php if ($t09_siswanonrutintemp->siswa_id->Visible) { // siswa_id ?>
 		<td<?php echo $t09_siswanonrutintemp->siswa_id->CellAttributes() ?>>
 <span id="el<?php echo $t09_siswanonrutintemp_delete->RowCnt ?>_t09_siswanonrutintemp_siswa_id" class="t09_siswanonrutintemp_siswa_id">
@@ -925,14 +928,6 @@ while (!$t09_siswanonrutintemp_delete->Recordset->EOF) {
 <span id="el<?php echo $t09_siswanonrutintemp_delete->RowCnt ?>_t09_siswanonrutintemp_nonrutin_id" class="t09_siswanonrutintemp_nonrutin_id">
 <span<?php echo $t09_siswanonrutintemp->nonrutin_id->ViewAttributes() ?>>
 <?php echo $t09_siswanonrutintemp->nonrutin_id->ListViewValue() ?></span>
-</span>
-</td>
-<?php } ?>
-<?php if ($t09_siswanonrutintemp->siswanonrutin_id->Visible) { // siswanonrutin_id ?>
-		<td<?php echo $t09_siswanonrutintemp->siswanonrutin_id->CellAttributes() ?>>
-<span id="el<?php echo $t09_siswanonrutintemp_delete->RowCnt ?>_t09_siswanonrutintemp_siswanonrutin_id" class="t09_siswanonrutintemp_siswanonrutin_id">
-<span<?php echo $t09_siswanonrutintemp->siswanonrutin_id->ViewAttributes() ?>>
-<?php echo $t09_siswanonrutintemp->siswanonrutin_id->ListViewValue() ?></span>
 </span>
 </td>
 <?php } ?>
@@ -957,6 +952,14 @@ while (!$t09_siswanonrutintemp_delete->Recordset->EOF) {
 <span id="el<?php echo $t09_siswanonrutintemp_delete->RowCnt ?>_t09_siswanonrutintemp_Sisa" class="t09_siswanonrutintemp_Sisa">
 <span<?php echo $t09_siswanonrutintemp->Sisa->ViewAttributes() ?>>
 <?php echo $t09_siswanonrutintemp->Sisa->ListViewValue() ?></span>
+</span>
+</td>
+<?php } ?>
+<?php if ($t09_siswanonrutintemp->siswanonrutin_id->Visible) { // siswanonrutin_id ?>
+		<td<?php echo $t09_siswanonrutintemp->siswanonrutin_id->CellAttributes() ?>>
+<span id="el<?php echo $t09_siswanonrutintemp_delete->RowCnt ?>_t09_siswanonrutintemp_siswanonrutin_id" class="t09_siswanonrutintemp_siswanonrutin_id">
+<span<?php echo $t09_siswanonrutintemp->siswanonrutin_id->ViewAttributes() ?>>
+<?php echo $t09_siswanonrutintemp->siswanonrutin_id->ListViewValue() ?></span>
 </span>
 </td>
 <?php } ?>

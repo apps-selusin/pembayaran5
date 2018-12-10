@@ -733,25 +733,65 @@ class cv01_siswa extends cTable {
 		$this->sekolah_id->EditAttrs["class"] = "form-control";
 		$this->sekolah_id->EditCustomAttributes = "";
 		$this->sekolah_id->EditValue = $this->sekolah_id->CurrentValue;
-		$this->sekolah_id->PlaceHolder = ew_RemoveHtml($this->sekolah_id->FldCaption());
+		if (strval($this->sekolah_id->CurrentValue) <> "") {
+			$sFilterWrk = "`id`" . ew_SearchString("=", $this->sekolah_id->CurrentValue, EW_DATATYPE_NUMBER, "");
+		$sSqlWrk = "SELECT `id`, `Sekolah` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t02_sekolah`";
+		$sWhereWrk = "";
+		$this->sekolah_id->LookupFilters = array();
+		ew_AddFilter($sWhereWrk, $sFilterWrk);
+		$this->Lookup_Selecting($this->sekolah_id, $sWhereWrk); // Call Lookup selecting
+		if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
+			$rswrk = Conn()->Execute($sSqlWrk);
+			if ($rswrk && !$rswrk->EOF) { // Lookup values found
+				$arwrk = array();
+				$arwrk[1] = $rswrk->fields('DispFld');
+				$this->sekolah_id->EditValue = $this->sekolah_id->DisplayValue($arwrk);
+				$rswrk->Close();
+			} else {
+				$this->sekolah_id->EditValue = $this->sekolah_id->CurrentValue;
+			}
+		} else {
+			$this->sekolah_id->EditValue = NULL;
+		}
+		$this->sekolah_id->ViewCustomAttributes = "";
 
 		// kelas_id
 		$this->kelas_id->EditAttrs["class"] = "form-control";
 		$this->kelas_id->EditCustomAttributes = "";
 		$this->kelas_id->EditValue = $this->kelas_id->CurrentValue;
-		$this->kelas_id->PlaceHolder = ew_RemoveHtml($this->kelas_id->FldCaption());
+		if (strval($this->kelas_id->CurrentValue) <> "") {
+			$sFilterWrk = "`id`" . ew_SearchString("=", $this->kelas_id->CurrentValue, EW_DATATYPE_NUMBER, "");
+		$sSqlWrk = "SELECT `id`, `Kelas` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t03_kelas`";
+		$sWhereWrk = "";
+		$this->kelas_id->LookupFilters = array();
+		ew_AddFilter($sWhereWrk, $sFilterWrk);
+		$this->Lookup_Selecting($this->kelas_id, $sWhereWrk); // Call Lookup selecting
+		if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
+			$rswrk = Conn()->Execute($sSqlWrk);
+			if ($rswrk && !$rswrk->EOF) { // Lookup values found
+				$arwrk = array();
+				$arwrk[1] = $rswrk->fields('DispFld');
+				$this->kelas_id->EditValue = $this->kelas_id->DisplayValue($arwrk);
+				$rswrk->Close();
+			} else {
+				$this->kelas_id->EditValue = $this->kelas_id->CurrentValue;
+			}
+		} else {
+			$this->kelas_id->EditValue = NULL;
+		}
+		$this->kelas_id->ViewCustomAttributes = "";
 
 		// NIS
 		$this->NIS->EditAttrs["class"] = "form-control";
 		$this->NIS->EditCustomAttributes = "";
 		$this->NIS->EditValue = $this->NIS->CurrentValue;
-		$this->NIS->PlaceHolder = ew_RemoveHtml($this->NIS->FldCaption());
+		$this->NIS->ViewCustomAttributes = "";
 
 		// Nama
 		$this->Nama->EditAttrs["class"] = "form-control";
 		$this->Nama->EditCustomAttributes = "";
 		$this->Nama->EditValue = $this->Nama->CurrentValue;
-		$this->Nama->PlaceHolder = ew_RemoveHtml($this->Nama->FldCaption());
+		$this->Nama->ViewCustomAttributes = "";
 
 		// Call Row Rendered event
 		$this->Row_Rendered();

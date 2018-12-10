@@ -284,14 +284,12 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 
 		// Set up list options
 		$this->SetupListOptions();
-		$this->id->SetVisibility();
-		$this->id->Visible = !$this->IsAdd() && !$this->IsCopy() && !$this->IsGridAdd();
 		$this->siswa_id->SetVisibility();
 		$this->nonrutin_id->SetVisibility();
-		$this->siswanonrutin_id->SetVisibility();
 		$this->Nilai->SetVisibility();
 		$this->Bayar->SetVisibility();
 		$this->Sisa->SetVisibility();
+		$this->siswanonrutin_id->SetVisibility();
 
 		// Global Page Loading event (in userfn*.php)
 		Page_Loading();
@@ -753,13 +751,13 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 			return FALSE;
 		if ($objForm->HasValue("x_nonrutin_id") && $objForm->HasValue("o_nonrutin_id") && $this->nonrutin_id->CurrentValue <> $this->nonrutin_id->OldValue)
 			return FALSE;
-		if ($objForm->HasValue("x_siswanonrutin_id") && $objForm->HasValue("o_siswanonrutin_id") && $this->siswanonrutin_id->CurrentValue <> $this->siswanonrutin_id->OldValue)
-			return FALSE;
 		if ($objForm->HasValue("x_Nilai") && $objForm->HasValue("o_Nilai") && $this->Nilai->CurrentValue <> $this->Nilai->OldValue)
 			return FALSE;
 		if ($objForm->HasValue("x_Bayar") && $objForm->HasValue("o_Bayar") && $this->Bayar->CurrentValue <> $this->Bayar->OldValue)
 			return FALSE;
 		if ($objForm->HasValue("x_Sisa") && $objForm->HasValue("o_Sisa") && $this->Sisa->CurrentValue <> $this->Sisa->OldValue)
+			return FALSE;
+		if ($objForm->HasValue("x_siswanonrutin_id") && $objForm->HasValue("o_siswanonrutin_id") && $this->siswanonrutin_id->CurrentValue <> $this->siswanonrutin_id->OldValue)
 			return FALSE;
 		return TRUE;
 	}
@@ -901,26 +899,8 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 		$item->OnLeft = FALSE;
 		$item->Visible = FALSE;
 
-		// "view"
-		$item = &$this->ListOptions->Add("view");
-		$item->CssStyle = "white-space: nowrap;";
-		$item->Visible = TRUE;
-		$item->OnLeft = FALSE;
-
 		// "edit"
 		$item = &$this->ListOptions->Add("edit");
-		$item->CssStyle = "white-space: nowrap;";
-		$item->Visible = TRUE;
-		$item->OnLeft = FALSE;
-
-		// "copy"
-		$item = &$this->ListOptions->Add("copy");
-		$item->CssStyle = "white-space: nowrap;";
-		$item->Visible = TRUE;
-		$item->OnLeft = FALSE;
-
-		// "delete"
-		$item = &$this->ListOptions->Add("delete");
 		$item->CssStyle = "white-space: nowrap;";
 		$item->Visible = TRUE;
 		$item->OnLeft = FALSE;
@@ -978,7 +958,11 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 				$option->UseButtonGroup = TRUE; // Use button group for grid delete button
 				$option->UseImageAndText = TRUE; // Use image and text for grid delete button
 				$oListOpt = &$option->Items["griddelete"];
-				$oListOpt->Body = "<a class=\"ewGridLink ewGridDelete\" title=\"" . ew_HtmlTitle($Language->Phrase("DeleteLink")) . "\" data-caption=\"" . ew_HtmlTitle($Language->Phrase("DeleteLink")) . "\" onclick=\"return ew_DeleteGridRow(this, " . $this->RowIndex . ");\">" . $Language->Phrase("DeleteLink") . "</a>";
+				if (is_numeric($this->RowIndex) && ($this->RowAction == "" || $this->RowAction == "edit")) { // Do not allow delete existing record
+					$oListOpt->Body = "&nbsp;";
+				} else {
+					$oListOpt->Body = "<a class=\"ewGridLink ewGridDelete\" title=\"" . ew_HtmlTitle($Language->Phrase("DeleteLink")) . "\" data-caption=\"" . ew_HtmlTitle($Language->Phrase("DeleteLink")) . "\" onclick=\"return ew_DeleteGridRow(this, " . $this->RowIndex . ");\">" . $Language->Phrase("DeleteLink") . "</a>";
+				}
 			}
 		}
 
@@ -986,15 +970,6 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 		$oListOpt = &$this->ListOptions->Items["sequence"];
 		$oListOpt->Body = ew_FormatSeqNo($this->RecCnt);
 		if ($this->CurrentMode == "view") { // View mode
-
-		// "view"
-		$oListOpt = &$this->ListOptions->Items["view"];
-		$viewcaption = ew_HtmlTitle($Language->Phrase("ViewLink"));
-		if (TRUE) {
-			$oListOpt->Body = "<a class=\"ewRowLink ewView\" title=\"" . $viewcaption . "\" data-caption=\"" . $viewcaption . "\" href=\"" . ew_HtmlEncode($this->ViewUrl) . "\">" . $Language->Phrase("ViewLink") . "</a>";
-		} else {
-			$oListOpt->Body = "";
-		}
 
 		// "edit"
 		$oListOpt = &$this->ListOptions->Items["edit"];
@@ -1004,22 +979,6 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 		} else {
 			$oListOpt->Body = "";
 		}
-
-		// "copy"
-		$oListOpt = &$this->ListOptions->Items["copy"];
-		$copycaption = ew_HtmlTitle($Language->Phrase("CopyLink"));
-		if (TRUE) {
-			$oListOpt->Body = "<a class=\"ewRowLink ewCopy\" title=\"" . $copycaption . "\" data-caption=\"" . $copycaption . "\" href=\"" . ew_HtmlEncode($this->CopyUrl) . "\">" . $Language->Phrase("CopyLink") . "</a>";
-		} else {
-			$oListOpt->Body = "";
-		}
-
-		// "delete"
-		$oListOpt = &$this->ListOptions->Items["delete"];
-		if (TRUE)
-			$oListOpt->Body = "<a class=\"ewRowLink ewDelete\"" . "" . " title=\"" . ew_HtmlTitle($Language->Phrase("DeleteLink")) . "\" data-caption=\"" . ew_HtmlTitle($Language->Phrase("DeleteLink")) . "\" href=\"" . ew_HtmlEncode($this->DeleteUrl) . "\">" . $Language->Phrase("DeleteLink") . "</a>";
-		else
-			$oListOpt->Body = "";
 		} // End View mode
 		if ($this->CurrentMode == "edit" && is_numeric($this->RowIndex)) {
 			$this->MultiSelectKey .= "<input type=\"hidden\" name=\"" . $KeyName . "\" id=\"" . $KeyName . "\" value=\"" . $this->id->CurrentValue . "\">";
@@ -1045,14 +1004,6 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 		$item = &$option->Add($option->GroupOptionName);
 		$item->Body = "";
 		$item->Visible = FALSE;
-
-		// Add
-		if ($this->CurrentMode == "view") { // Check view mode
-			$item = &$option->Add("add");
-			$addcaption = ew_HtmlTitle($Language->Phrase("AddLink"));
-			$item->Body = "<a class=\"ewAddEdit ewAdd\" title=\"" . $addcaption . "\" data-caption=\"" . $addcaption . "\" href=\"" . ew_HtmlEncode($this->AddUrl) . "\">" . $Language->Phrase("AddLink") . "</a>";
-			$item->Visible = ($this->AddUrl <> "");
-		}
 	}
 
 	// Render other options
@@ -1066,7 +1017,7 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 				$option->UseImageAndText = TRUE;
 				$item = &$option->Add("addblankrow");
 				$item->Body = "<a class=\"ewAddEdit ewAddBlankRow\" title=\"" . ew_HtmlTitle($Language->Phrase("AddBlankRow")) . "\" data-caption=\"" . ew_HtmlTitle($Language->Phrase("AddBlankRow")) . "\" href=\"javascript:void(0);\" onclick=\"ew_AddGridRow(this);\">" . $Language->Phrase("AddBlankRow") . "</a>";
-				$item->Visible = TRUE;
+				$item->Visible = FALSE;
 				$this->ShowOtherOptions = $item->Visible;
 			}
 		}
@@ -1126,20 +1077,18 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 
 	// Load default values
 	function LoadDefaultValues() {
-		$this->id->CurrentValue = NULL;
-		$this->id->OldValue = $this->id->CurrentValue;
 		$this->siswa_id->CurrentValue = NULL;
 		$this->siswa_id->OldValue = $this->siswa_id->CurrentValue;
 		$this->nonrutin_id->CurrentValue = NULL;
 		$this->nonrutin_id->OldValue = $this->nonrutin_id->CurrentValue;
-		$this->siswanonrutin_id->CurrentValue = NULL;
-		$this->siswanonrutin_id->OldValue = $this->siswanonrutin_id->CurrentValue;
 		$this->Nilai->CurrentValue = 0.00;
 		$this->Nilai->OldValue = $this->Nilai->CurrentValue;
 		$this->Bayar->CurrentValue = 0.00;
 		$this->Bayar->OldValue = $this->Bayar->CurrentValue;
 		$this->Sisa->CurrentValue = 0.00;
 		$this->Sisa->OldValue = $this->Sisa->CurrentValue;
+		$this->siswanonrutin_id->CurrentValue = NULL;
+		$this->siswanonrutin_id->OldValue = $this->siswanonrutin_id->CurrentValue;
 	}
 
 	// Load form values
@@ -1148,8 +1097,6 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 		// Load from form
 		global $objForm;
 		$objForm->FormName = $this->FormName;
-		if (!$this->id->FldIsDetailKey && $this->CurrentAction <> "gridadd" && $this->CurrentAction <> "add")
-			$this->id->setFormValue($objForm->GetValue("x_id"));
 		if (!$this->siswa_id->FldIsDetailKey) {
 			$this->siswa_id->setFormValue($objForm->GetValue("x_siswa_id"));
 		}
@@ -1158,10 +1105,6 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 			$this->nonrutin_id->setFormValue($objForm->GetValue("x_nonrutin_id"));
 		}
 		$this->nonrutin_id->setOldValue($objForm->GetValue("o_nonrutin_id"));
-		if (!$this->siswanonrutin_id->FldIsDetailKey) {
-			$this->siswanonrutin_id->setFormValue($objForm->GetValue("x_siswanonrutin_id"));
-		}
-		$this->siswanonrutin_id->setOldValue($objForm->GetValue("o_siswanonrutin_id"));
 		if (!$this->Nilai->FldIsDetailKey) {
 			$this->Nilai->setFormValue($objForm->GetValue("x_Nilai"));
 		}
@@ -1174,6 +1117,12 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 			$this->Sisa->setFormValue($objForm->GetValue("x_Sisa"));
 		}
 		$this->Sisa->setOldValue($objForm->GetValue("o_Sisa"));
+		if (!$this->siswanonrutin_id->FldIsDetailKey) {
+			$this->siswanonrutin_id->setFormValue($objForm->GetValue("x_siswanonrutin_id"));
+		}
+		$this->siswanonrutin_id->setOldValue($objForm->GetValue("o_siswanonrutin_id"));
+		if (!$this->id->FldIsDetailKey && $this->CurrentAction <> "gridadd" && $this->CurrentAction <> "add")
+			$this->id->setFormValue($objForm->GetValue("x_id"));
 	}
 
 	// Restore form values
@@ -1183,10 +1132,10 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 			$this->id->CurrentValue = $this->id->FormValue;
 		$this->siswa_id->CurrentValue = $this->siswa_id->FormValue;
 		$this->nonrutin_id->CurrentValue = $this->nonrutin_id->FormValue;
-		$this->siswanonrutin_id->CurrentValue = $this->siswanonrutin_id->FormValue;
 		$this->Nilai->CurrentValue = $this->Nilai->FormValue;
 		$this->Bayar->CurrentValue = $this->Bayar->FormValue;
 		$this->Sisa->CurrentValue = $this->Sisa->FormValue;
+		$this->siswanonrutin_id->CurrentValue = $this->siswanonrutin_id->FormValue;
 	}
 
 	// Load recordset
@@ -1247,10 +1196,10 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 		$this->id->setDbValue($rs->fields('id'));
 		$this->siswa_id->setDbValue($rs->fields('siswa_id'));
 		$this->nonrutin_id->setDbValue($rs->fields('nonrutin_id'));
-		$this->siswanonrutin_id->setDbValue($rs->fields('siswanonrutin_id'));
 		$this->Nilai->setDbValue($rs->fields('Nilai'));
 		$this->Bayar->setDbValue($rs->fields('Bayar'));
 		$this->Sisa->setDbValue($rs->fields('Sisa'));
+		$this->siswanonrutin_id->setDbValue($rs->fields('siswanonrutin_id'));
 	}
 
 	// Load DbValue from recordset
@@ -1260,10 +1209,10 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 		$this->id->DbValue = $row['id'];
 		$this->siswa_id->DbValue = $row['siswa_id'];
 		$this->nonrutin_id->DbValue = $row['nonrutin_id'];
-		$this->siswanonrutin_id->DbValue = $row['siswanonrutin_id'];
 		$this->Nilai->DbValue = $row['Nilai'];
 		$this->Bayar->DbValue = $row['Bayar'];
 		$this->Sisa->DbValue = $row['Sisa'];
+		$this->siswanonrutin_id->DbValue = $row['siswanonrutin_id'];
 	}
 
 	// Load old record
@@ -1324,10 +1273,10 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 		// id
 		// siswa_id
 		// nonrutin_id
-		// siswanonrutin_id
 		// Nilai
 		// Bayar
 		// Sisa
+		// siswanonrutin_id
 
 		if ($this->RowType == EW_ROWTYPE_VIEW) { // View row
 
@@ -1341,28 +1290,49 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 
 		// nonrutin_id
 		$this->nonrutin_id->ViewValue = $this->nonrutin_id->CurrentValue;
+		if (strval($this->nonrutin_id->CurrentValue) <> "") {
+			$sFilterWrk = "`id`" . ew_SearchString("=", $this->nonrutin_id->CurrentValue, EW_DATATYPE_NUMBER, "");
+		$sSqlWrk = "SELECT `id`, `Jenis` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t08_nonrutin`";
+		$sWhereWrk = "";
+		$this->nonrutin_id->LookupFilters = array();
+		ew_AddFilter($sWhereWrk, $sFilterWrk);
+		$this->Lookup_Selecting($this->nonrutin_id, $sWhereWrk); // Call Lookup selecting
+		if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
+			$rswrk = Conn()->Execute($sSqlWrk);
+			if ($rswrk && !$rswrk->EOF) { // Lookup values found
+				$arwrk = array();
+				$arwrk[1] = $rswrk->fields('DispFld');
+				$this->nonrutin_id->ViewValue = $this->nonrutin_id->DisplayValue($arwrk);
+				$rswrk->Close();
+			} else {
+				$this->nonrutin_id->ViewValue = $this->nonrutin_id->CurrentValue;
+			}
+		} else {
+			$this->nonrutin_id->ViewValue = NULL;
+		}
 		$this->nonrutin_id->ViewCustomAttributes = "";
-
-		// siswanonrutin_id
-		$this->siswanonrutin_id->ViewValue = $this->siswanonrutin_id->CurrentValue;
-		$this->siswanonrutin_id->ViewCustomAttributes = "";
 
 		// Nilai
 		$this->Nilai->ViewValue = $this->Nilai->CurrentValue;
+		$this->Nilai->ViewValue = ew_FormatNumber($this->Nilai->ViewValue, 2, -2, -2, -2);
+		$this->Nilai->CellCssStyle .= "text-align: right;";
 		$this->Nilai->ViewCustomAttributes = "";
 
 		// Bayar
 		$this->Bayar->ViewValue = $this->Bayar->CurrentValue;
+		$this->Bayar->ViewValue = ew_FormatNumber($this->Bayar->ViewValue, 2, -2, -2, -2);
+		$this->Bayar->CellCssStyle .= "text-align: right;";
 		$this->Bayar->ViewCustomAttributes = "";
 
 		// Sisa
 		$this->Sisa->ViewValue = $this->Sisa->CurrentValue;
+		$this->Sisa->ViewValue = ew_FormatNumber($this->Sisa->ViewValue, 2, -2, -2, -2);
+		$this->Sisa->CellCssStyle .= "text-align: right;";
 		$this->Sisa->ViewCustomAttributes = "";
 
-			// id
-			$this->id->LinkCustomAttributes = "";
-			$this->id->HrefValue = "";
-			$this->id->TooltipValue = "";
+		// siswanonrutin_id
+		$this->siswanonrutin_id->ViewValue = $this->siswanonrutin_id->CurrentValue;
+		$this->siswanonrutin_id->ViewCustomAttributes = "";
 
 			// siswa_id
 			$this->siswa_id->LinkCustomAttributes = "";
@@ -1373,11 +1343,6 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 			$this->nonrutin_id->LinkCustomAttributes = "";
 			$this->nonrutin_id->HrefValue = "";
 			$this->nonrutin_id->TooltipValue = "";
-
-			// siswanonrutin_id
-			$this->siswanonrutin_id->LinkCustomAttributes = "";
-			$this->siswanonrutin_id->HrefValue = "";
-			$this->siswanonrutin_id->TooltipValue = "";
 
 			// Nilai
 			$this->Nilai->LinkCustomAttributes = "";
@@ -1393,11 +1358,14 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 			$this->Sisa->LinkCustomAttributes = "";
 			$this->Sisa->HrefValue = "";
 			$this->Sisa->TooltipValue = "";
+
+			// siswanonrutin_id
+			$this->siswanonrutin_id->LinkCustomAttributes = "";
+			$this->siswanonrutin_id->HrefValue = "";
+			$this->siswanonrutin_id->TooltipValue = "";
 		} elseif ($this->RowType == EW_ROWTYPE_ADD) { // Add row
 
-			// id
 			// siswa_id
-
 			$this->siswa_id->EditAttrs["class"] = "form-control";
 			$this->siswa_id->EditCustomAttributes = "";
 			if ($this->siswa_id->getSessionValue() <> "") {
@@ -1414,13 +1382,27 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 			$this->nonrutin_id->EditAttrs["class"] = "form-control";
 			$this->nonrutin_id->EditCustomAttributes = "";
 			$this->nonrutin_id->EditValue = ew_HtmlEncode($this->nonrutin_id->CurrentValue);
+			if (strval($this->nonrutin_id->CurrentValue) <> "") {
+				$sFilterWrk = "`id`" . ew_SearchString("=", $this->nonrutin_id->CurrentValue, EW_DATATYPE_NUMBER, "");
+			$sSqlWrk = "SELECT `id`, `Jenis` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t08_nonrutin`";
+			$sWhereWrk = "";
+			$this->nonrutin_id->LookupFilters = array();
+			ew_AddFilter($sWhereWrk, $sFilterWrk);
+			$this->Lookup_Selecting($this->nonrutin_id, $sWhereWrk); // Call Lookup selecting
+			if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
+				$rswrk = Conn()->Execute($sSqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = array();
+					$arwrk[1] = ew_HtmlEncode($rswrk->fields('DispFld'));
+					$this->nonrutin_id->EditValue = $this->nonrutin_id->DisplayValue($arwrk);
+					$rswrk->Close();
+				} else {
+					$this->nonrutin_id->EditValue = ew_HtmlEncode($this->nonrutin_id->CurrentValue);
+				}
+			} else {
+				$this->nonrutin_id->EditValue = NULL;
+			}
 			$this->nonrutin_id->PlaceHolder = ew_RemoveHtml($this->nonrutin_id->FldCaption());
-
-			// siswanonrutin_id
-			$this->siswanonrutin_id->EditAttrs["class"] = "form-control";
-			$this->siswanonrutin_id->EditCustomAttributes = "";
-			$this->siswanonrutin_id->EditValue = ew_HtmlEncode($this->siswanonrutin_id->CurrentValue);
-			$this->siswanonrutin_id->PlaceHolder = ew_RemoveHtml($this->siswanonrutin_id->FldCaption());
 
 			// Nilai
 			$this->Nilai->EditAttrs["class"] = "form-control";
@@ -1428,7 +1410,7 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 			$this->Nilai->EditValue = ew_HtmlEncode($this->Nilai->CurrentValue);
 			$this->Nilai->PlaceHolder = ew_RemoveHtml($this->Nilai->FldCaption());
 			if (strval($this->Nilai->EditValue) <> "" && is_numeric($this->Nilai->EditValue)) {
-			$this->Nilai->EditValue = ew_FormatNumber($this->Nilai->EditValue, -2, -1, -2, 0);
+			$this->Nilai->EditValue = ew_FormatNumber($this->Nilai->EditValue, -2, -2, -2, -2);
 			$this->Nilai->OldValue = $this->Nilai->EditValue;
 			}
 
@@ -1438,7 +1420,7 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 			$this->Bayar->EditValue = ew_HtmlEncode($this->Bayar->CurrentValue);
 			$this->Bayar->PlaceHolder = ew_RemoveHtml($this->Bayar->FldCaption());
 			if (strval($this->Bayar->EditValue) <> "" && is_numeric($this->Bayar->EditValue)) {
-			$this->Bayar->EditValue = ew_FormatNumber($this->Bayar->EditValue, -2, -1, -2, 0);
+			$this->Bayar->EditValue = ew_FormatNumber($this->Bayar->EditValue, -2, -2, -2, -2);
 			$this->Bayar->OldValue = $this->Bayar->EditValue;
 			}
 
@@ -1448,27 +1430,25 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 			$this->Sisa->EditValue = ew_HtmlEncode($this->Sisa->CurrentValue);
 			$this->Sisa->PlaceHolder = ew_RemoveHtml($this->Sisa->FldCaption());
 			if (strval($this->Sisa->EditValue) <> "" && is_numeric($this->Sisa->EditValue)) {
-			$this->Sisa->EditValue = ew_FormatNumber($this->Sisa->EditValue, -2, -1, -2, 0);
+			$this->Sisa->EditValue = ew_FormatNumber($this->Sisa->EditValue, -2, -2, -2, -2);
 			$this->Sisa->OldValue = $this->Sisa->EditValue;
 			}
+
+			// siswanonrutin_id
+			$this->siswanonrutin_id->EditAttrs["class"] = "form-control";
+			$this->siswanonrutin_id->EditCustomAttributes = "";
+			$this->siswanonrutin_id->EditValue = ew_HtmlEncode($this->siswanonrutin_id->CurrentValue);
+			$this->siswanonrutin_id->PlaceHolder = ew_RemoveHtml($this->siswanonrutin_id->FldCaption());
 
 			// Add refer script
-			// id
-
-			$this->id->LinkCustomAttributes = "";
-			$this->id->HrefValue = "";
-
 			// siswa_id
+
 			$this->siswa_id->LinkCustomAttributes = "";
 			$this->siswa_id->HrefValue = "";
 
 			// nonrutin_id
 			$this->nonrutin_id->LinkCustomAttributes = "";
 			$this->nonrutin_id->HrefValue = "";
-
-			// siswanonrutin_id
-			$this->siswanonrutin_id->LinkCustomAttributes = "";
-			$this->siswanonrutin_id->HrefValue = "";
 
 			// Nilai
 			$this->Nilai->LinkCustomAttributes = "";
@@ -1481,13 +1461,11 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 			// Sisa
 			$this->Sisa->LinkCustomAttributes = "";
 			$this->Sisa->HrefValue = "";
-		} elseif ($this->RowType == EW_ROWTYPE_EDIT) { // Edit row
 
-			// id
-			$this->id->EditAttrs["class"] = "form-control";
-			$this->id->EditCustomAttributes = "";
-			$this->id->EditValue = $this->id->CurrentValue;
-			$this->id->ViewCustomAttributes = "";
+			// siswanonrutin_id
+			$this->siswanonrutin_id->LinkCustomAttributes = "";
+			$this->siswanonrutin_id->HrefValue = "";
+		} elseif ($this->RowType == EW_ROWTYPE_EDIT) { // Edit row
 
 			// siswa_id
 			$this->siswa_id->EditAttrs["class"] = "form-control";
@@ -1505,24 +1483,36 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 			// nonrutin_id
 			$this->nonrutin_id->EditAttrs["class"] = "form-control";
 			$this->nonrutin_id->EditCustomAttributes = "";
-			$this->nonrutin_id->EditValue = ew_HtmlEncode($this->nonrutin_id->CurrentValue);
-			$this->nonrutin_id->PlaceHolder = ew_RemoveHtml($this->nonrutin_id->FldCaption());
-
-			// siswanonrutin_id
-			$this->siswanonrutin_id->EditAttrs["class"] = "form-control";
-			$this->siswanonrutin_id->EditCustomAttributes = "";
-			$this->siswanonrutin_id->EditValue = ew_HtmlEncode($this->siswanonrutin_id->CurrentValue);
-			$this->siswanonrutin_id->PlaceHolder = ew_RemoveHtml($this->siswanonrutin_id->FldCaption());
+			$this->nonrutin_id->EditValue = $this->nonrutin_id->CurrentValue;
+			if (strval($this->nonrutin_id->CurrentValue) <> "") {
+				$sFilterWrk = "`id`" . ew_SearchString("=", $this->nonrutin_id->CurrentValue, EW_DATATYPE_NUMBER, "");
+			$sSqlWrk = "SELECT `id`, `Jenis` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t08_nonrutin`";
+			$sWhereWrk = "";
+			$this->nonrutin_id->LookupFilters = array();
+			ew_AddFilter($sWhereWrk, $sFilterWrk);
+			$this->Lookup_Selecting($this->nonrutin_id, $sWhereWrk); // Call Lookup selecting
+			if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
+				$rswrk = Conn()->Execute($sSqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = array();
+					$arwrk[1] = $rswrk->fields('DispFld');
+					$this->nonrutin_id->EditValue = $this->nonrutin_id->DisplayValue($arwrk);
+					$rswrk->Close();
+				} else {
+					$this->nonrutin_id->EditValue = $this->nonrutin_id->CurrentValue;
+				}
+			} else {
+				$this->nonrutin_id->EditValue = NULL;
+			}
+			$this->nonrutin_id->ViewCustomAttributes = "";
 
 			// Nilai
 			$this->Nilai->EditAttrs["class"] = "form-control";
 			$this->Nilai->EditCustomAttributes = "";
-			$this->Nilai->EditValue = ew_HtmlEncode($this->Nilai->CurrentValue);
-			$this->Nilai->PlaceHolder = ew_RemoveHtml($this->Nilai->FldCaption());
-			if (strval($this->Nilai->EditValue) <> "" && is_numeric($this->Nilai->EditValue)) {
-			$this->Nilai->EditValue = ew_FormatNumber($this->Nilai->EditValue, -2, -1, -2, 0);
-			$this->Nilai->OldValue = $this->Nilai->EditValue;
-			}
+			$this->Nilai->EditValue = $this->Nilai->CurrentValue;
+			$this->Nilai->EditValue = ew_FormatNumber($this->Nilai->EditValue, 2, -2, -2, -2);
+			$this->Nilai->CellCssStyle .= "text-align: right;";
+			$this->Nilai->ViewCustomAttributes = "";
 
 			// Bayar
 			$this->Bayar->EditAttrs["class"] = "form-control";
@@ -1530,7 +1520,7 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 			$this->Bayar->EditValue = ew_HtmlEncode($this->Bayar->CurrentValue);
 			$this->Bayar->PlaceHolder = ew_RemoveHtml($this->Bayar->FldCaption());
 			if (strval($this->Bayar->EditValue) <> "" && is_numeric($this->Bayar->EditValue)) {
-			$this->Bayar->EditValue = ew_FormatNumber($this->Bayar->EditValue, -2, -1, -2, 0);
+			$this->Bayar->EditValue = ew_FormatNumber($this->Bayar->EditValue, -2, -2, -2, -2);
 			$this->Bayar->OldValue = $this->Bayar->EditValue;
 			}
 
@@ -1540,31 +1530,29 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 			$this->Sisa->EditValue = ew_HtmlEncode($this->Sisa->CurrentValue);
 			$this->Sisa->PlaceHolder = ew_RemoveHtml($this->Sisa->FldCaption());
 			if (strval($this->Sisa->EditValue) <> "" && is_numeric($this->Sisa->EditValue)) {
-			$this->Sisa->EditValue = ew_FormatNumber($this->Sisa->EditValue, -2, -1, -2, 0);
+			$this->Sisa->EditValue = ew_FormatNumber($this->Sisa->EditValue, -2, -2, -2, -2);
 			$this->Sisa->OldValue = $this->Sisa->EditValue;
 			}
 
+			// siswanonrutin_id
+			$this->siswanonrutin_id->EditAttrs["class"] = "form-control";
+			$this->siswanonrutin_id->EditCustomAttributes = "";
+
 			// Edit refer script
-			// id
-
-			$this->id->LinkCustomAttributes = "";
-			$this->id->HrefValue = "";
-
 			// siswa_id
+
 			$this->siswa_id->LinkCustomAttributes = "";
 			$this->siswa_id->HrefValue = "";
 
 			// nonrutin_id
 			$this->nonrutin_id->LinkCustomAttributes = "";
 			$this->nonrutin_id->HrefValue = "";
-
-			// siswanonrutin_id
-			$this->siswanonrutin_id->LinkCustomAttributes = "";
-			$this->siswanonrutin_id->HrefValue = "";
+			$this->nonrutin_id->TooltipValue = "";
 
 			// Nilai
 			$this->Nilai->LinkCustomAttributes = "";
 			$this->Nilai->HrefValue = "";
+			$this->Nilai->TooltipValue = "";
 
 			// Bayar
 			$this->Bayar->LinkCustomAttributes = "";
@@ -1573,6 +1561,10 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 			// Sisa
 			$this->Sisa->LinkCustomAttributes = "";
 			$this->Sisa->HrefValue = "";
+
+			// siswanonrutin_id
+			$this->siswanonrutin_id->LinkCustomAttributes = "";
+			$this->siswanonrutin_id->HrefValue = "";
 		}
 		if ($this->RowType == EW_ROWTYPE_ADD ||
 			$this->RowType == EW_ROWTYPE_EDIT ||
@@ -1600,18 +1592,6 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 		}
 		if (!$this->nonrutin_id->FldIsDetailKey && !is_null($this->nonrutin_id->FormValue) && $this->nonrutin_id->FormValue == "") {
 			ew_AddMessage($gsFormError, str_replace("%s", $this->nonrutin_id->FldCaption(), $this->nonrutin_id->ReqErrMsg));
-		}
-		if (!ew_CheckInteger($this->nonrutin_id->FormValue)) {
-			ew_AddMessage($gsFormError, $this->nonrutin_id->FldErrMsg());
-		}
-		if (!$this->siswanonrutin_id->FldIsDetailKey && !is_null($this->siswanonrutin_id->FormValue) && $this->siswanonrutin_id->FormValue == "") {
-			ew_AddMessage($gsFormError, str_replace("%s", $this->siswanonrutin_id->FldCaption(), $this->siswanonrutin_id->ReqErrMsg));
-		}
-		if (!ew_CheckInteger($this->siswanonrutin_id->FormValue)) {
-			ew_AddMessage($gsFormError, $this->siswanonrutin_id->FldErrMsg());
-		}
-		if (!ew_CheckNumber($this->Nilai->FormValue)) {
-			ew_AddMessage($gsFormError, $this->Nilai->FldErrMsg());
 		}
 		if (!ew_CheckNumber($this->Bayar->FormValue)) {
 			ew_AddMessage($gsFormError, $this->Bayar->FldErrMsg());
@@ -1734,20 +1714,14 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 			// siswa_id
 			$this->siswa_id->SetDbValueDef($rsnew, $this->siswa_id->CurrentValue, 0, $this->siswa_id->ReadOnly);
 
-			// nonrutin_id
-			$this->nonrutin_id->SetDbValueDef($rsnew, $this->nonrutin_id->CurrentValue, 0, $this->nonrutin_id->ReadOnly);
-
-			// siswanonrutin_id
-			$this->siswanonrutin_id->SetDbValueDef($rsnew, $this->siswanonrutin_id->CurrentValue, 0, $this->siswanonrutin_id->ReadOnly);
-
-			// Nilai
-			$this->Nilai->SetDbValueDef($rsnew, $this->Nilai->CurrentValue, NULL, $this->Nilai->ReadOnly);
-
 			// Bayar
 			$this->Bayar->SetDbValueDef($rsnew, $this->Bayar->CurrentValue, NULL, $this->Bayar->ReadOnly);
 
 			// Sisa
 			$this->Sisa->SetDbValueDef($rsnew, $this->Sisa->CurrentValue, NULL, $this->Sisa->ReadOnly);
+
+			// siswanonrutin_id
+			$this->siswanonrutin_id->SetDbValueDef($rsnew, $this->siswanonrutin_id->CurrentValue, 0, $this->siswanonrutin_id->ReadOnly);
 
 			// Call Row Updating event
 			$bUpdateRow = $this->Row_Updating($rsold, $rsnew);
@@ -1803,9 +1777,6 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 		// nonrutin_id
 		$this->nonrutin_id->SetDbValueDef($rsnew, $this->nonrutin_id->CurrentValue, 0, FALSE);
 
-		// siswanonrutin_id
-		$this->siswanonrutin_id->SetDbValueDef($rsnew, $this->siswanonrutin_id->CurrentValue, 0, FALSE);
-
 		// Nilai
 		$this->Nilai->SetDbValueDef($rsnew, $this->Nilai->CurrentValue, NULL, strval($this->Nilai->CurrentValue) == "");
 
@@ -1814,6 +1785,9 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 
 		// Sisa
 		$this->Sisa->SetDbValueDef($rsnew, $this->Sisa->CurrentValue, NULL, strval($this->Sisa->CurrentValue) == "");
+
+		// siswanonrutin_id
+		$this->siswanonrutin_id->SetDbValueDef($rsnew, $this->siswanonrutin_id->CurrentValue, 0, FALSE);
 
 		// Call Row Inserting event
 		$rs = ($rsold == NULL) ? NULL : $rsold->fields;
@@ -1863,6 +1837,18 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 		global $gsLanguage;
 		$pageId = $pageId ?: $this->PageID;
 		switch ($fld->FldVar) {
+		case "x_nonrutin_id":
+			$sSqlWrk = "";
+			$sSqlWrk = "SELECT `id` AS `LinkFld`, `Jenis` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t08_nonrutin`";
+			$sWhereWrk = "{filter}";
+			$this->nonrutin_id->LookupFilters = array();
+			$fld->LookupFilters += array("s" => $sSqlWrk, "d" => "", "f0" => '`id` = {filter_value}', "t0" => "3", "fn0" => "");
+			$sSqlWrk = "";
+			$this->Lookup_Selecting($this->nonrutin_id, $sWhereWrk); // Call Lookup selecting
+			if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
+			if ($sSqlWrk <> "")
+				$fld->LookupFilters["s"] .= $sSqlWrk;
+			break;
 		}
 	}
 
@@ -1871,6 +1857,19 @@ class ct09_siswanonrutintemp_grid extends ct09_siswanonrutintemp {
 		global $gsLanguage;
 		$pageId = $pageId ?: $this->PageID;
 		switch ($fld->FldVar) {
+		case "x_nonrutin_id":
+			$sSqlWrk = "";
+			$sSqlWrk = "SELECT `id`, `Jenis` AS `DispFld` FROM `t08_nonrutin`";
+			$sWhereWrk = "`Jenis` LIKE '{query_value}%'";
+			$this->nonrutin_id->LookupFilters = array();
+			$fld->LookupFilters += array("s" => $sSqlWrk, "d" => "");
+			$sSqlWrk = "";
+			$this->Lookup_Selecting($this->nonrutin_id, $sWhereWrk); // Call Lookup selecting
+			if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
+			$sSqlWrk .= " LIMIT " . EW_AUTO_SUGGEST_MAX_ENTRIES;
+			if ($sSqlWrk <> "")
+				$fld->LookupFilters["s"] .= $sSqlWrk;
+			break;
 		}
 	}
 

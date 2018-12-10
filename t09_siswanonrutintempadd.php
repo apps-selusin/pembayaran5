@@ -260,10 +260,10 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 		$this->CurrentAction = (@$_GET["a"] <> "") ? $_GET["a"] : @$_POST["a_list"]; // Set up current action
 		$this->siswa_id->SetVisibility();
 		$this->nonrutin_id->SetVisibility();
-		$this->siswanonrutin_id->SetVisibility();
 		$this->Nilai->SetVisibility();
 		$this->Bayar->SetVisibility();
 		$this->Sisa->SetVisibility();
+		$this->siswanonrutin_id->SetVisibility();
 
 		// Global Page Loading event (in userfn*.php)
 		Page_Loading();
@@ -457,11 +457,11 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 		$this->siswa_id->OldValue = $this->siswa_id->CurrentValue;
 		$this->nonrutin_id->CurrentValue = NULL;
 		$this->nonrutin_id->OldValue = $this->nonrutin_id->CurrentValue;
-		$this->siswanonrutin_id->CurrentValue = NULL;
-		$this->siswanonrutin_id->OldValue = $this->siswanonrutin_id->CurrentValue;
 		$this->Nilai->CurrentValue = 0.00;
 		$this->Bayar->CurrentValue = 0.00;
 		$this->Sisa->CurrentValue = 0.00;
+		$this->siswanonrutin_id->CurrentValue = NULL;
+		$this->siswanonrutin_id->OldValue = $this->siswanonrutin_id->CurrentValue;
 	}
 
 	// Load form values
@@ -475,9 +475,6 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 		if (!$this->nonrutin_id->FldIsDetailKey) {
 			$this->nonrutin_id->setFormValue($objForm->GetValue("x_nonrutin_id"));
 		}
-		if (!$this->siswanonrutin_id->FldIsDetailKey) {
-			$this->siswanonrutin_id->setFormValue($objForm->GetValue("x_siswanonrutin_id"));
-		}
 		if (!$this->Nilai->FldIsDetailKey) {
 			$this->Nilai->setFormValue($objForm->GetValue("x_Nilai"));
 		}
@@ -487,6 +484,9 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 		if (!$this->Sisa->FldIsDetailKey) {
 			$this->Sisa->setFormValue($objForm->GetValue("x_Sisa"));
 		}
+		if (!$this->siswanonrutin_id->FldIsDetailKey) {
+			$this->siswanonrutin_id->setFormValue($objForm->GetValue("x_siswanonrutin_id"));
+		}
 	}
 
 	// Restore form values
@@ -495,10 +495,10 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 		$this->LoadOldRecord();
 		$this->siswa_id->CurrentValue = $this->siswa_id->FormValue;
 		$this->nonrutin_id->CurrentValue = $this->nonrutin_id->FormValue;
-		$this->siswanonrutin_id->CurrentValue = $this->siswanonrutin_id->FormValue;
 		$this->Nilai->CurrentValue = $this->Nilai->FormValue;
 		$this->Bayar->CurrentValue = $this->Bayar->FormValue;
 		$this->Sisa->CurrentValue = $this->Sisa->FormValue;
+		$this->siswanonrutin_id->CurrentValue = $this->siswanonrutin_id->FormValue;
 	}
 
 	// Load row based on key values
@@ -533,10 +533,10 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 		$this->id->setDbValue($rs->fields('id'));
 		$this->siswa_id->setDbValue($rs->fields('siswa_id'));
 		$this->nonrutin_id->setDbValue($rs->fields('nonrutin_id'));
-		$this->siswanonrutin_id->setDbValue($rs->fields('siswanonrutin_id'));
 		$this->Nilai->setDbValue($rs->fields('Nilai'));
 		$this->Bayar->setDbValue($rs->fields('Bayar'));
 		$this->Sisa->setDbValue($rs->fields('Sisa'));
+		$this->siswanonrutin_id->setDbValue($rs->fields('siswanonrutin_id'));
 	}
 
 	// Load DbValue from recordset
@@ -546,10 +546,10 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 		$this->id->DbValue = $row['id'];
 		$this->siswa_id->DbValue = $row['siswa_id'];
 		$this->nonrutin_id->DbValue = $row['nonrutin_id'];
-		$this->siswanonrutin_id->DbValue = $row['siswanonrutin_id'];
 		$this->Nilai->DbValue = $row['Nilai'];
 		$this->Bayar->DbValue = $row['Bayar'];
 		$this->Sisa->DbValue = $row['Sisa'];
+		$this->siswanonrutin_id->DbValue = $row['siswanonrutin_id'];
 	}
 
 	// Load old record
@@ -600,10 +600,10 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 		// id
 		// siswa_id
 		// nonrutin_id
-		// siswanonrutin_id
 		// Nilai
 		// Bayar
 		// Sisa
+		// siswanonrutin_id
 
 		if ($this->RowType == EW_ROWTYPE_VIEW) { // View row
 
@@ -617,11 +617,27 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 
 		// nonrutin_id
 		$this->nonrutin_id->ViewValue = $this->nonrutin_id->CurrentValue;
+		if (strval($this->nonrutin_id->CurrentValue) <> "") {
+			$sFilterWrk = "`id`" . ew_SearchString("=", $this->nonrutin_id->CurrentValue, EW_DATATYPE_NUMBER, "");
+		$sSqlWrk = "SELECT `id`, `Jenis` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t08_nonrutin`";
+		$sWhereWrk = "";
+		$this->nonrutin_id->LookupFilters = array();
+		ew_AddFilter($sWhereWrk, $sFilterWrk);
+		$this->Lookup_Selecting($this->nonrutin_id, $sWhereWrk); // Call Lookup selecting
+		if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
+			$rswrk = Conn()->Execute($sSqlWrk);
+			if ($rswrk && !$rswrk->EOF) { // Lookup values found
+				$arwrk = array();
+				$arwrk[1] = $rswrk->fields('DispFld');
+				$this->nonrutin_id->ViewValue = $this->nonrutin_id->DisplayValue($arwrk);
+				$rswrk->Close();
+			} else {
+				$this->nonrutin_id->ViewValue = $this->nonrutin_id->CurrentValue;
+			}
+		} else {
+			$this->nonrutin_id->ViewValue = NULL;
+		}
 		$this->nonrutin_id->ViewCustomAttributes = "";
-
-		// siswanonrutin_id
-		$this->siswanonrutin_id->ViewValue = $this->siswanonrutin_id->CurrentValue;
-		$this->siswanonrutin_id->ViewCustomAttributes = "";
 
 		// Nilai
 		$this->Nilai->ViewValue = $this->Nilai->CurrentValue;
@@ -635,6 +651,10 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 		$this->Sisa->ViewValue = $this->Sisa->CurrentValue;
 		$this->Sisa->ViewCustomAttributes = "";
 
+		// siswanonrutin_id
+		$this->siswanonrutin_id->ViewValue = $this->siswanonrutin_id->CurrentValue;
+		$this->siswanonrutin_id->ViewCustomAttributes = "";
+
 			// siswa_id
 			$this->siswa_id->LinkCustomAttributes = "";
 			$this->siswa_id->HrefValue = "";
@@ -644,11 +664,6 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 			$this->nonrutin_id->LinkCustomAttributes = "";
 			$this->nonrutin_id->HrefValue = "";
 			$this->nonrutin_id->TooltipValue = "";
-
-			// siswanonrutin_id
-			$this->siswanonrutin_id->LinkCustomAttributes = "";
-			$this->siswanonrutin_id->HrefValue = "";
-			$this->siswanonrutin_id->TooltipValue = "";
 
 			// Nilai
 			$this->Nilai->LinkCustomAttributes = "";
@@ -664,6 +679,11 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 			$this->Sisa->LinkCustomAttributes = "";
 			$this->Sisa->HrefValue = "";
 			$this->Sisa->TooltipValue = "";
+
+			// siswanonrutin_id
+			$this->siswanonrutin_id->LinkCustomAttributes = "";
+			$this->siswanonrutin_id->HrefValue = "";
+			$this->siswanonrutin_id->TooltipValue = "";
 		} elseif ($this->RowType == EW_ROWTYPE_ADD) { // Add row
 
 			// siswa_id
@@ -682,13 +702,27 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 			$this->nonrutin_id->EditAttrs["class"] = "form-control";
 			$this->nonrutin_id->EditCustomAttributes = "";
 			$this->nonrutin_id->EditValue = ew_HtmlEncode($this->nonrutin_id->CurrentValue);
+			if (strval($this->nonrutin_id->CurrentValue) <> "") {
+				$sFilterWrk = "`id`" . ew_SearchString("=", $this->nonrutin_id->CurrentValue, EW_DATATYPE_NUMBER, "");
+			$sSqlWrk = "SELECT `id`, `Jenis` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t08_nonrutin`";
+			$sWhereWrk = "";
+			$this->nonrutin_id->LookupFilters = array();
+			ew_AddFilter($sWhereWrk, $sFilterWrk);
+			$this->Lookup_Selecting($this->nonrutin_id, $sWhereWrk); // Call Lookup selecting
+			if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
+				$rswrk = Conn()->Execute($sSqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = array();
+					$arwrk[1] = ew_HtmlEncode($rswrk->fields('DispFld'));
+					$this->nonrutin_id->EditValue = $this->nonrutin_id->DisplayValue($arwrk);
+					$rswrk->Close();
+				} else {
+					$this->nonrutin_id->EditValue = ew_HtmlEncode($this->nonrutin_id->CurrentValue);
+				}
+			} else {
+				$this->nonrutin_id->EditValue = NULL;
+			}
 			$this->nonrutin_id->PlaceHolder = ew_RemoveHtml($this->nonrutin_id->FldCaption());
-
-			// siswanonrutin_id
-			$this->siswanonrutin_id->EditAttrs["class"] = "form-control";
-			$this->siswanonrutin_id->EditCustomAttributes = "";
-			$this->siswanonrutin_id->EditValue = ew_HtmlEncode($this->siswanonrutin_id->CurrentValue);
-			$this->siswanonrutin_id->PlaceHolder = ew_RemoveHtml($this->siswanonrutin_id->FldCaption());
 
 			// Nilai
 			$this->Nilai->EditAttrs["class"] = "form-control";
@@ -711,6 +745,12 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 			$this->Sisa->PlaceHolder = ew_RemoveHtml($this->Sisa->FldCaption());
 			if (strval($this->Sisa->EditValue) <> "" && is_numeric($this->Sisa->EditValue)) $this->Sisa->EditValue = ew_FormatNumber($this->Sisa->EditValue, -2, -1, -2, 0);
 
+			// siswanonrutin_id
+			$this->siswanonrutin_id->EditAttrs["class"] = "form-control";
+			$this->siswanonrutin_id->EditCustomAttributes = "";
+			$this->siswanonrutin_id->EditValue = ew_HtmlEncode($this->siswanonrutin_id->CurrentValue);
+			$this->siswanonrutin_id->PlaceHolder = ew_RemoveHtml($this->siswanonrutin_id->FldCaption());
+
 			// Add refer script
 			// siswa_id
 
@@ -720,10 +760,6 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 			// nonrutin_id
 			$this->nonrutin_id->LinkCustomAttributes = "";
 			$this->nonrutin_id->HrefValue = "";
-
-			// siswanonrutin_id
-			$this->siswanonrutin_id->LinkCustomAttributes = "";
-			$this->siswanonrutin_id->HrefValue = "";
 
 			// Nilai
 			$this->Nilai->LinkCustomAttributes = "";
@@ -736,6 +772,10 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 			// Sisa
 			$this->Sisa->LinkCustomAttributes = "";
 			$this->Sisa->HrefValue = "";
+
+			// siswanonrutin_id
+			$this->siswanonrutin_id->LinkCustomAttributes = "";
+			$this->siswanonrutin_id->HrefValue = "";
 		}
 		if ($this->RowType == EW_ROWTYPE_ADD ||
 			$this->RowType == EW_ROWTYPE_EDIT ||
@@ -769,12 +809,6 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 		}
 		if (!ew_CheckInteger($this->nonrutin_id->FormValue)) {
 			ew_AddMessage($gsFormError, $this->nonrutin_id->FldErrMsg());
-		}
-		if (!$this->siswanonrutin_id->FldIsDetailKey && !is_null($this->siswanonrutin_id->FormValue) && $this->siswanonrutin_id->FormValue == "") {
-			ew_AddMessage($gsFormError, str_replace("%s", $this->siswanonrutin_id->FldCaption(), $this->siswanonrutin_id->ReqErrMsg));
-		}
-		if (!ew_CheckInteger($this->siswanonrutin_id->FormValue)) {
-			ew_AddMessage($gsFormError, $this->siswanonrutin_id->FldErrMsg());
 		}
 		if (!ew_CheckNumber($this->Nilai->FormValue)) {
 			ew_AddMessage($gsFormError, $this->Nilai->FldErrMsg());
@@ -815,9 +849,6 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 		// nonrutin_id
 		$this->nonrutin_id->SetDbValueDef($rsnew, $this->nonrutin_id->CurrentValue, 0, FALSE);
 
-		// siswanonrutin_id
-		$this->siswanonrutin_id->SetDbValueDef($rsnew, $this->siswanonrutin_id->CurrentValue, 0, FALSE);
-
 		// Nilai
 		$this->Nilai->SetDbValueDef($rsnew, $this->Nilai->CurrentValue, NULL, strval($this->Nilai->CurrentValue) == "");
 
@@ -826,6 +857,9 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 
 		// Sisa
 		$this->Sisa->SetDbValueDef($rsnew, $this->Sisa->CurrentValue, NULL, strval($this->Sisa->CurrentValue) == "");
+
+		// siswanonrutin_id
+		$this->siswanonrutin_id->SetDbValueDef($rsnew, $this->siswanonrutin_id->CurrentValue, 0, FALSE);
 
 		// Call Row Inserting event
 		$rs = ($rsold == NULL) ? NULL : $rsold->fields;
@@ -932,6 +966,18 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 		global $gsLanguage;
 		$pageId = $pageId ?: $this->PageID;
 		switch ($fld->FldVar) {
+		case "x_nonrutin_id":
+			$sSqlWrk = "";
+			$sSqlWrk = "SELECT `id` AS `LinkFld`, `Jenis` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t08_nonrutin`";
+			$sWhereWrk = "{filter}";
+			$this->nonrutin_id->LookupFilters = array();
+			$fld->LookupFilters += array("s" => $sSqlWrk, "d" => "", "f0" => '`id` = {filter_value}', "t0" => "3", "fn0" => "");
+			$sSqlWrk = "";
+			$this->Lookup_Selecting($this->nonrutin_id, $sWhereWrk); // Call Lookup selecting
+			if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
+			if ($sSqlWrk <> "")
+				$fld->LookupFilters["s"] .= $sSqlWrk;
+			break;
 		}
 	}
 
@@ -940,6 +986,19 @@ class ct09_siswanonrutintemp_add extends ct09_siswanonrutintemp {
 		global $gsLanguage;
 		$pageId = $pageId ?: $this->PageID;
 		switch ($fld->FldVar) {
+		case "x_nonrutin_id":
+			$sSqlWrk = "";
+			$sSqlWrk = "SELECT `id`, `Jenis` AS `DispFld` FROM `t08_nonrutin`";
+			$sWhereWrk = "`Jenis` LIKE '{query_value}%'";
+			$this->nonrutin_id->LookupFilters = array();
+			$fld->LookupFilters += array("s" => $sSqlWrk, "d" => "");
+			$sSqlWrk = "";
+			$this->Lookup_Selecting($this->nonrutin_id, $sWhereWrk); // Call Lookup selecting
+			if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
+			$sSqlWrk .= " LIMIT " . EW_AUTO_SUGGEST_MAX_ENTRIES;
+			if ($sSqlWrk <> "")
+				$fld->LookupFilters["s"] .= $sSqlWrk;
+			break;
 		}
 	}
 
@@ -1063,12 +1122,6 @@ ft09_siswanonrutintempadd.Validate = function() {
 			elm = this.GetElements("x" + infix + "_nonrutin_id");
 			if (elm && !ew_CheckInteger(elm.value))
 				return this.OnError(elm, "<?php echo ew_JsEncode2($t09_siswanonrutintemp->nonrutin_id->FldErrMsg()) ?>");
-			elm = this.GetElements("x" + infix + "_siswanonrutin_id");
-			if (elm && !ew_IsHidden(elm) && !ew_HasValue(elm))
-				return this.OnError(elm, "<?php echo ew_JsEncode2(str_replace("%s", $t09_siswanonrutintemp->siswanonrutin_id->FldCaption(), $t09_siswanonrutintemp->siswanonrutin_id->ReqErrMsg)) ?>");
-			elm = this.GetElements("x" + infix + "_siswanonrutin_id");
-			if (elm && !ew_CheckInteger(elm.value))
-				return this.OnError(elm, "<?php echo ew_JsEncode2($t09_siswanonrutintemp->siswanonrutin_id->FldErrMsg()) ?>");
 			elm = this.GetElements("x" + infix + "_Nilai");
 			if (elm && !ew_CheckNumber(elm.value))
 				return this.OnError(elm, "<?php echo ew_JsEncode2($t09_siswanonrutintemp->Nilai->FldErrMsg()) ?>");
@@ -1111,8 +1164,9 @@ ft09_siswanonrutintempadd.ValidateRequired = false;
 <?php } ?>
 
 // Dynamic selection lists
-// Form object for search
+ft09_siswanonrutintempadd.Lists["x_nonrutin_id"] = {"LinkField":"x_id","Ajax":true,"AutoFill":false,"DisplayFields":["x_Jenis","","",""],"ParentFields":[],"ChildFields":[],"FilterFields":[],"Options":[],"Template":"","LinkTable":"t08_nonrutin"};
 
+// Form object for search
 </script>
 <script type="text/javascript">
 
@@ -1163,22 +1217,24 @@ $t09_siswanonrutintemp_add->ShowMessage();
 <?php } ?>
 <?php if ($t09_siswanonrutintemp->nonrutin_id->Visible) { // nonrutin_id ?>
 	<div id="r_nonrutin_id" class="form-group">
-		<label id="elh_t09_siswanonrutintemp_nonrutin_id" for="x_nonrutin_id" class="col-sm-2 control-label ewLabel"><?php echo $t09_siswanonrutintemp->nonrutin_id->FldCaption() ?><?php echo $Language->Phrase("FieldRequiredIndicator") ?></label>
+		<label id="elh_t09_siswanonrutintemp_nonrutin_id" class="col-sm-2 control-label ewLabel"><?php echo $t09_siswanonrutintemp->nonrutin_id->FldCaption() ?><?php echo $Language->Phrase("FieldRequiredIndicator") ?></label>
 		<div class="col-sm-10"><div<?php echo $t09_siswanonrutintemp->nonrutin_id->CellAttributes() ?>>
 <span id="el_t09_siswanonrutintemp_nonrutin_id">
-<input type="text" data-table="t09_siswanonrutintemp" data-field="x_nonrutin_id" name="x_nonrutin_id" id="x_nonrutin_id" size="30" placeholder="<?php echo ew_HtmlEncode($t09_siswanonrutintemp->nonrutin_id->getPlaceHolder()) ?>" value="<?php echo $t09_siswanonrutintemp->nonrutin_id->EditValue ?>"<?php echo $t09_siswanonrutintemp->nonrutin_id->EditAttributes() ?>>
+<?php
+$wrkonchange = trim(" " . @$t09_siswanonrutintemp->nonrutin_id->EditAttrs["onchange"]);
+if ($wrkonchange <> "") $wrkonchange = " onchange=\"" . ew_JsEncode2($wrkonchange) . "\"";
+$t09_siswanonrutintemp->nonrutin_id->EditAttrs["onchange"] = "";
+?>
+<span id="as_x_nonrutin_id" style="white-space: nowrap; z-index: 8970">
+	<input type="text" name="sv_x_nonrutin_id" id="sv_x_nonrutin_id" value="<?php echo $t09_siswanonrutintemp->nonrutin_id->EditValue ?>" size="30" placeholder="<?php echo ew_HtmlEncode($t09_siswanonrutintemp->nonrutin_id->getPlaceHolder()) ?>" data-placeholder="<?php echo ew_HtmlEncode($t09_siswanonrutintemp->nonrutin_id->getPlaceHolder()) ?>"<?php echo $t09_siswanonrutintemp->nonrutin_id->EditAttributes() ?>>
+</span>
+<input type="hidden" data-table="t09_siswanonrutintemp" data-field="x_nonrutin_id" data-value-separator="<?php echo $t09_siswanonrutintemp->nonrutin_id->DisplayValueSeparatorAttribute() ?>" name="x_nonrutin_id" id="x_nonrutin_id" value="<?php echo ew_HtmlEncode($t09_siswanonrutintemp->nonrutin_id->CurrentValue) ?>"<?php echo $wrkonchange ?>>
+<input type="hidden" name="q_x_nonrutin_id" id="q_x_nonrutin_id" value="<?php echo $t09_siswanonrutintemp->nonrutin_id->LookupFilterQuery(true) ?>">
+<script type="text/javascript">
+ft09_siswanonrutintempadd.CreateAutoSuggest({"id":"x_nonrutin_id","forceSelect":false});
+</script>
 </span>
 <?php echo $t09_siswanonrutintemp->nonrutin_id->CustomMsg ?></div></div>
-	</div>
-<?php } ?>
-<?php if ($t09_siswanonrutintemp->siswanonrutin_id->Visible) { // siswanonrutin_id ?>
-	<div id="r_siswanonrutin_id" class="form-group">
-		<label id="elh_t09_siswanonrutintemp_siswanonrutin_id" for="x_siswanonrutin_id" class="col-sm-2 control-label ewLabel"><?php echo $t09_siswanonrutintemp->siswanonrutin_id->FldCaption() ?><?php echo $Language->Phrase("FieldRequiredIndicator") ?></label>
-		<div class="col-sm-10"><div<?php echo $t09_siswanonrutintemp->siswanonrutin_id->CellAttributes() ?>>
-<span id="el_t09_siswanonrutintemp_siswanonrutin_id">
-<input type="text" data-table="t09_siswanonrutintemp" data-field="x_siswanonrutin_id" name="x_siswanonrutin_id" id="x_siswanonrutin_id" size="30" placeholder="<?php echo ew_HtmlEncode($t09_siswanonrutintemp->siswanonrutin_id->getPlaceHolder()) ?>" value="<?php echo $t09_siswanonrutintemp->siswanonrutin_id->EditValue ?>"<?php echo $t09_siswanonrutintemp->siswanonrutin_id->EditAttributes() ?>>
-</span>
-<?php echo $t09_siswanonrutintemp->siswanonrutin_id->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 <?php if ($t09_siswanonrutintemp->Nilai->Visible) { // Nilai ?>
@@ -1209,6 +1265,16 @@ $t09_siswanonrutintemp_add->ShowMessage();
 <input type="text" data-table="t09_siswanonrutintemp" data-field="x_Sisa" name="x_Sisa" id="x_Sisa" size="30" placeholder="<?php echo ew_HtmlEncode($t09_siswanonrutintemp->Sisa->getPlaceHolder()) ?>" value="<?php echo $t09_siswanonrutintemp->Sisa->EditValue ?>"<?php echo $t09_siswanonrutintemp->Sisa->EditAttributes() ?>>
 </span>
 <?php echo $t09_siswanonrutintemp->Sisa->CustomMsg ?></div></div>
+	</div>
+<?php } ?>
+<?php if ($t09_siswanonrutintemp->siswanonrutin_id->Visible) { // siswanonrutin_id ?>
+	<div id="r_siswanonrutin_id" class="form-group">
+		<label id="elh_t09_siswanonrutintemp_siswanonrutin_id" class="col-sm-2 control-label ewLabel"><?php echo $t09_siswanonrutintemp->siswanonrutin_id->FldCaption() ?></label>
+		<div class="col-sm-10"><div<?php echo $t09_siswanonrutintemp->siswanonrutin_id->CellAttributes() ?>>
+<span id="el_t09_siswanonrutintemp_siswanonrutin_id">
+<input type="text" data-table="t09_siswanonrutintemp" data-field="x_siswanonrutin_id" name="x_siswanonrutin_id" id="x_siswanonrutin_id" size="30" placeholder="<?php echo ew_HtmlEncode($t09_siswanonrutintemp->siswanonrutin_id->getPlaceHolder()) ?>" value="<?php echo $t09_siswanonrutintemp->siswanonrutin_id->EditValue ?>"<?php echo $t09_siswanonrutintemp->siswanonrutin_id->EditAttributes() ?>>
+</span>
+<?php echo $t09_siswanonrutintemp->siswanonrutin_id->CustomMsg ?></div></div>
 	</div>
 <?php } ?>
 </div>
