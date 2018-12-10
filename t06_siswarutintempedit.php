@@ -625,6 +625,7 @@ class ct06_siswarutintemp_edit extends ct06_siswarutintemp {
 		$this->rutin_id->ViewCustomAttributes = "";
 
 		// Periode_Awal
+		$this->Periode_Awal->ViewValue = $this->Periode_Awal->CurrentValue;
 		if (strval($this->Periode_Awal->CurrentValue) <> "") {
 			$sFilterWrk = "`Periode_Tahun_Bulan`" . ew_SearchString("=", $this->Periode_Awal->CurrentValue, EW_DATATYPE_STRING, "");
 		$sSqlWrk = "SELECT `Periode_Tahun_Bulan`, `Periode_Text` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t07_siswarutinbayar`";
@@ -759,12 +760,10 @@ class ct06_siswarutintemp_edit extends ct06_siswarutintemp {
 			// Periode_Awal
 			$this->Periode_Awal->EditAttrs["class"] = "form-control";
 			$this->Periode_Awal->EditCustomAttributes = "";
-			if (trim(strval($this->Periode_Awal->CurrentValue)) == "") {
-				$sFilterWrk = "0=1";
-			} else {
+			$this->Periode_Awal->EditValue = $this->Periode_Awal->CurrentValue;
+			if (strval($this->Periode_Awal->CurrentValue) <> "") {
 				$sFilterWrk = "`Periode_Tahun_Bulan`" . ew_SearchString("=", $this->Periode_Awal->CurrentValue, EW_DATATYPE_STRING, "");
-			}
-			$sSqlWrk = "SELECT `Periode_Tahun_Bulan`, `Periode_Text` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld`, '' AS `SelectFilterFld`, '' AS `SelectFilterFld2`, '' AS `SelectFilterFld3`, '' AS `SelectFilterFld4` FROM `t07_siswarutinbayar`";
+			$sSqlWrk = "SELECT `Periode_Tahun_Bulan`, `Periode_Text` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t07_siswarutinbayar`";
 			$sWhereWrk = "";
 			$this->Periode_Awal->LookupFilters = array();
 			$lookuptblfilter = "siswarutin_id = ".$this->siswarutin_id->CurrentValue." and Tanggal_Bayar is null";
@@ -772,10 +771,19 @@ class ct06_siswarutintemp_edit extends ct06_siswarutintemp {
 			ew_AddFilter($sWhereWrk, $sFilterWrk);
 			$this->Lookup_Selecting($this->Periode_Awal, $sWhereWrk); // Call Lookup selecting
 			if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
-			$rswrk = Conn()->Execute($sSqlWrk);
-			$arwrk = ($rswrk) ? $rswrk->GetRows() : array();
-			if ($rswrk) $rswrk->Close();
-			$this->Periode_Awal->EditValue = $arwrk;
+				$rswrk = Conn()->Execute($sSqlWrk);
+				if ($rswrk && !$rswrk->EOF) { // Lookup values found
+					$arwrk = array();
+					$arwrk[1] = $rswrk->fields('DispFld');
+					$this->Periode_Awal->EditValue = $this->Periode_Awal->DisplayValue($arwrk);
+					$rswrk->Close();
+				} else {
+					$this->Periode_Awal->EditValue = $this->Periode_Awal->CurrentValue;
+				}
+			} else {
+				$this->Periode_Awal->EditValue = NULL;
+			}
+			$this->Periode_Awal->ViewCustomAttributes = "";
 
 			// Periode_Akhir
 			$this->Periode_Akhir->EditAttrs["class"] = "form-control";
@@ -828,6 +836,7 @@ class ct06_siswarutintemp_edit extends ct06_siswarutintemp {
 			// Periode_Awal
 			$this->Periode_Awal->LinkCustomAttributes = "";
 			$this->Periode_Awal->HrefValue = "";
+			$this->Periode_Awal->TooltipValue = "";
 
 			// Periode_Akhir
 			$this->Periode_Akhir->LinkCustomAttributes = "";
@@ -904,9 +913,6 @@ class ct06_siswarutintemp_edit extends ct06_siswarutintemp {
 			$rsold = &$rs->fields;
 			$this->LoadDbValues($rsold);
 			$rsnew = array();
-
-			// Periode_Awal
-			$this->Periode_Awal->SetDbValueDef($rsnew, $this->Periode_Awal->CurrentValue, NULL, $this->Periode_Awal->ReadOnly);
 
 			// Periode_Akhir
 			$this->Periode_Akhir->SetDbValueDef($rsnew, $this->Periode_Akhir->CurrentValue, NULL, $this->Periode_Akhir->ReadOnly);
@@ -1028,20 +1034,6 @@ class ct06_siswarutintemp_edit extends ct06_siswarutintemp {
 		global $gsLanguage;
 		$pageId = $pageId ?: $this->PageID;
 		switch ($fld->FldVar) {
-		case "x_Periode_Awal":
-			$sSqlWrk = "";
-			$sSqlWrk = "SELECT `Periode_Tahun_Bulan` AS `LinkFld`, `Periode_Text` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t07_siswarutinbayar`";
-			$sWhereWrk = "";
-			$this->Periode_Awal->LookupFilters = array();
-			$lookuptblfilter = "siswarutin_id = ".$this->siswarutin_id->CurrentValue." and Tanggal_Bayar is null";
-			ew_AddFilter($sWhereWrk, $lookuptblfilter);
-			$fld->LookupFilters += array("s" => $sSqlWrk, "d" => "", "f0" => '`Periode_Tahun_Bulan` = {filter_value}', "t0" => "200", "fn0" => "");
-			$sSqlWrk = "";
-			$this->Lookup_Selecting($this->Periode_Awal, $sWhereWrk); // Call Lookup selecting
-			if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
-			if ($sSqlWrk <> "")
-				$fld->LookupFilters["s"] .= $sSqlWrk;
-			break;
 		case "x_Periode_Akhir":
 			$sSqlWrk = "";
 			$sSqlWrk = "SELECT `Periode_Tahun_Bulan` AS `LinkFld`, `Periode_Text` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t07_siswarutinbayar`";
@@ -1272,14 +1264,13 @@ $t06_siswarutintemp_edit->ShowMessage();
 <?php } ?>
 <?php if ($t06_siswarutintemp->Periode_Awal->Visible) { // Periode_Awal ?>
 	<div id="r_Periode_Awal" class="form-group">
-		<label id="elh_t06_siswarutintemp_Periode_Awal" for="x_Periode_Awal" class="col-sm-2 control-label ewLabel"><?php echo $t06_siswarutintemp->Periode_Awal->FldCaption() ?></label>
+		<label id="elh_t06_siswarutintemp_Periode_Awal" class="col-sm-2 control-label ewLabel"><?php echo $t06_siswarutintemp->Periode_Awal->FldCaption() ?></label>
 		<div class="col-sm-10"><div<?php echo $t06_siswarutintemp->Periode_Awal->CellAttributes() ?>>
 <span id="el_t06_siswarutintemp_Periode_Awal">
-<select data-table="t06_siswarutintemp" data-field="x_Periode_Awal" data-value-separator="<?php echo $t06_siswarutintemp->Periode_Awal->DisplayValueSeparatorAttribute() ?>" id="x_Periode_Awal" name="x_Periode_Awal"<?php echo $t06_siswarutintemp->Periode_Awal->EditAttributes() ?>>
-<?php echo $t06_siswarutintemp->Periode_Awal->SelectOptionListHtml("x_Periode_Awal") ?>
-</select>
-<input type="hidden" name="s_x_Periode_Awal" id="s_x_Periode_Awal" value="<?php echo $t06_siswarutintemp->Periode_Awal->LookupFilterQuery() ?>">
+<span<?php echo $t06_siswarutintemp->Periode_Awal->ViewAttributes() ?>>
+<p class="form-control-static"><?php echo $t06_siswarutintemp->Periode_Awal->EditValue ?></p></span>
 </span>
+<input type="hidden" data-table="t06_siswarutintemp" data-field="x_Periode_Awal" name="x_Periode_Awal" id="x_Periode_Awal" value="<?php echo ew_HtmlEncode($t06_siswarutintemp->Periode_Awal->CurrentValue) ?>">
 <?php echo $t06_siswarutintemp->Periode_Awal->CustomMsg ?></div></div>
 	</div>
 <?php } ?>

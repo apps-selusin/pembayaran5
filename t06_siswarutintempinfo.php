@@ -65,10 +65,8 @@ class ct06_siswarutintemp extends cTable {
 		$this->fields['rutin_id'] = &$this->rutin_id;
 
 		// Periode_Awal
-		$this->Periode_Awal = new cField('t06_siswarutintemp', 't06_siswarutintemp', 'x_Periode_Awal', 'Periode_Awal', '`Periode_Awal`', '`Periode_Awal`', 200, -1, FALSE, '`Periode_Awal`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'SELECT');
+		$this->Periode_Awal = new cField('t06_siswarutintemp', 't06_siswarutintemp', 'x_Periode_Awal', 'Periode_Awal', '`Periode_Awal`', '`Periode_Awal`', 200, -1, FALSE, '`Periode_Awal`', FALSE, FALSE, FALSE, 'FORMATTED TEXT', 'TEXT');
 		$this->Periode_Awal->Sortable = TRUE; // Allow sort
-		$this->Periode_Awal->UsePleaseSelect = TRUE; // Use PleaseSelect by default
-		$this->Periode_Awal->PleaseSelectText = $Language->Phrase("PleaseSelect"); // PleaseSelect text
 		$this->fields['Periode_Awal'] = &$this->Periode_Awal;
 
 		// Periode_Akhir
@@ -708,6 +706,7 @@ class ct06_siswarutintemp extends cTable {
 		$this->rutin_id->ViewCustomAttributes = "";
 
 		// Periode_Awal
+		$this->Periode_Awal->ViewValue = $this->Periode_Awal->CurrentValue;
 		if (strval($this->Periode_Awal->CurrentValue) <> "") {
 			$sFilterWrk = "`Periode_Tahun_Bulan`" . ew_SearchString("=", $this->Periode_Awal->CurrentValue, EW_DATATYPE_STRING, "");
 		$sSqlWrk = "SELECT `Periode_Tahun_Bulan`, `Periode_Text` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t07_siswarutinbayar`";
@@ -863,6 +862,30 @@ class ct06_siswarutintemp extends cTable {
 		// Periode_Awal
 		$this->Periode_Awal->EditAttrs["class"] = "form-control";
 		$this->Periode_Awal->EditCustomAttributes = "";
+		$this->Periode_Awal->EditValue = $this->Periode_Awal->CurrentValue;
+		if (strval($this->Periode_Awal->CurrentValue) <> "") {
+			$sFilterWrk = "`Periode_Tahun_Bulan`" . ew_SearchString("=", $this->Periode_Awal->CurrentValue, EW_DATATYPE_STRING, "");
+		$sSqlWrk = "SELECT `Periode_Tahun_Bulan`, `Periode_Text` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t07_siswarutinbayar`";
+		$sWhereWrk = "";
+		$this->Periode_Awal->LookupFilters = array();
+		$lookuptblfilter = "siswarutin_id = ".$this->siswarutin_id->CurrentValue." and Tanggal_Bayar is null";
+		ew_AddFilter($sWhereWrk, $lookuptblfilter);
+		ew_AddFilter($sWhereWrk, $sFilterWrk);
+		$this->Lookup_Selecting($this->Periode_Awal, $sWhereWrk); // Call Lookup selecting
+		if ($sWhereWrk <> "") $sSqlWrk .= " WHERE " . $sWhereWrk;
+			$rswrk = Conn()->Execute($sSqlWrk);
+			if ($rswrk && !$rswrk->EOF) { // Lookup values found
+				$arwrk = array();
+				$arwrk[1] = $rswrk->fields('DispFld');
+				$this->Periode_Awal->EditValue = $this->Periode_Awal->DisplayValue($arwrk);
+				$rswrk->Close();
+			} else {
+				$this->Periode_Awal->EditValue = $this->Periode_Awal->CurrentValue;
+			}
+		} else {
+			$this->Periode_Awal->EditValue = NULL;
+		}
+		$this->Periode_Awal->ViewCustomAttributes = "";
 
 		// Periode_Akhir
 		$this->Periode_Akhir->EditAttrs["class"] = "form-control";
@@ -1161,31 +1184,25 @@ class ct06_siswarutintemp extends cTable {
 	// Row Rendering event
 	function Row_Rendering() {
 
-		// Enter your code here	
+		// Enter your code here
+		if (CurrentPageID() == "edit" && $this->CurrentAction != "F") {
+			if ($this->siswarutin_id->CurrentValue <> "") {
+			$siswarutin_id = $this->siswarutin_id->CurrentValue;
+			$q = "select Periode_Tahun_Bulan, Periode_Text from t07_siswarutinbayar
+				where siswarutin_id = ".$siswarutin_id." and Tanggal_Bayar is null";
+			$r = ew_ExecuteRow($q);
+			$this->Periode_Awal->CurrentValue = $r["Periode_Tahun_Bulan"];
+			$this->Periode_Awal->ViewValue = $this->Periode_Awal->CurrentValue;
+			}
+		}
 	}
 
 	// Row Rendered event
 	function Row_Rendered() {
 
 		// To view properties of field class, use:
-		//var_dump($this-><FieldName>);
+		//var_dump($this-><FieldName>); 
 
-		if (CurrentPageID() == "edit" && $this->CurrentAction != "F") {
-
-			//echo $this->id->CurrentValue;
-			//echo $this->id->ViewValue;
-			//echo $_SESSION["siswa_id"];
-			//echo $this->siswarutin_id->EditValue;
-			//var_dump($this->siswarutin_id);
-
-			$siswarutin_id = $this->siswarutin_id->CurrentValue;
-			$q = "select Periode_Tahun_Bulan, Periode_Text from t07_siswarutinbayar
-				where siswarutin_id = ".$siswarutin_id." and Tanggal_Bayar is null";
-			$r = ew_ExecuteRow($q);
-			$this->Periode_Awal->ViewValue = $r["Periode_Text"];
-			$this->Periode_Awal->CurrentValue = $r["Periode_Tahun_Bulan"];
-			echo $r["Periode_Text"].$r["Periode_Tahun_Bulan"];
-		}
 	}
 
 	// User ID Filtering event

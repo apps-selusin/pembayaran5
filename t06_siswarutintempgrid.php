@@ -424,20 +424,28 @@ ft06_siswarutintempgrid.CreateAutoSuggest({"id":"x<?php echo $t06_siswarutintemp
 		<td data-name="Periode_Awal"<?php echo $t06_siswarutintemp->Periode_Awal->CellAttributes() ?>>
 <?php if ($t06_siswarutintemp->RowType == EW_ROWTYPE_ADD) { // Add record ?>
 <span id="el<?php echo $t06_siswarutintemp_grid->RowCnt ?>_t06_siswarutintemp_Periode_Awal" class="form-group t06_siswarutintemp_Periode_Awal">
-<select data-table="t06_siswarutintemp" data-field="x_Periode_Awal" data-value-separator="<?php echo $t06_siswarutintemp->Periode_Awal->DisplayValueSeparatorAttribute() ?>" id="x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" name="x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal"<?php echo $t06_siswarutintemp->Periode_Awal->EditAttributes() ?>>
-<?php echo $t06_siswarutintemp->Periode_Awal->SelectOptionListHtml("x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal") ?>
-</select>
-<input type="hidden" name="s_x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" id="s_x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" value="<?php echo $t06_siswarutintemp->Periode_Awal->LookupFilterQuery() ?>">
+<?php
+$wrkonchange = trim(" " . @$t06_siswarutintemp->Periode_Awal->EditAttrs["onchange"]);
+if ($wrkonchange <> "") $wrkonchange = " onchange=\"" . ew_JsEncode2($wrkonchange) . "\"";
+$t06_siswarutintemp->Periode_Awal->EditAttrs["onchange"] = "";
+?>
+<span id="as_x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" style="white-space: nowrap; z-index: <?php echo (9000 - $t06_siswarutintemp_grid->RowCnt * 10) ?>">
+	<input type="text" name="sv_x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" id="sv_x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" value="<?php echo $t06_siswarutintemp->Periode_Awal->EditValue ?>" size="30" maxlength="6" placeholder="<?php echo ew_HtmlEncode($t06_siswarutintemp->Periode_Awal->getPlaceHolder()) ?>" data-placeholder="<?php echo ew_HtmlEncode($t06_siswarutintemp->Periode_Awal->getPlaceHolder()) ?>"<?php echo $t06_siswarutintemp->Periode_Awal->EditAttributes() ?>>
+</span>
+<input type="hidden" data-table="t06_siswarutintemp" data-field="x_Periode_Awal" data-value-separator="<?php echo $t06_siswarutintemp->Periode_Awal->DisplayValueSeparatorAttribute() ?>" name="x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" id="x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" value="<?php echo ew_HtmlEncode($t06_siswarutintemp->Periode_Awal->CurrentValue) ?>"<?php echo $wrkonchange ?>>
+<input type="hidden" name="q_x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" id="q_x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" value="<?php echo $t06_siswarutintemp->Periode_Awal->LookupFilterQuery(true) ?>">
+<script type="text/javascript">
+ft06_siswarutintempgrid.CreateAutoSuggest({"id":"x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal","forceSelect":false});
+</script>
 </span>
 <input type="hidden" data-table="t06_siswarutintemp" data-field="x_Periode_Awal" name="o<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" id="o<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" value="<?php echo ew_HtmlEncode($t06_siswarutintemp->Periode_Awal->OldValue) ?>">
 <?php } ?>
 <?php if ($t06_siswarutintemp->RowType == EW_ROWTYPE_EDIT) { // Edit record ?>
 <span id="el<?php echo $t06_siswarutintemp_grid->RowCnt ?>_t06_siswarutintemp_Periode_Awal" class="form-group t06_siswarutintemp_Periode_Awal">
-<select data-table="t06_siswarutintemp" data-field="x_Periode_Awal" data-value-separator="<?php echo $t06_siswarutintemp->Periode_Awal->DisplayValueSeparatorAttribute() ?>" id="x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" name="x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal"<?php echo $t06_siswarutintemp->Periode_Awal->EditAttributes() ?>>
-<?php echo $t06_siswarutintemp->Periode_Awal->SelectOptionListHtml("x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal") ?>
-</select>
-<input type="hidden" name="s_x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" id="s_x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" value="<?php echo $t06_siswarutintemp->Periode_Awal->LookupFilterQuery() ?>">
+<span<?php echo $t06_siswarutintemp->Periode_Awal->ViewAttributes() ?>>
+<p class="form-control-static"><?php echo $t06_siswarutintemp->Periode_Awal->EditValue ?></p></span>
 </span>
+<input type="hidden" data-table="t06_siswarutintemp" data-field="x_Periode_Awal" name="x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" id="x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" value="<?php echo ew_HtmlEncode($t06_siswarutintemp->Periode_Awal->CurrentValue) ?>">
 <?php } ?>
 <?php if ($t06_siswarutintemp->RowType == EW_ROWTYPE_VIEW) { // View record ?>
 <span id="el<?php echo $t06_siswarutintemp_grid->RowCnt ?>_t06_siswarutintemp_Periode_Awal" class="t06_siswarutintemp_Periode_Awal">
@@ -670,10 +678,19 @@ ft06_siswarutintempgrid.CreateAutoSuggest({"id":"x<?php echo $t06_siswarutintemp
 		<td data-name="Periode_Awal">
 <?php if ($t06_siswarutintemp->CurrentAction <> "F") { ?>
 <span id="el$rowindex$_t06_siswarutintemp_Periode_Awal" class="form-group t06_siswarutintemp_Periode_Awal">
-<select data-table="t06_siswarutintemp" data-field="x_Periode_Awal" data-value-separator="<?php echo $t06_siswarutintemp->Periode_Awal->DisplayValueSeparatorAttribute() ?>" id="x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" name="x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal"<?php echo $t06_siswarutintemp->Periode_Awal->EditAttributes() ?>>
-<?php echo $t06_siswarutintemp->Periode_Awal->SelectOptionListHtml("x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal") ?>
-</select>
-<input type="hidden" name="s_x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" id="s_x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" value="<?php echo $t06_siswarutintemp->Periode_Awal->LookupFilterQuery() ?>">
+<?php
+$wrkonchange = trim(" " . @$t06_siswarutintemp->Periode_Awal->EditAttrs["onchange"]);
+if ($wrkonchange <> "") $wrkonchange = " onchange=\"" . ew_JsEncode2($wrkonchange) . "\"";
+$t06_siswarutintemp->Periode_Awal->EditAttrs["onchange"] = "";
+?>
+<span id="as_x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" style="white-space: nowrap; z-index: <?php echo (9000 - $t06_siswarutintemp_grid->RowCnt * 10) ?>">
+	<input type="text" name="sv_x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" id="sv_x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" value="<?php echo $t06_siswarutintemp->Periode_Awal->EditValue ?>" size="30" maxlength="6" placeholder="<?php echo ew_HtmlEncode($t06_siswarutintemp->Periode_Awal->getPlaceHolder()) ?>" data-placeholder="<?php echo ew_HtmlEncode($t06_siswarutintemp->Periode_Awal->getPlaceHolder()) ?>"<?php echo $t06_siswarutintemp->Periode_Awal->EditAttributes() ?>>
+</span>
+<input type="hidden" data-table="t06_siswarutintemp" data-field="x_Periode_Awal" data-value-separator="<?php echo $t06_siswarutintemp->Periode_Awal->DisplayValueSeparatorAttribute() ?>" name="x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" id="x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" value="<?php echo ew_HtmlEncode($t06_siswarutintemp->Periode_Awal->CurrentValue) ?>"<?php echo $wrkonchange ?>>
+<input type="hidden" name="q_x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" id="q_x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal" value="<?php echo $t06_siswarutintemp->Periode_Awal->LookupFilterQuery(true) ?>">
+<script type="text/javascript">
+ft06_siswarutintempgrid.CreateAutoSuggest({"id":"x<?php echo $t06_siswarutintemp_grid->RowIndex ?>_Periode_Awal","forceSelect":false});
+</script>
 </span>
 <?php } else { ?>
 <span id="el$rowindex$_t06_siswarutintemp_Periode_Awal" class="form-group t06_siswarutintemp_Periode_Awal">

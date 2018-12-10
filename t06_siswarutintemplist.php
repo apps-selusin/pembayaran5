@@ -1190,6 +1190,7 @@ class ct06_siswarutintemp_list extends ct06_siswarutintemp {
 		$this->rutin_id->ViewCustomAttributes = "";
 
 		// Periode_Awal
+		$this->Periode_Awal->ViewValue = $this->Periode_Awal->CurrentValue;
 		if (strval($this->Periode_Awal->CurrentValue) <> "") {
 			$sFilterWrk = "`Periode_Tahun_Bulan`" . ew_SearchString("=", $this->Periode_Awal->CurrentValue, EW_DATATYPE_STRING, "");
 		$sSqlWrk = "SELECT `Periode_Tahun_Bulan`, `Periode_Text` AS `DispFld`, '' AS `Disp2Fld`, '' AS `Disp3Fld`, '' AS `Disp4Fld` FROM `t07_siswarutinbayar`";
