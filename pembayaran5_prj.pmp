@@ -724,8 +724,24 @@ function Row_Rendered() {
 	//var_dump($this-><FieldName>);
 
 	if (CurrentPageID() == "edit" && $this->CurrentAction != "F") {
-		echo $this->id->CurrentValue;
-		echo $this->id->ViewValue;
+		//echo $this->id->CurrentValue;
+		//echo $this->id->ViewValue;
+		//echo $_SESSION["siswa_id"];
+		//echo $this->siswarutin_id->EditValue;
+		var_dump($this->siswarutin_id);
+	}
+}
+]]></CustomScript>
+  <CustomScript ScriptType="Server" ScriptCodeType="Table" ScriptName="Row_Rendered" ScriptCtrlID="" ScriptL1Key="cf01_home.php" ScriptL2Key=""><![CDATA[// Row Rendered event
+function Row_Rendered() {
+	// To view properties of field class, use:
+	//var_dump($this-><FieldName>);
+
+	if (CurrentPageID() == "edit" && $this->CurrentAction != "F") {
+		//echo $this->id->CurrentValue;
+		//echo $this->id->ViewValue;
+		echo $_SESSION["siswa_id"];
+		echo $this->siswarutin_id->ViewValue;
 	}
 }
 ]]></CustomScript>

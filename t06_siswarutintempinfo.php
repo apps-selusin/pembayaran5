@@ -1172,8 +1172,13 @@ class ct06_siswarutintemp extends cTable {
 		//var_dump($this-><FieldName>);
 
 		if (CurrentPageID() == "edit" && $this->CurrentAction != "F") {
-			echo $this->id->CurrentValue;
-			echo $this->id->ViewValue;
+
+			//echo $this->id->CurrentValue;
+			//echo $this->id->ViewValue;
+			//echo $_SESSION["siswa_id"];
+			//echo $this->siswarutin_id->EditValue;
+
+			var_dump($this->siswarutin_id);
 		}
 	}
 
