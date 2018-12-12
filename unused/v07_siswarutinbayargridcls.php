@@ -286,9 +286,9 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 		$this->SetupListOptions();
 		$this->rutin_id->SetVisibility();
 		$this->a_Nilai->SetVisibility();
+		$this->Periode_Text->SetVisibility();
 		$this->Tanggal_Bayar->SetVisibility();
 		$this->Nilai_Bayar->SetVisibility();
-		$this->Periode_Text->SetVisibility();
 
 		// Global Page Loading event (in userfn*.php)
 		Page_Loading();
@@ -754,11 +754,11 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 			return FALSE;
 		if ($objForm->HasValue("x_a_Nilai") && $objForm->HasValue("o_a_Nilai") && $this->a_Nilai->CurrentValue <> $this->a_Nilai->OldValue)
 			return FALSE;
+		if ($objForm->HasValue("x_Periode_Text") && $objForm->HasValue("o_Periode_Text") && $this->Periode_Text->CurrentValue <> $this->Periode_Text->OldValue)
+			return FALSE;
 		if ($objForm->HasValue("x_Tanggal_Bayar") && $objForm->HasValue("o_Tanggal_Bayar") && $this->Tanggal_Bayar->CurrentValue <> $this->Tanggal_Bayar->OldValue)
 			return FALSE;
 		if ($objForm->HasValue("x_Nilai_Bayar") && $objForm->HasValue("o_Nilai_Bayar") && $this->Nilai_Bayar->CurrentValue <> $this->Nilai_Bayar->OldValue)
-			return FALSE;
-		if ($objForm->HasValue("x_Periode_Text") && $objForm->HasValue("o_Periode_Text") && $this->Periode_Text->CurrentValue <> $this->Periode_Text->OldValue)
 			return FALSE;
 		return TRUE;
 	}
@@ -1069,12 +1069,12 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 		$this->rutin_id->OldValue = $this->rutin_id->CurrentValue;
 		$this->a_Nilai->CurrentValue = 0.00;
 		$this->a_Nilai->OldValue = $this->a_Nilai->CurrentValue;
+		$this->Periode_Text->CurrentValue = NULL;
+		$this->Periode_Text->OldValue = $this->Periode_Text->CurrentValue;
 		$this->Tanggal_Bayar->CurrentValue = NULL;
 		$this->Tanggal_Bayar->OldValue = $this->Tanggal_Bayar->CurrentValue;
 		$this->Nilai_Bayar->CurrentValue = 0.00;
 		$this->Nilai_Bayar->OldValue = $this->Nilai_Bayar->CurrentValue;
-		$this->Periode_Text->CurrentValue = NULL;
-		$this->Periode_Text->OldValue = $this->Periode_Text->CurrentValue;
 	}
 
 	// Load form values
@@ -1091,6 +1091,10 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 			$this->a_Nilai->setFormValue($objForm->GetValue("x_a_Nilai"));
 		}
 		$this->a_Nilai->setOldValue($objForm->GetValue("o_a_Nilai"));
+		if (!$this->Periode_Text->FldIsDetailKey) {
+			$this->Periode_Text->setFormValue($objForm->GetValue("x_Periode_Text"));
+		}
+		$this->Periode_Text->setOldValue($objForm->GetValue("o_Periode_Text"));
 		if (!$this->Tanggal_Bayar->FldIsDetailKey) {
 			$this->Tanggal_Bayar->setFormValue($objForm->GetValue("x_Tanggal_Bayar"));
 			$this->Tanggal_Bayar->CurrentValue = ew_UnFormatDateTime($this->Tanggal_Bayar->CurrentValue, 0);
@@ -1100,10 +1104,6 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 			$this->Nilai_Bayar->setFormValue($objForm->GetValue("x_Nilai_Bayar"));
 		}
 		$this->Nilai_Bayar->setOldValue($objForm->GetValue("o_Nilai_Bayar"));
-		if (!$this->Periode_Text->FldIsDetailKey) {
-			$this->Periode_Text->setFormValue($objForm->GetValue("x_Periode_Text"));
-		}
-		$this->Periode_Text->setOldValue($objForm->GetValue("o_Periode_Text"));
 		if (!$this->a_id->FldIsDetailKey && $this->CurrentAction <> "gridadd" && $this->CurrentAction <> "add")
 			$this->a_id->setFormValue($objForm->GetValue("x_a_id"));
 		if (!$this->b_id->FldIsDetailKey && $this->CurrentAction <> "gridadd" && $this->CurrentAction <> "add")
@@ -1119,10 +1119,10 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 			$this->b_id->CurrentValue = $this->b_id->FormValue;
 		$this->rutin_id->CurrentValue = $this->rutin_id->FormValue;
 		$this->a_Nilai->CurrentValue = $this->a_Nilai->FormValue;
+		$this->Periode_Text->CurrentValue = $this->Periode_Text->FormValue;
 		$this->Tanggal_Bayar->CurrentValue = $this->Tanggal_Bayar->FormValue;
 		$this->Tanggal_Bayar->CurrentValue = ew_UnFormatDateTime($this->Tanggal_Bayar->CurrentValue, 0);
 		$this->Nilai_Bayar->CurrentValue = $this->Nilai_Bayar->FormValue;
-		$this->Periode_Text->CurrentValue = $this->Periode_Text->FormValue;
 	}
 
 	// Load recordset
@@ -1189,10 +1189,10 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 		$this->Bulan->setDbValue($rs->fields('Bulan'));
 		$this->Tahun->setDbValue($rs->fields('Tahun'));
 		$this->b_Nilai->setDbValue($rs->fields('b_Nilai'));
+		$this->Periode_Text->setDbValue($rs->fields('Periode_Text'));
 		$this->Tanggal_Bayar->setDbValue($rs->fields('Tanggal_Bayar'));
 		$this->Nilai_Bayar->setDbValue($rs->fields('Nilai_Bayar'));
 		$this->Periode_Tahun_Bulan->setDbValue($rs->fields('Periode_Tahun_Bulan'));
-		$this->Periode_Text->setDbValue($rs->fields('Periode_Text'));
 		$this->Per_Thn_Bln_Byr->setDbValue($rs->fields('Per_Thn_Bln_Byr'));
 		$this->Per_Thn_Bln_Byr_Text->setDbValue($rs->fields('Per_Thn_Bln_Byr_Text'));
 	}
@@ -1210,10 +1210,10 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 		$this->Bulan->DbValue = $row['Bulan'];
 		$this->Tahun->DbValue = $row['Tahun'];
 		$this->b_Nilai->DbValue = $row['b_Nilai'];
+		$this->Periode_Text->DbValue = $row['Periode_Text'];
 		$this->Tanggal_Bayar->DbValue = $row['Tanggal_Bayar'];
 		$this->Nilai_Bayar->DbValue = $row['Nilai_Bayar'];
 		$this->Periode_Tahun_Bulan->DbValue = $row['Periode_Tahun_Bulan'];
-		$this->Periode_Text->DbValue = $row['Periode_Text'];
 		$this->Per_Thn_Bln_Byr->DbValue = $row['Per_Thn_Bln_Byr'];
 		$this->Per_Thn_Bln_Byr_Text->DbValue = $row['Per_Thn_Bln_Byr_Text'];
 	}
@@ -1282,10 +1282,10 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 		// Bulan
 		// Tahun
 		// b_Nilai
+		// Periode_Text
 		// Tanggal_Bayar
 		// Nilai_Bayar
 		// Periode_Tahun_Bulan
-		// Periode_Text
 		// Per_Thn_Bln_Byr
 		// Per_Thn_Bln_Byr_Text
 
@@ -1349,6 +1349,10 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 		$this->b_Nilai->ViewValue = $this->b_Nilai->CurrentValue;
 		$this->b_Nilai->ViewCustomAttributes = "";
 
+		// Periode_Text
+		$this->Periode_Text->ViewValue = $this->Periode_Text->CurrentValue;
+		$this->Periode_Text->ViewCustomAttributes = "";
+
 		// Tanggal_Bayar
 		$this->Tanggal_Bayar->ViewValue = $this->Tanggal_Bayar->CurrentValue;
 		$this->Tanggal_Bayar->ViewValue = ew_FormatDateTime($this->Tanggal_Bayar->ViewValue, 0);
@@ -1363,10 +1367,6 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 		// Periode_Tahun_Bulan
 		$this->Periode_Tahun_Bulan->ViewValue = $this->Periode_Tahun_Bulan->CurrentValue;
 		$this->Periode_Tahun_Bulan->ViewCustomAttributes = "";
-
-		// Periode_Text
-		$this->Periode_Text->ViewValue = $this->Periode_Text->CurrentValue;
-		$this->Periode_Text->ViewCustomAttributes = "";
 
 		// Per_Thn_Bln_Byr
 		$this->Per_Thn_Bln_Byr->ViewValue = $this->Per_Thn_Bln_Byr->CurrentValue;
@@ -1386,6 +1386,11 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 			$this->a_Nilai->HrefValue = "";
 			$this->a_Nilai->TooltipValue = "";
 
+			// Periode_Text
+			$this->Periode_Text->LinkCustomAttributes = "";
+			$this->Periode_Text->HrefValue = "";
+			$this->Periode_Text->TooltipValue = "";
+
 			// Tanggal_Bayar
 			$this->Tanggal_Bayar->LinkCustomAttributes = "";
 			$this->Tanggal_Bayar->HrefValue = "";
@@ -1395,11 +1400,6 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 			$this->Nilai_Bayar->LinkCustomAttributes = "";
 			$this->Nilai_Bayar->HrefValue = "";
 			$this->Nilai_Bayar->TooltipValue = "";
-
-			// Periode_Text
-			$this->Periode_Text->LinkCustomAttributes = "";
-			$this->Periode_Text->HrefValue = "";
-			$this->Periode_Text->TooltipValue = "";
 		} elseif ($this->RowType == EW_ROWTYPE_ADD) { // Add row
 
 			// rutin_id
@@ -1438,6 +1438,12 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 			$this->a_Nilai->OldValue = $this->a_Nilai->EditValue;
 			}
 
+			// Periode_Text
+			$this->Periode_Text->EditAttrs["class"] = "form-control";
+			$this->Periode_Text->EditCustomAttributes = "";
+			$this->Periode_Text->EditValue = ew_HtmlEncode($this->Periode_Text->CurrentValue);
+			$this->Periode_Text->PlaceHolder = ew_RemoveHtml($this->Periode_Text->FldCaption());
+
 			// Tanggal_Bayar
 			$this->Tanggal_Bayar->EditAttrs["class"] = "form-control";
 			$this->Tanggal_Bayar->EditCustomAttributes = "";
@@ -1454,12 +1460,6 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 			$this->Nilai_Bayar->OldValue = $this->Nilai_Bayar->EditValue;
 			}
 
-			// Periode_Text
-			$this->Periode_Text->EditAttrs["class"] = "form-control";
-			$this->Periode_Text->EditCustomAttributes = "";
-			$this->Periode_Text->EditValue = ew_HtmlEncode($this->Periode_Text->CurrentValue);
-			$this->Periode_Text->PlaceHolder = ew_RemoveHtml($this->Periode_Text->FldCaption());
-
 			// Add refer script
 			// rutin_id
 
@@ -1470,6 +1470,10 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 			$this->a_Nilai->LinkCustomAttributes = "";
 			$this->a_Nilai->HrefValue = "";
 
+			// Periode_Text
+			$this->Periode_Text->LinkCustomAttributes = "";
+			$this->Periode_Text->HrefValue = "";
+
 			// Tanggal_Bayar
 			$this->Tanggal_Bayar->LinkCustomAttributes = "";
 			$this->Tanggal_Bayar->HrefValue = "";
@@ -1477,10 +1481,6 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 			// Nilai_Bayar
 			$this->Nilai_Bayar->LinkCustomAttributes = "";
 			$this->Nilai_Bayar->HrefValue = "";
-
-			// Periode_Text
-			$this->Periode_Text->LinkCustomAttributes = "";
-			$this->Periode_Text->HrefValue = "";
 		} elseif ($this->RowType == EW_ROWTYPE_EDIT) { // Edit row
 
 			// rutin_id
@@ -1519,6 +1519,12 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 			$this->a_Nilai->OldValue = $this->a_Nilai->EditValue;
 			}
 
+			// Periode_Text
+			$this->Periode_Text->EditAttrs["class"] = "form-control";
+			$this->Periode_Text->EditCustomAttributes = "";
+			$this->Periode_Text->EditValue = ew_HtmlEncode($this->Periode_Text->CurrentValue);
+			$this->Periode_Text->PlaceHolder = ew_RemoveHtml($this->Periode_Text->FldCaption());
+
 			// Tanggal_Bayar
 			$this->Tanggal_Bayar->EditAttrs["class"] = "form-control";
 			$this->Tanggal_Bayar->EditCustomAttributes = "";
@@ -1535,12 +1541,6 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 			$this->Nilai_Bayar->OldValue = $this->Nilai_Bayar->EditValue;
 			}
 
-			// Periode_Text
-			$this->Periode_Text->EditAttrs["class"] = "form-control";
-			$this->Periode_Text->EditCustomAttributes = "";
-			$this->Periode_Text->EditValue = ew_HtmlEncode($this->Periode_Text->CurrentValue);
-			$this->Periode_Text->PlaceHolder = ew_RemoveHtml($this->Periode_Text->FldCaption());
-
 			// Edit refer script
 			// rutin_id
 
@@ -1551,6 +1551,10 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 			$this->a_Nilai->LinkCustomAttributes = "";
 			$this->a_Nilai->HrefValue = "";
 
+			// Periode_Text
+			$this->Periode_Text->LinkCustomAttributes = "";
+			$this->Periode_Text->HrefValue = "";
+
 			// Tanggal_Bayar
 			$this->Tanggal_Bayar->LinkCustomAttributes = "";
 			$this->Tanggal_Bayar->HrefValue = "";
@@ -1558,10 +1562,6 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 			// Nilai_Bayar
 			$this->Nilai_Bayar->LinkCustomAttributes = "";
 			$this->Nilai_Bayar->HrefValue = "";
-
-			// Periode_Text
-			$this->Periode_Text->LinkCustomAttributes = "";
-			$this->Periode_Text->HrefValue = "";
 		}
 		if ($this->RowType == EW_ROWTYPE_ADD ||
 			$this->RowType == EW_ROWTYPE_EDIT ||
@@ -1719,14 +1719,14 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 			// a_Nilai
 			$this->a_Nilai->SetDbValueDef($rsnew, $this->a_Nilai->CurrentValue, 0, $this->a_Nilai->ReadOnly);
 
+			// Periode_Text
+			$this->Periode_Text->SetDbValueDef($rsnew, $this->Periode_Text->CurrentValue, NULL, $this->Periode_Text->ReadOnly);
+
 			// Tanggal_Bayar
 			$this->Tanggal_Bayar->SetDbValueDef($rsnew, ew_UnFormatDateTime($this->Tanggal_Bayar->CurrentValue, 0), NULL, $this->Tanggal_Bayar->ReadOnly);
 
 			// Nilai_Bayar
 			$this->Nilai_Bayar->SetDbValueDef($rsnew, $this->Nilai_Bayar->CurrentValue, NULL, $this->Nilai_Bayar->ReadOnly);
-
-			// Periode_Text
-			$this->Periode_Text->SetDbValueDef($rsnew, $this->Periode_Text->CurrentValue, NULL, $this->Periode_Text->ReadOnly);
 
 			// Call Row Updating event
 			$bUpdateRow = $this->Row_Updating($rsold, $rsnew);
@@ -1782,14 +1782,14 @@ class cv07_siswarutinbayar_grid extends cv07_siswarutinbayar {
 		// a_Nilai
 		$this->a_Nilai->SetDbValueDef($rsnew, $this->a_Nilai->CurrentValue, 0, strval($this->a_Nilai->CurrentValue) == "");
 
+		// Periode_Text
+		$this->Periode_Text->SetDbValueDef($rsnew, $this->Periode_Text->CurrentValue, NULL, FALSE);
+
 		// Tanggal_Bayar
 		$this->Tanggal_Bayar->SetDbValueDef($rsnew, ew_UnFormatDateTime($this->Tanggal_Bayar->CurrentValue, 0), NULL, FALSE);
 
 		// Nilai_Bayar
 		$this->Nilai_Bayar->SetDbValueDef($rsnew, $this->Nilai_Bayar->CurrentValue, NULL, strval($this->Nilai_Bayar->CurrentValue) == "");
-
-		// Periode_Text
-		$this->Periode_Text->SetDbValueDef($rsnew, $this->Periode_Text->CurrentValue, NULL, FALSE);
 
 		// siswa_id
 		if ($this->siswa_id->getSessionValue() <> "") {

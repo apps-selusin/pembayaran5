@@ -588,9 +588,6 @@
     <menu id="4">
       <phrase id="menutext" value="Siswa" />
     </menu>
-    <menu id="23">
-      <phrase id="menutext" value="Rutin" />
-    </menu>
     <menu id="16">
       <phrase id="menutext" value="Bayar" />
     </menu>
@@ -1166,54 +1163,6 @@
       </field>
       <field id="nama">
         <phrase id="fldcaption" value="Nama" />
-      </field>
-    </table>
-    <table id="v07_siswarutinbayar">
-      <phrase id="tblcaption" value="Rutin" />
-      <field id="a_id">
-        <phrase id="fldcaption" value="a id" />
-      </field>
-      <field id="siswa_id">
-        <phrase id="fldcaption" value="siswa id" />
-      </field>
-      <field id="rutin_id">
-        <phrase id="fldcaption" value="Jenis" />
-      </field>
-      <field id="a_nilai">
-        <phrase id="fldcaption" value="Nilai" />
-      </field>
-      <field id="b_id">
-        <phrase id="fldcaption" value="b id" />
-      </field>
-      <field id="siswarutin_id">
-        <phrase id="fldcaption" value="siswarutin id" />
-      </field>
-      <field id="bulan">
-        <phrase id="fldcaption" value="Bulan" />
-      </field>
-      <field id="tahun">
-        <phrase id="fldcaption" value="Tahun" />
-      </field>
-      <field id="b_nilai">
-        <phrase id="fldcaption" value="b Nilai" />
-      </field>
-      <field id="tanggal_bayar">
-        <phrase id="fldcaption" value="Tanggal Bayar" />
-      </field>
-      <field id="nilai_bayar">
-        <phrase id="fldcaption" value="Bayar" />
-      </field>
-      <field id="periode_tahun_bulan">
-        <phrase id="fldcaption" value="Periode Tahun Bulan" />
-      </field>
-      <field id="periode_text">
-        <phrase id="fldcaption" value="Periode Text" />
-      </field>
-      <field id="per_thn_bln_byr">
-        <phrase id="fldcaption" value="Per Thn Bln Byr" />
-      </field>
-      <field id="per_thn_bln_byr_text">
-        <phrase id="fldcaption" value="Per Thn Bln Byr Text" />
       </field>
     </table>
   </project>

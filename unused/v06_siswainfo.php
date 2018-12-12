@@ -106,30 +106,6 @@ class cv06_siswa extends cTable {
 		}
 	}
 
-	// Current detail table name
-	function getCurrentDetailTable() {
-		return @$_SESSION[EW_PROJECT_NAME . "_" . $this->TableVar . "_" . EW_TABLE_DETAIL_TABLE];
-	}
-
-	function setCurrentDetailTable($v) {
-		$_SESSION[EW_PROJECT_NAME . "_" . $this->TableVar . "_" . EW_TABLE_DETAIL_TABLE] = $v;
-	}
-
-	// Get detail url
-	function GetDetailUrl() {
-
-		// Detail url
-		$sDetailUrl = "";
-		if ($this->getCurrentDetailTable() == "v07_siswarutinbayar") {
-			$sDetailUrl = $GLOBALS["v07_siswarutinbayar"]->GetListUrl() . "?" . EW_TABLE_SHOW_MASTER . "=" . $this->TableVar;
-			$sDetailUrl .= "&fk_id=" . urlencode($this->id->CurrentValue);
-		}
-		if ($sDetailUrl == "") {
-			$sDetailUrl = "v06_siswalist.php";
-		}
-		return $sDetailUrl;
-	}
-
 	// Table level SQL
 	var $_SqlFrom = "";
 
@@ -471,10 +447,7 @@ class cv06_siswa extends cTable {
 
 	// Edit URL
 	function GetEditUrl($parm = "") {
-		if ($parm <> "")
-			$url = $this->KeyUrl("v06_siswaedit.php", $this->UrlParm($parm));
-		else
-			$url = $this->KeyUrl("v06_siswaedit.php", $this->UrlParm(EW_TABLE_SHOW_DETAIL . "="));
+		$url = $this->KeyUrl("v06_siswaedit.php", $this->UrlParm($parm));
 		return $this->AddMasterUrl($url);
 	}
 
@@ -486,10 +459,7 @@ class cv06_siswa extends cTable {
 
 	// Copy URL
 	function GetCopyUrl($parm = "") {
-		if ($parm <> "")
-			$url = $this->KeyUrl("v06_siswaadd.php", $this->UrlParm($parm));
-		else
-			$url = $this->KeyUrl("v06_siswaadd.php", $this->UrlParm(EW_TABLE_SHOW_DETAIL . "="));
+		$url = $this->KeyUrl("v06_siswaadd.php", $this->UrlParm($parm));
 		return $this->AddMasterUrl($url);
 	}
 

@@ -72,9 +72,9 @@ fv07_siswarutinbayargrid.EmptyRow = function(infix) {
 	var fobj = this.Form;
 	if (ew_ValueChanged(fobj, infix, "rutin_id", false)) return false;
 	if (ew_ValueChanged(fobj, infix, "a_Nilai", false)) return false;
+	if (ew_ValueChanged(fobj, infix, "Periode_Text", false)) return false;
 	if (ew_ValueChanged(fobj, infix, "Tanggal_Bayar", false)) return false;
 	if (ew_ValueChanged(fobj, infix, "Nilai_Bayar", false)) return false;
-	if (ew_ValueChanged(fobj, infix, "Periode_Text", false)) return false;
 	return true;
 }
 
@@ -184,6 +184,15 @@ $v07_siswarutinbayar_grid->ListOptions->Render("header", "left");
         </div></div></th>
 	<?php } ?>
 <?php } ?>		
+<?php if ($v07_siswarutinbayar->Periode_Text->Visible) { // Periode_Text ?>
+	<?php if ($v07_siswarutinbayar->SortUrl($v07_siswarutinbayar->Periode_Text) == "") { ?>
+		<th data-name="Periode_Text"><div id="elh_v07_siswarutinbayar_Periode_Text" class="v07_siswarutinbayar_Periode_Text"><div class="ewTableHeaderCaption"><?php echo $v07_siswarutinbayar->Periode_Text->FldCaption() ?></div></div></th>
+	<?php } else { ?>
+		<th data-name="Periode_Text"><div><div id="elh_v07_siswarutinbayar_Periode_Text" class="v07_siswarutinbayar_Periode_Text">
+			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption"><?php echo $v07_siswarutinbayar->Periode_Text->FldCaption() ?></span><span class="ewTableHeaderSort"><?php if ($v07_siswarutinbayar->Periode_Text->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($v07_siswarutinbayar->Periode_Text->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span></div>
+        </div></div></th>
+	<?php } ?>
+<?php } ?>		
 <?php if ($v07_siswarutinbayar->Tanggal_Bayar->Visible) { // Tanggal_Bayar ?>
 	<?php if ($v07_siswarutinbayar->SortUrl($v07_siswarutinbayar->Tanggal_Bayar) == "") { ?>
 		<th data-name="Tanggal_Bayar"><div id="elh_v07_siswarutinbayar_Tanggal_Bayar" class="v07_siswarutinbayar_Tanggal_Bayar"><div class="ewTableHeaderCaption"><?php echo $v07_siswarutinbayar->Tanggal_Bayar->FldCaption() ?></div></div></th>
@@ -199,15 +208,6 @@ $v07_siswarutinbayar_grid->ListOptions->Render("header", "left");
 	<?php } else { ?>
 		<th data-name="Nilai_Bayar"><div><div id="elh_v07_siswarutinbayar_Nilai_Bayar" class="v07_siswarutinbayar_Nilai_Bayar">
 			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption"><?php echo $v07_siswarutinbayar->Nilai_Bayar->FldCaption() ?></span><span class="ewTableHeaderSort"><?php if ($v07_siswarutinbayar->Nilai_Bayar->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($v07_siswarutinbayar->Nilai_Bayar->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span></div>
-        </div></div></th>
-	<?php } ?>
-<?php } ?>		
-<?php if ($v07_siswarutinbayar->Periode_Text->Visible) { // Periode_Text ?>
-	<?php if ($v07_siswarutinbayar->SortUrl($v07_siswarutinbayar->Periode_Text) == "") { ?>
-		<th data-name="Periode_Text"><div id="elh_v07_siswarutinbayar_Periode_Text" class="v07_siswarutinbayar_Periode_Text"><div class="ewTableHeaderCaption"><?php echo $v07_siswarutinbayar->Periode_Text->FldCaption() ?></div></div></th>
-	<?php } else { ?>
-		<th data-name="Periode_Text"><div><div id="elh_v07_siswarutinbayar_Periode_Text" class="v07_siswarutinbayar_Periode_Text">
-			<div class="ewTableHeaderBtn"><span class="ewTableHeaderCaption"><?php echo $v07_siswarutinbayar->Periode_Text->FldCaption() ?></span><span class="ewTableHeaderSort"><?php if ($v07_siswarutinbayar->Periode_Text->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($v07_siswarutinbayar->Periode_Text->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span></div>
         </div></div></th>
 	<?php } ?>
 <?php } ?>		
@@ -414,6 +414,34 @@ fv07_siswarutinbayargrid.CreateAutoSuggest({"id":"x<?php echo $v07_siswarutinbay
 <?php } ?>
 </td>
 	<?php } ?>
+	<?php if ($v07_siswarutinbayar->Periode_Text->Visible) { // Periode_Text ?>
+		<td data-name="Periode_Text"<?php echo $v07_siswarutinbayar->Periode_Text->CellAttributes() ?>>
+<?php if ($v07_siswarutinbayar->RowType == EW_ROWTYPE_ADD) { // Add record ?>
+<span id="el<?php echo $v07_siswarutinbayar_grid->RowCnt ?>_v07_siswarutinbayar_Periode_Text" class="form-group v07_siswarutinbayar_Periode_Text">
+<input type="text" data-table="v07_siswarutinbayar" data-field="x_Periode_Text" name="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" id="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" size="30" maxlength="14" placeholder="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Periode_Text->getPlaceHolder()) ?>" value="<?php echo $v07_siswarutinbayar->Periode_Text->EditValue ?>"<?php echo $v07_siswarutinbayar->Periode_Text->EditAttributes() ?>>
+</span>
+<input type="hidden" data-table="v07_siswarutinbayar" data-field="x_Periode_Text" name="o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" id="o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" value="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Periode_Text->OldValue) ?>">
+<?php } ?>
+<?php if ($v07_siswarutinbayar->RowType == EW_ROWTYPE_EDIT) { // Edit record ?>
+<span id="el<?php echo $v07_siswarutinbayar_grid->RowCnt ?>_v07_siswarutinbayar_Periode_Text" class="form-group v07_siswarutinbayar_Periode_Text">
+<input type="text" data-table="v07_siswarutinbayar" data-field="x_Periode_Text" name="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" id="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" size="30" maxlength="14" placeholder="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Periode_Text->getPlaceHolder()) ?>" value="<?php echo $v07_siswarutinbayar->Periode_Text->EditValue ?>"<?php echo $v07_siswarutinbayar->Periode_Text->EditAttributes() ?>>
+</span>
+<?php } ?>
+<?php if ($v07_siswarutinbayar->RowType == EW_ROWTYPE_VIEW) { // View record ?>
+<span id="el<?php echo $v07_siswarutinbayar_grid->RowCnt ?>_v07_siswarutinbayar_Periode_Text" class="v07_siswarutinbayar_Periode_Text">
+<span<?php echo $v07_siswarutinbayar->Periode_Text->ViewAttributes() ?>>
+<?php echo $v07_siswarutinbayar->Periode_Text->ListViewValue() ?></span>
+</span>
+<?php if ($v07_siswarutinbayar->CurrentAction <> "F") { ?>
+<input type="hidden" data-table="v07_siswarutinbayar" data-field="x_Periode_Text" name="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" id="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" value="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Periode_Text->FormValue) ?>">
+<input type="hidden" data-table="v07_siswarutinbayar" data-field="x_Periode_Text" name="o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" id="o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" value="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Periode_Text->OldValue) ?>">
+<?php } else { ?>
+<input type="hidden" data-table="v07_siswarutinbayar" data-field="x_Periode_Text" name="fv07_siswarutinbayargrid$x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" id="fv07_siswarutinbayargrid$x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" value="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Periode_Text->FormValue) ?>">
+<input type="hidden" data-table="v07_siswarutinbayar" data-field="x_Periode_Text" name="fv07_siswarutinbayargrid$o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" id="fv07_siswarutinbayargrid$o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" value="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Periode_Text->OldValue) ?>">
+<?php } ?>
+<?php } ?>
+</td>
+	<?php } ?>
 	<?php if ($v07_siswarutinbayar->Tanggal_Bayar->Visible) { // Tanggal_Bayar ?>
 		<td data-name="Tanggal_Bayar"<?php echo $v07_siswarutinbayar->Tanggal_Bayar->CellAttributes() ?>>
 <?php if ($v07_siswarutinbayar->RowType == EW_ROWTYPE_ADD) { // Add record ?>
@@ -466,34 +494,6 @@ fv07_siswarutinbayargrid.CreateAutoSuggest({"id":"x<?php echo $v07_siswarutinbay
 <?php } else { ?>
 <input type="hidden" data-table="v07_siswarutinbayar" data-field="x_Nilai_Bayar" name="fv07_siswarutinbayargrid$x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Nilai_Bayar" id="fv07_siswarutinbayargrid$x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Nilai_Bayar" value="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Nilai_Bayar->FormValue) ?>">
 <input type="hidden" data-table="v07_siswarutinbayar" data-field="x_Nilai_Bayar" name="fv07_siswarutinbayargrid$o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Nilai_Bayar" id="fv07_siswarutinbayargrid$o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Nilai_Bayar" value="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Nilai_Bayar->OldValue) ?>">
-<?php } ?>
-<?php } ?>
-</td>
-	<?php } ?>
-	<?php if ($v07_siswarutinbayar->Periode_Text->Visible) { // Periode_Text ?>
-		<td data-name="Periode_Text"<?php echo $v07_siswarutinbayar->Periode_Text->CellAttributes() ?>>
-<?php if ($v07_siswarutinbayar->RowType == EW_ROWTYPE_ADD) { // Add record ?>
-<span id="el<?php echo $v07_siswarutinbayar_grid->RowCnt ?>_v07_siswarutinbayar_Periode_Text" class="form-group v07_siswarutinbayar_Periode_Text">
-<input type="text" data-table="v07_siswarutinbayar" data-field="x_Periode_Text" name="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" id="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" size="30" maxlength="14" placeholder="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Periode_Text->getPlaceHolder()) ?>" value="<?php echo $v07_siswarutinbayar->Periode_Text->EditValue ?>"<?php echo $v07_siswarutinbayar->Periode_Text->EditAttributes() ?>>
-</span>
-<input type="hidden" data-table="v07_siswarutinbayar" data-field="x_Periode_Text" name="o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" id="o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" value="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Periode_Text->OldValue) ?>">
-<?php } ?>
-<?php if ($v07_siswarutinbayar->RowType == EW_ROWTYPE_EDIT) { // Edit record ?>
-<span id="el<?php echo $v07_siswarutinbayar_grid->RowCnt ?>_v07_siswarutinbayar_Periode_Text" class="form-group v07_siswarutinbayar_Periode_Text">
-<input type="text" data-table="v07_siswarutinbayar" data-field="x_Periode_Text" name="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" id="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" size="30" maxlength="14" placeholder="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Periode_Text->getPlaceHolder()) ?>" value="<?php echo $v07_siswarutinbayar->Periode_Text->EditValue ?>"<?php echo $v07_siswarutinbayar->Periode_Text->EditAttributes() ?>>
-</span>
-<?php } ?>
-<?php if ($v07_siswarutinbayar->RowType == EW_ROWTYPE_VIEW) { // View record ?>
-<span id="el<?php echo $v07_siswarutinbayar_grid->RowCnt ?>_v07_siswarutinbayar_Periode_Text" class="v07_siswarutinbayar_Periode_Text">
-<span<?php echo $v07_siswarutinbayar->Periode_Text->ViewAttributes() ?>>
-<?php echo $v07_siswarutinbayar->Periode_Text->ListViewValue() ?></span>
-</span>
-<?php if ($v07_siswarutinbayar->CurrentAction <> "F") { ?>
-<input type="hidden" data-table="v07_siswarutinbayar" data-field="x_Periode_Text" name="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" id="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" value="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Periode_Text->FormValue) ?>">
-<input type="hidden" data-table="v07_siswarutinbayar" data-field="x_Periode_Text" name="o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" id="o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" value="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Periode_Text->OldValue) ?>">
-<?php } else { ?>
-<input type="hidden" data-table="v07_siswarutinbayar" data-field="x_Periode_Text" name="fv07_siswarutinbayargrid$x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" id="fv07_siswarutinbayargrid$x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" value="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Periode_Text->FormValue) ?>">
-<input type="hidden" data-table="v07_siswarutinbayar" data-field="x_Periode_Text" name="fv07_siswarutinbayargrid$o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" id="fv07_siswarutinbayargrid$o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" value="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Periode_Text->OldValue) ?>">
 <?php } ?>
 <?php } ?>
 </td>
@@ -584,6 +584,22 @@ fv07_siswarutinbayargrid.CreateAutoSuggest({"id":"x<?php echo $v07_siswarutinbay
 <input type="hidden" data-table="v07_siswarutinbayar" data-field="x_a_Nilai" name="o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_a_Nilai" id="o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_a_Nilai" value="<?php echo ew_HtmlEncode($v07_siswarutinbayar->a_Nilai->OldValue) ?>">
 </td>
 	<?php } ?>
+	<?php if ($v07_siswarutinbayar->Periode_Text->Visible) { // Periode_Text ?>
+		<td data-name="Periode_Text">
+<?php if ($v07_siswarutinbayar->CurrentAction <> "F") { ?>
+<span id="el$rowindex$_v07_siswarutinbayar_Periode_Text" class="form-group v07_siswarutinbayar_Periode_Text">
+<input type="text" data-table="v07_siswarutinbayar" data-field="x_Periode_Text" name="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" id="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" size="30" maxlength="14" placeholder="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Periode_Text->getPlaceHolder()) ?>" value="<?php echo $v07_siswarutinbayar->Periode_Text->EditValue ?>"<?php echo $v07_siswarutinbayar->Periode_Text->EditAttributes() ?>>
+</span>
+<?php } else { ?>
+<span id="el$rowindex$_v07_siswarutinbayar_Periode_Text" class="form-group v07_siswarutinbayar_Periode_Text">
+<span<?php echo $v07_siswarutinbayar->Periode_Text->ViewAttributes() ?>>
+<p class="form-control-static"><?php echo $v07_siswarutinbayar->Periode_Text->ViewValue ?></p></span>
+</span>
+<input type="hidden" data-table="v07_siswarutinbayar" data-field="x_Periode_Text" name="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" id="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" value="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Periode_Text->FormValue) ?>">
+<?php } ?>
+<input type="hidden" data-table="v07_siswarutinbayar" data-field="x_Periode_Text" name="o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" id="o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" value="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Periode_Text->OldValue) ?>">
+</td>
+	<?php } ?>
 	<?php if ($v07_siswarutinbayar->Tanggal_Bayar->Visible) { // Tanggal_Bayar ?>
 		<td data-name="Tanggal_Bayar">
 <?php if ($v07_siswarutinbayar->CurrentAction <> "F") { ?>
@@ -614,22 +630,6 @@ fv07_siswarutinbayargrid.CreateAutoSuggest({"id":"x<?php echo $v07_siswarutinbay
 <input type="hidden" data-table="v07_siswarutinbayar" data-field="x_Nilai_Bayar" name="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Nilai_Bayar" id="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Nilai_Bayar" value="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Nilai_Bayar->FormValue) ?>">
 <?php } ?>
 <input type="hidden" data-table="v07_siswarutinbayar" data-field="x_Nilai_Bayar" name="o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Nilai_Bayar" id="o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Nilai_Bayar" value="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Nilai_Bayar->OldValue) ?>">
-</td>
-	<?php } ?>
-	<?php if ($v07_siswarutinbayar->Periode_Text->Visible) { // Periode_Text ?>
-		<td data-name="Periode_Text">
-<?php if ($v07_siswarutinbayar->CurrentAction <> "F") { ?>
-<span id="el$rowindex$_v07_siswarutinbayar_Periode_Text" class="form-group v07_siswarutinbayar_Periode_Text">
-<input type="text" data-table="v07_siswarutinbayar" data-field="x_Periode_Text" name="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" id="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" size="30" maxlength="14" placeholder="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Periode_Text->getPlaceHolder()) ?>" value="<?php echo $v07_siswarutinbayar->Periode_Text->EditValue ?>"<?php echo $v07_siswarutinbayar->Periode_Text->EditAttributes() ?>>
-</span>
-<?php } else { ?>
-<span id="el$rowindex$_v07_siswarutinbayar_Periode_Text" class="form-group v07_siswarutinbayar_Periode_Text">
-<span<?php echo $v07_siswarutinbayar->Periode_Text->ViewAttributes() ?>>
-<p class="form-control-static"><?php echo $v07_siswarutinbayar->Periode_Text->ViewValue ?></p></span>
-</span>
-<input type="hidden" data-table="v07_siswarutinbayar" data-field="x_Periode_Text" name="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" id="x<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" value="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Periode_Text->FormValue) ?>">
-<?php } ?>
-<input type="hidden" data-table="v07_siswarutinbayar" data-field="x_Periode_Text" name="o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" id="o<?php echo $v07_siswarutinbayar_grid->RowIndex ?>_Periode_Text" value="<?php echo ew_HtmlEncode($v07_siswarutinbayar->Periode_Text->OldValue) ?>">
 </td>
 	<?php } ?>
 <?php
