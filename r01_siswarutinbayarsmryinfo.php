@@ -61,16 +61,10 @@ class crr01_siswarutinbayar extends crTableBase {
 		// SekolahKelas
 		$this->SekolahKelas = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_SekolahKelas', 'SekolahKelas', '`SekolahKelas`', 201, EWR_DATATYPE_MEMO, -1);
 		$this->SekolahKelas->Sortable = TRUE; // Allow sort
-		$this->SekolahKelas->GroupingFieldId = 2;
-		$this->SekolahKelas->ShowGroupHeaderAsRow = $this->ShowGroupHeaderAsRow;
-		$this->SekolahKelas->ShowCompactSummaryFooter = $this->ShowCompactSummaryFooter;
 		$this->fields['SekolahKelas'] = &$this->SekolahKelas;
 		$this->SekolahKelas->DateFilter = "";
 		$this->SekolahKelas->SqlSelect = "";
 		$this->SekolahKelas->SqlOrderBy = "";
-		$this->SekolahKelas->FldGroupByType = "";
-		$this->SekolahKelas->FldGroupInt = "0";
-		$this->SekolahKelas->FldGroupSql = "";
 
 		// Periode_Text
 		$this->Periode_Text = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_Periode_Text', 'Periode_Text', '`Periode_Text`', 200, EWR_DATATYPE_STRING, -1);
@@ -380,7 +374,7 @@ class crr01_siswarutinbayar extends crTableBase {
 	var $_SqlOrderBy = "";
 
 	function getSqlOrderBy() {
-		return ($this->_SqlOrderBy <> "") ? $this->_SqlOrderBy : "`Jenis` ASC, `SekolahKelas` ASC";
+		return ($this->_SqlOrderBy <> "") ? $this->_SqlOrderBy : "`Jenis` ASC";
 	}
 
 	function SqlOrderBy() { // For backward compatibility

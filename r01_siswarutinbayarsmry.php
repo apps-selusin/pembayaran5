@@ -524,7 +524,7 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 		// 2nd dimension = no of fields
 
 		$nDtls = 7;
-		$nGrps = 3;
+		$nGrps = 2;
 		$this->Val = &ewr_InitArray($nDtls, 0);
 		$this->Cnt = &ewr_Init2DArray($nGrps, $nDtls, 0);
 		$this->Smry = &ewr_Init2DArray($nGrps, $nDtls, 0);
@@ -536,7 +536,7 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 		$this->GrandMx = &ewr_InitArray($nDtls, NULL);
 
 		// Set up array if accumulation required: array(Accum, SkipNullOrZero)
-		$this->Col = array(array(FALSE, FALSE), array(FALSE,FALSE), array(FALSE,FALSE), array(TRUE,TRUE), array(FALSE,FALSE), array(FALSE,FALSE), array(FALSE,FALSE));
+		$this->Col = array(array(FALSE, FALSE), array(FALSE,FALSE), array(FALSE,FALSE), array(TRUE,FALSE), array(FALSE,FALSE), array(FALSE,FALSE), array(FALSE,FALSE));
 
 		// Set up groups per page dynamically
 		$this->SetUpDisplayGrps();
@@ -645,19 +645,11 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 		$cnt = 0;
 		foreach ($this->DetailRows as $row) {
 			$wrkJenis = $row["Jenis"];
-			$wrkSekolahKelas = $row["SekolahKelas"];
 			if ($lvl >= 1) {
 				$val = $curValue ? $this->Jenis->CurrentValue : $this->Jenis->OldValue;
 				$grpval = $curValue ? $this->Jenis->GroupValue() : $this->Jenis->GroupOldValue();
 				if (is_null($val) && !is_null($wrkJenis) || !is_null($val) && is_null($wrkJenis) ||
 					$grpval <> $this->Jenis->getGroupValueBase($wrkJenis))
-				continue;
-			}
-			if ($lvl >= 2) {
-				$val = $curValue ? $this->SekolahKelas->CurrentValue : $this->SekolahKelas->OldValue;
-				$grpval = $curValue ? $this->SekolahKelas->GroupValue() : $this->SekolahKelas->GroupOldValue();
-				if (is_null($val) && !is_null($wrkSekolahKelas) || !is_null($val) && is_null($wrkSekolahKelas) ||
-					$grpval <> $this->SekolahKelas->getGroupValueBase($wrkSekolahKelas))
 				continue;
 			}
 			$cnt++;
@@ -672,10 +664,6 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 				return (is_null($this->Jenis->CurrentValue) && !is_null($this->Jenis->OldValue)) ||
 					(!is_null($this->Jenis->CurrentValue) && is_null($this->Jenis->OldValue)) ||
 					($this->Jenis->GroupValue() <> $this->Jenis->GroupOldValue());
-			case 2:
-				return (is_null($this->SekolahKelas->CurrentValue) && !is_null($this->SekolahKelas->OldValue)) ||
-					(!is_null($this->SekolahKelas->CurrentValue) && is_null($this->SekolahKelas->OldValue)) ||
-					($this->SekolahKelas->GroupValue() <> $this->SekolahKelas->GroupOldValue()) || $this->ChkLvlBreak(1); // Recurse upper level
 		}
 	}
 
@@ -1121,7 +1109,6 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 		if ($this->RowType == EWR_ROWTYPE_TOTAL && !($this->RowTotalType == EWR_ROWTOTAL_GROUP && $this->RowTotalSubType == EWR_ROWTOTAL_HEADER)) { // Summary row
 			ewr_PrependClass($this->RowAttrs["class"], ($this->RowTotalType == EWR_ROWTOTAL_PAGE || $this->RowTotalType == EWR_ROWTOTAL_GRAND) ? "ewRptGrpAggregate" : "ewRptGrpSummary" . $this->RowGroupLevel); // Set up row class
 			if ($this->RowTotalType == EWR_ROWTOTAL_GROUP) $this->RowAttrs["data-group"] = $this->Jenis->GroupOldValue(); // Set up group attribute
-			if ($this->RowTotalType == EWR_ROWTOTAL_GROUP && $this->RowGroupLevel >= 2) $this->RowAttrs["data-group-2"] = $this->SekolahKelas->GroupOldValue(); // Set up group attribute 2
 
 			// Jenis
 			$this->Jenis->GroupViewValue = $this->Jenis->GroupOldValue();
@@ -1131,14 +1118,6 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 			$this->Jenis->GroupSummaryValue = $this->Jenis->GroupViewValue;
 			$this->Jenis->GroupSummaryViewValue = ($this->Jenis->GroupSummaryOldValue <> $this->Jenis->GroupSummaryValue) ? $this->Jenis->GroupSummaryValue : "&nbsp;";
 
-			// SekolahKelas
-			$this->SekolahKelas->GroupViewValue = $this->SekolahKelas->GroupOldValue();
-			$this->SekolahKelas->CellAttrs["class"] = ($this->RowGroupLevel == 2) ? "ewRptGrpSummary2" : "ewRptGrpField2";
-			$this->SekolahKelas->GroupViewValue = ewr_DisplayGroupValue($this->SekolahKelas, $this->SekolahKelas->GroupViewValue);
-			$this->SekolahKelas->GroupSummaryOldValue = $this->SekolahKelas->GroupSummaryValue;
-			$this->SekolahKelas->GroupSummaryValue = $this->SekolahKelas->GroupViewValue;
-			$this->SekolahKelas->GroupSummaryViewValue = ($this->SekolahKelas->GroupSummaryOldValue <> $this->SekolahKelas->GroupSummaryValue) ? $this->SekolahKelas->GroupSummaryValue : "&nbsp;";
-
 			// Nilai_Bayar
 			$this->Nilai_Bayar->SumViewValue = $this->Nilai_Bayar->SumValue;
 			$this->Nilai_Bayar->SumViewValue = ewr_FormatNumber($this->Nilai_Bayar->SumViewValue, 2, -2, -2, -2);
@@ -1147,9 +1126,6 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 
 			// Jenis
 			$this->Jenis->HrefValue = "";
-
-			// SekolahKelas
-			$this->SekolahKelas->HrefValue = "";
 
 			// Periode_Text
 			$this->Periode_Text->HrefValue = "";
@@ -1171,10 +1147,8 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 		} else {
 			if ($this->RowTotalType == EWR_ROWTOTAL_GROUP && $this->RowTotalSubType == EWR_ROWTOTAL_HEADER) {
 			$this->RowAttrs["data-group"] = $this->Jenis->GroupValue(); // Set up group attribute
-			if ($this->RowGroupLevel >= 2) $this->RowAttrs["data-group-2"] = $this->SekolahKelas->GroupValue(); // Set up group attribute 2
 			} else {
 			$this->RowAttrs["data-group"] = $this->Jenis->GroupValue(); // Set up group attribute
-			$this->RowAttrs["data-group-2"] = $this->SekolahKelas->GroupValue(); // Set up group attribute 2
 			}
 
 			// Jenis
@@ -1183,13 +1157,6 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 			$this->Jenis->GroupViewValue = ewr_DisplayGroupValue($this->Jenis, $this->Jenis->GroupViewValue);
 			if ($this->Jenis->GroupValue() == $this->Jenis->GroupOldValue() && !$this->ChkLvlBreak(1))
 				$this->Jenis->GroupViewValue = "&nbsp;";
-
-			// SekolahKelas
-			$this->SekolahKelas->GroupViewValue = $this->SekolahKelas->GroupValue();
-			$this->SekolahKelas->CellAttrs["class"] = "ewRptGrpField2";
-			$this->SekolahKelas->GroupViewValue = ewr_DisplayGroupValue($this->SekolahKelas, $this->SekolahKelas->GroupViewValue);
-			if ($this->SekolahKelas->GroupValue() == $this->SekolahKelas->GroupOldValue() && !$this->ChkLvlBreak(2))
-				$this->SekolahKelas->GroupViewValue = "&nbsp;";
 
 			// Periode_Text
 			$this->Periode_Text->ViewValue = $this->Periode_Text->CurrentValue;
@@ -1220,9 +1187,6 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 
 			// Jenis
 			$this->Jenis->HrefValue = "";
-
-			// SekolahKelas
-			$this->SekolahKelas->HrefValue = "";
 
 			// Periode_Text
 			$this->Periode_Text->HrefValue = "";
@@ -1255,15 +1219,6 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 			$LinkAttrs = &$this->Jenis->LinkAttrs;
 			$this->Cell_Rendered($this->Jenis, $CurrentValue, $ViewValue, $ViewAttrs, $CellAttrs, $HrefValue, $LinkAttrs);
 
-			// SekolahKelas
-			$CurrentValue = $this->SekolahKelas->GroupViewValue;
-			$ViewValue = &$this->SekolahKelas->GroupViewValue;
-			$ViewAttrs = &$this->SekolahKelas->ViewAttrs;
-			$CellAttrs = &$this->SekolahKelas->CellAttrs;
-			$HrefValue = &$this->SekolahKelas->HrefValue;
-			$LinkAttrs = &$this->SekolahKelas->LinkAttrs;
-			$this->Cell_Rendered($this->SekolahKelas, $CurrentValue, $ViewValue, $ViewAttrs, $CellAttrs, $HrefValue, $LinkAttrs);
-
 			// Nilai_Bayar
 			$CurrentValue = $this->Nilai_Bayar->SumValue;
 			$ViewValue = &$this->Nilai_Bayar->SumViewValue;
@@ -1282,15 +1237,6 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 			$HrefValue = &$this->Jenis->HrefValue;
 			$LinkAttrs = &$this->Jenis->LinkAttrs;
 			$this->Cell_Rendered($this->Jenis, $CurrentValue, $ViewValue, $ViewAttrs, $CellAttrs, $HrefValue, $LinkAttrs);
-
-			// SekolahKelas
-			$CurrentValue = $this->SekolahKelas->GroupValue();
-			$ViewValue = &$this->SekolahKelas->GroupViewValue;
-			$ViewAttrs = &$this->SekolahKelas->ViewAttrs;
-			$CellAttrs = &$this->SekolahKelas->CellAttrs;
-			$HrefValue = &$this->SekolahKelas->HrefValue;
-			$LinkAttrs = &$this->SekolahKelas->LinkAttrs;
-			$this->Cell_Rendered($this->SekolahKelas, $CurrentValue, $ViewValue, $ViewAttrs, $CellAttrs, $HrefValue, $LinkAttrs);
 
 			// Periode_Text
 			$CurrentValue = $this->Periode_Text->CurrentValue;
@@ -1358,7 +1304,6 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 		$this->SubGrpColumnCount = 0;
 		$this->DtlColumnCount = 0;
 		if ($this->Jenis->Visible) $this->GrpColumnCount += 1;
-		if ($this->SekolahKelas->Visible) { $this->GrpColumnCount += 1; $this->SubGrpColumnCount += 1; }
 		if ($this->Periode_Text->Visible) $this->DtlColumnCount += 1;
 		if ($this->Tanggal_Bayar->Visible) $this->DtlColumnCount += 1;
 		if ($this->Nilai_Bayar->Visible) $this->DtlColumnCount += 1;
@@ -1929,7 +1874,6 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 			$this->setOrderBy("");
 			$this->setStartGroup(1);
 			$this->Jenis->setSort("");
-			$this->SekolahKelas->setSort("");
 			$this->Periode_Text->setSort("");
 			$this->Tanggal_Bayar->setSort("");
 			$this->Nilai_Bayar->setSort("");
@@ -2196,7 +2140,6 @@ $Page->RecIndex = 0;
 // Get first row
 if ($Page->TotalGrps > 0) {
 	$Page->GetGrpRow(1);
-	$Page->GrpCounter[0] = 1;
 	$Page->GrpCount = 1;
 }
 $Page->GrpIdx = ewr_InitArray($Page->StopGrp - $Page->StartGrp + 1, -1);
@@ -2247,28 +2190,6 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 		<div class="ewTableHeaderBtn ewPointer r01_siswarutinbayar_Jenis" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->Jenis) ?>',0);">
 			<span class="ewTableHeaderCaption"><?php echo $Page->Jenis->FldCaption() ?></span>
 			<span class="ewTableHeaderSort"><?php if ($Page->Jenis->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($Page->Jenis->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span>
-		</div>
-<?php } ?>
-	</td>
-<?php } ?>
-	<?php } ?>
-<?php } ?>
-<?php if ($Page->SekolahKelas->Visible) { ?>
-	<?php if ($Page->SekolahKelas->ShowGroupHeaderAsRow) { ?>
-	<td data-field="SekolahKelas">&nbsp;</td>
-	<?php } else { ?>
-<?php if ($Page->Export <> "" || $Page->DrillDown) { ?>
-	<td data-field="SekolahKelas"><div class="r01_siswarutinbayar_SekolahKelas"><span class="ewTableHeaderCaption"><?php echo $Page->SekolahKelas->FldCaption() ?></span></div></td>
-<?php } else { ?>
-	<td data-field="SekolahKelas">
-<?php if ($Page->SortUrl($Page->SekolahKelas) == "") { ?>
-		<div class="ewTableHeaderBtn r01_siswarutinbayar_SekolahKelas">
-			<span class="ewTableHeaderCaption"><?php echo $Page->SekolahKelas->FldCaption() ?></span>
-		</div>
-<?php } else { ?>
-		<div class="ewTableHeaderBtn ewPointer r01_siswarutinbayar_SekolahKelas" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->SekolahKelas) ?>',0);">
-			<span class="ewTableHeaderCaption"><?php echo $Page->SekolahKelas->FldCaption() ?></span>
-			<span class="ewTableHeaderSort"><?php if ($Page->SekolahKelas->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($Page->SekolahKelas->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span>
 		</div>
 <?php } ?>
 	</td>
@@ -2402,7 +2323,7 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 	$rsdtlcnt = ($rs) ? $rs->RecordCount() : 0;
 	if ($rsdtlcnt > 0)
 		$Page->GetRow(1);
-	$Page->GrpIdx[$Page->GrpCount] = array(-1);
+	$Page->GrpIdx[$Page->GrpCount] = $rsdtlcnt;
 	while ($rs && !$rs->EOF) { // Loop detail records
 		$Page->RecCount++;
 		$Page->RecIndex++;
@@ -2444,46 +2365,6 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 		</td>
 	</tr>
 <?php } ?>
-<?php if ($Page->SekolahKelas->Visible && $Page->ChkLvlBreak(2) && $Page->SekolahKelas->ShowGroupHeaderAsRow) { ?>
-<?php
-
-		// Render header row
-		$Page->ResetAttrs();
-		$Page->RowType = EWR_ROWTYPE_TOTAL;
-		$Page->RowTotalType = EWR_ROWTOTAL_GROUP;
-		$Page->RowTotalSubType = EWR_ROWTOTAL_HEADER;
-		$Page->RowGroupLevel = 2;
-		$Page->SekolahKelas->Count = $Page->GetSummaryCount(2);
-		$Page->RenderRow();
-?>
-	<tr<?php echo $Page->RowAttributes(); ?>>
-<?php if ($Page->Jenis->Visible) { ?>
-		<td data-field="Jenis"<?php echo $Page->Jenis->CellAttributes(); ?>></td>
-<?php } ?>
-<?php if ($Page->SekolahKelas->Visible) { ?>
-		<td data-field="SekolahKelas"<?php echo $Page->SekolahKelas->CellAttributes(); ?>><span class="ewGroupToggle icon-collapse"></span></td>
-<?php } ?>
-		<td data-field="SekolahKelas" colspan="<?php echo ($Page->GrpColumnCount + $Page->DtlColumnCount - 2) ?>"<?php echo $Page->SekolahKelas->CellAttributes() ?>>
-<?php if ($Page->Export <> "" || $Page->DrillDown) { ?>
-		<span class="ewSummaryCaption r01_siswarutinbayar_SekolahKelas"><span class="ewTableHeaderCaption"><?php echo $Page->SekolahKelas->FldCaption() ?></span></span>
-<?php } else { ?>
-	<?php if ($Page->SortUrl($Page->SekolahKelas) == "") { ?>
-		<span class="ewSummaryCaption r01_siswarutinbayar_SekolahKelas">
-			<span class="ewTableHeaderCaption"><?php echo $Page->SekolahKelas->FldCaption() ?></span>
-		</span>
-	<?php } else { ?>
-		<span class="ewTableHeaderBtn ewPointer ewSummaryCaption r01_siswarutinbayar_SekolahKelas" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->SekolahKelas) ?>',0);">
-			<span class="ewTableHeaderCaption"><?php echo $Page->SekolahKelas->FldCaption() ?></span>
-			<span class="ewTableHeaderSort"><?php if ($Page->SekolahKelas->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($Page->SekolahKelas->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span>
-		</span>
-	<?php } ?>
-<?php } ?>
-		<?php echo $ReportLanguage->Phrase("SummaryColon") ?>
-<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_r01_siswarutinbayar_SekolahKelas"<?php echo $Page->SekolahKelas->ViewAttributes() ?>><?php echo $Page->SekolahKelas->GroupViewValue ?></span>
-		<span class="ewSummaryCount">(<span class="ewAggregateCaption"><?php echo $ReportLanguage->Phrase("RptCnt") ?></span><?php echo $ReportLanguage->Phrase("AggregateEqual") ?><span class="ewAggregateValue"><?php echo ewr_FormatNumber($Page->SekolahKelas->Count,0,-2,-2,-2) ?></span>)</span>
-		</td>
-	</tr>
-<?php } ?>
 <?php
 
 		// Render detail row
@@ -2500,37 +2381,29 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 <span data-class="tpx<?php echo $Page->GrpCount ?>_r01_siswarutinbayar_Jenis"<?php echo $Page->Jenis->ViewAttributes() ?>><?php echo $Page->Jenis->GroupViewValue ?></span></td>
 	<?php } ?>
 <?php } ?>
-<?php if ($Page->SekolahKelas->Visible) { ?>
-	<?php if ($Page->SekolahKelas->ShowGroupHeaderAsRow) { ?>
-		<td data-field="SekolahKelas"<?php echo $Page->SekolahKelas->CellAttributes(); ?>>&nbsp;</td>
-	<?php } else { ?>
-		<td data-field="SekolahKelas"<?php echo $Page->SekolahKelas->CellAttributes(); ?>>
-<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_r01_siswarutinbayar_SekolahKelas"<?php echo $Page->SekolahKelas->ViewAttributes() ?>><?php echo $Page->SekolahKelas->GroupViewValue ?></span></td>
-	<?php } ?>
-<?php } ?>
 <?php if ($Page->Periode_Text->Visible) { ?>
 		<td data-field="Periode_Text"<?php echo $Page->Periode_Text->CellAttributes() ?>>
-<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_<?php echo $Page->RecCount ?>_r01_siswarutinbayar_Periode_Text"<?php echo $Page->Periode_Text->ViewAttributes() ?>><?php echo $Page->Periode_Text->ListViewValue() ?></span></td>
+<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->RecCount ?>_r01_siswarutinbayar_Periode_Text"<?php echo $Page->Periode_Text->ViewAttributes() ?>><?php echo $Page->Periode_Text->ListViewValue() ?></span></td>
 <?php } ?>
 <?php if ($Page->Tanggal_Bayar->Visible) { ?>
 		<td data-field="Tanggal_Bayar"<?php echo $Page->Tanggal_Bayar->CellAttributes() ?>>
-<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_<?php echo $Page->RecCount ?>_r01_siswarutinbayar_Tanggal_Bayar"<?php echo $Page->Tanggal_Bayar->ViewAttributes() ?>><?php echo $Page->Tanggal_Bayar->ListViewValue() ?></span></td>
+<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->RecCount ?>_r01_siswarutinbayar_Tanggal_Bayar"<?php echo $Page->Tanggal_Bayar->ViewAttributes() ?>><?php echo $Page->Tanggal_Bayar->ListViewValue() ?></span></td>
 <?php } ?>
 <?php if ($Page->Nilai_Bayar->Visible) { ?>
 		<td data-field="Nilai_Bayar"<?php echo $Page->Nilai_Bayar->CellAttributes() ?>>
-<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_<?php echo $Page->RecCount ?>_r01_siswarutinbayar_Nilai_Bayar"<?php echo $Page->Nilai_Bayar->ViewAttributes() ?>><?php echo $Page->Nilai_Bayar->ListViewValue() ?></span></td>
+<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->RecCount ?>_r01_siswarutinbayar_Nilai_Bayar"<?php echo $Page->Nilai_Bayar->ViewAttributes() ?>><?php echo $Page->Nilai_Bayar->ListViewValue() ?></span></td>
 <?php } ?>
 <?php if ($Page->Periode_Tahun_Bulan->Visible) { ?>
 		<td data-field="Periode_Tahun_Bulan"<?php echo $Page->Periode_Tahun_Bulan->CellAttributes() ?>>
-<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_<?php echo $Page->RecCount ?>_r01_siswarutinbayar_Periode_Tahun_Bulan"<?php echo $Page->Periode_Tahun_Bulan->ViewAttributes() ?>><?php echo $Page->Periode_Tahun_Bulan->ListViewValue() ?></span></td>
+<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->RecCount ?>_r01_siswarutinbayar_Periode_Tahun_Bulan"<?php echo $Page->Periode_Tahun_Bulan->ViewAttributes() ?>><?php echo $Page->Periode_Tahun_Bulan->ListViewValue() ?></span></td>
 <?php } ?>
 <?php if ($Page->NIS->Visible) { ?>
 		<td data-field="NIS"<?php echo $Page->NIS->CellAttributes() ?>>
-<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_<?php echo $Page->RecCount ?>_r01_siswarutinbayar_NIS"<?php echo $Page->NIS->ViewAttributes() ?>><?php echo $Page->NIS->ListViewValue() ?></span></td>
+<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->RecCount ?>_r01_siswarutinbayar_NIS"<?php echo $Page->NIS->ViewAttributes() ?>><?php echo $Page->NIS->ListViewValue() ?></span></td>
 <?php } ?>
 <?php if ($Page->Nama->Visible) { ?>
 		<td data-field="Nama"<?php echo $Page->Nama->CellAttributes() ?>>
-<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_<?php echo $Page->RecCount ?>_r01_siswarutinbayar_Nama"<?php echo $Page->Nama->ViewAttributes() ?>><?php echo $Page->Nama->ListViewValue() ?></span></td>
+<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->RecCount ?>_r01_siswarutinbayar_Nama"<?php echo $Page->Nama->ViewAttributes() ?>><?php echo $Page->Nama->ListViewValue() ?></span></td>
 <?php } ?>
 	</tr>
 <?php
@@ -2551,7 +2424,6 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 ?>
 <?php
 			$Page->Jenis->Count = $Page->GetSummaryCount(1, FALSE);
-			$Page->SekolahKelas->Count = $Page->GetSummaryCount(2, FALSE);
 			$Page->Nilai_Bayar->Count = $Page->Cnt[1][3];
 			$Page->Nilai_Bayar->SumValue = $Page->Smry[1][3]; // Load SUM
 			$Page->ResetAttrs();
@@ -2571,17 +2443,6 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 		&nbsp;
 	<?php } else { ?>
 		<span class="ewSummaryCount"><span class="ewAggregateCaption"><?php echo $ReportLanguage->Phrase("RptCnt") ?></span><?php echo $ReportLanguage->Phrase("AggregateEqual") ?><span class="ewAggregateValue"><?php echo ewr_FormatNumber($Page->Jenis->Count,0,-2,-2,-2) ?></span></span>
-	<?php } ?>
-		</td>
-<?php } ?>
-<?php if ($Page->SekolahKelas->Visible) { ?>
-		<td data-field="SekolahKelas"<?php echo $Page->Jenis->CellAttributes() ?>>
-	<?php if ($Page->SekolahKelas->ShowGroupHeaderAsRow) { ?>
-		&nbsp;
-	<?php } elseif ($Page->RowGroupLevel <> 2) { ?>
-		&nbsp;
-	<?php } else { ?>
-		<span class="ewSummaryCount"><span class="ewAggregateCaption"><?php echo $ReportLanguage->Phrase("RptCnt") ?></span><?php echo $ReportLanguage->Phrase("AggregateEqual") ?><span class="ewAggregateValue"><?php echo ewr_FormatNumber($Page->SekolahKelas->Count,0,-2,-2,-2) ?></span></span>
 	<?php } ?>
 		</td>
 <?php } ?>
@@ -2654,7 +2515,6 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 	if ($Page->ShowHeader)
 		$Page->Page_Breaking($Page->ShowHeader, $Page->PageBreakContent);
 	$Page->GrpCount++;
-	$Page->GrpCounter[0] = 1;
 
 	// Handle EOF
 	if (!$rsgrp || $rsgrp->EOF)
