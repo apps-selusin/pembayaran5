@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2018/12/12" version="13.0.0" id="en" name="English" desc="English" author="e.World Technology Ltd.">
+<ew-language date="2018/12/13" version="13.0.0" id="en" name="English" desc="English" author="e.World Technology Ltd.">
   <!-- 
 	*** Important Notes:
 	1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -582,9 +582,6 @@
   </global>
   <project>
     <phrase id="footertext" value="&amp;copy;2018 Selaras Solusindo. All rights reserved." />
-    <menu id="10024">
-      <phrase id="menutext" value="v 07 siswarutinbayar" />
-    </menu>
     <menu id="21">
       <phrase id="menutext" value="Home" />
     </menu>
@@ -650,6 +647,12 @@
     </menu>
     <menu id="20">
       <phrase id="menutext" value="v 05 potensi" />
+    </menu>
+    <menu id="10023">
+      <phrase id="menutext" value="List Pembayaran" />
+    </menu>
+    <menu id="10025">
+      <phrase id="menutext" value="List Pembayaran" />
     </menu>
     <menu id="10001">
       <phrase id="menutext" value="t 01 tahunajaran" />
@@ -717,8 +720,8 @@
     <menu id="10022">
       <phrase id="menutext" value="v 07 siswarutinbayar" />
     </menu>
-    <menu id="10023">
-      <phrase id="menutext" value="List Pembayaran" />
+    <menu id="10024">
+      <phrase id="menutext" value="v 09 siswabayar" />
     </menu>
     <table id="t01_tahunajaran">
       <phrase id="tblcaption" value="t 01 tahunajaran" />

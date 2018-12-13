@@ -1,52 +1,51 @@
 <?php
 
 // Global variable for table object
-$r01_siswarutinbayar = NULL;
+$r02_siswabayar = NULL;
 
 //
-// Table class for r01_siswarutinbayar
+// Table class for r02_siswabayar
 //
-class crr01_siswarutinbayar extends crTableBase {
+class crr02_siswabayar extends crTableBase {
 	var $ShowGroupHeaderAsRow = FALSE;
 	var $ShowCompactSummaryFooter = TRUE;
 	var $Jenis;
-	var $SekolahKelas;
-	var $b_Nilai;
-	var $Periode_Text;
-	var $Tanggal_Bayar;
-	var $Nilai_Bayar;
-	var $Periode_Tahun_Bulan;
-	var $NIS;
-	var $Nama;
-	var $rutin_id;
-	var $siswa_id;
 	var $a_id;
 	var $sekolah_id;
 	var $kelas_id;
+	var $NIS;
+	var $Nama;
 	var $b_id;
+	var $siswa_id;
+	var $rutin_id;
+	var $b_Nilai;
 	var $c_id;
 	var $siswarutin_id;
 	var $Bulan;
 	var $Tahun;
 	var $c_Nilai;
+	var $Tanggal_Bayar;
+	var $Nilai_Bayar;
+	var $Sisa;
+	var $Periode_Tahun_Bulan;
+	var $Periode_Text;
 	var $Per_Thn_Bln_Byr;
 	var $Per_Thn_Bln_Byr_Text;
-	var $Sisa;
 
 	//
 	// Table class constructor
 	//
 	function __construct() {
 		global $ReportLanguage, $gsLanguage;
-		$this->TableVar = 'r01_siswarutinbayar';
-		$this->TableName = 'r01_siswarutinbayar';
+		$this->TableVar = 'r02_siswabayar';
+		$this->TableName = 'r02_siswabayar';
 		$this->TableType = 'REPORT';
 		$this->DBID = 'DB';
 		$this->ExportAll = FALSE;
 		$this->ExportPageBreakCount = 0;
 
 		// Jenis
-		$this->Jenis = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_Jenis', 'Jenis', '`Jenis`', 200, EWR_DATATYPE_STRING, -1);
+		$this->Jenis = new crField('r02_siswabayar', 'r02_siswabayar', 'x_Jenis', 'Jenis', '`Jenis`', 200, EWR_DATATYPE_STRING, -1);
 		$this->Jenis->Sortable = TRUE; // Allow sort
 		$this->Jenis->GroupingFieldId = 1;
 		$this->Jenis->ShowGroupHeaderAsRow = $this->ShowGroupHeaderAsRow;
@@ -59,16 +58,78 @@ class crr01_siswarutinbayar extends crTableBase {
 		$this->Jenis->FldGroupInt = "0";
 		$this->Jenis->FldGroupSql = "";
 
-		// SekolahKelas
-		$this->SekolahKelas = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_SekolahKelas', 'SekolahKelas', '`SekolahKelas`', 201, EWR_DATATYPE_MEMO, -1);
-		$this->SekolahKelas->Sortable = TRUE; // Allow sort
-		$this->fields['SekolahKelas'] = &$this->SekolahKelas;
-		$this->SekolahKelas->DateFilter = "";
-		$this->SekolahKelas->SqlSelect = "";
-		$this->SekolahKelas->SqlOrderBy = "";
+		// a_id
+		$this->a_id = new crField('r02_siswabayar', 'r02_siswabayar', 'x_a_id', 'a_id', '`a_id`', 3, EWR_DATATYPE_NUMBER, -1);
+		$this->a_id->Sortable = TRUE; // Allow sort
+		$this->a_id->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectInteger");
+		$this->fields['a_id'] = &$this->a_id;
+		$this->a_id->DateFilter = "";
+		$this->a_id->SqlSelect = "";
+		$this->a_id->SqlOrderBy = "";
+
+		// sekolah_id
+		$this->sekolah_id = new crField('r02_siswabayar', 'r02_siswabayar', 'x_sekolah_id', 'sekolah_id', '`sekolah_id`', 3, EWR_DATATYPE_NUMBER, -1);
+		$this->sekolah_id->Sortable = TRUE; // Allow sort
+		$this->sekolah_id->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectInteger");
+		$this->fields['sekolah_id'] = &$this->sekolah_id;
+		$this->sekolah_id->DateFilter = "";
+		$this->sekolah_id->SqlSelect = "";
+		$this->sekolah_id->SqlOrderBy = "";
+
+		// kelas_id
+		$this->kelas_id = new crField('r02_siswabayar', 'r02_siswabayar', 'x_kelas_id', 'kelas_id', '`kelas_id`', 3, EWR_DATATYPE_NUMBER, -1);
+		$this->kelas_id->Sortable = TRUE; // Allow sort
+		$this->kelas_id->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectInteger");
+		$this->fields['kelas_id'] = &$this->kelas_id;
+		$this->kelas_id->DateFilter = "";
+		$this->kelas_id->SqlSelect = "";
+		$this->kelas_id->SqlOrderBy = "";
+
+		// NIS
+		$this->NIS = new crField('r02_siswabayar', 'r02_siswabayar', 'x_NIS', 'NIS', '`NIS`', 200, EWR_DATATYPE_STRING, -1);
+		$this->NIS->Sortable = TRUE; // Allow sort
+		$this->fields['NIS'] = &$this->NIS;
+		$this->NIS->DateFilter = "";
+		$this->NIS->SqlSelect = "";
+		$this->NIS->SqlOrderBy = "";
+
+		// Nama
+		$this->Nama = new crField('r02_siswabayar', 'r02_siswabayar', 'x_Nama', 'Nama', '`Nama`', 200, EWR_DATATYPE_STRING, -1);
+		$this->Nama->Sortable = TRUE; // Allow sort
+		$this->fields['Nama'] = &$this->Nama;
+		$this->Nama->DateFilter = "";
+		$this->Nama->SqlSelect = "";
+		$this->Nama->SqlOrderBy = "";
+
+		// b_id
+		$this->b_id = new crField('r02_siswabayar', 'r02_siswabayar', 'x_b_id', 'b_id', '`b_id`', 3, EWR_DATATYPE_NUMBER, -1);
+		$this->b_id->Sortable = TRUE; // Allow sort
+		$this->b_id->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectInteger");
+		$this->fields['b_id'] = &$this->b_id;
+		$this->b_id->DateFilter = "";
+		$this->b_id->SqlSelect = "";
+		$this->b_id->SqlOrderBy = "";
+
+		// siswa_id
+		$this->siswa_id = new crField('r02_siswabayar', 'r02_siswabayar', 'x_siswa_id', 'siswa_id', '`siswa_id`', 3, EWR_DATATYPE_NUMBER, -1);
+		$this->siswa_id->Sortable = TRUE; // Allow sort
+		$this->siswa_id->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectInteger");
+		$this->fields['siswa_id'] = &$this->siswa_id;
+		$this->siswa_id->DateFilter = "";
+		$this->siswa_id->SqlSelect = "";
+		$this->siswa_id->SqlOrderBy = "";
+
+		// rutin_id
+		$this->rutin_id = new crField('r02_siswabayar', 'r02_siswabayar', 'x_rutin_id', 'rutin_id', '`rutin_id`', 3, EWR_DATATYPE_NUMBER, -1);
+		$this->rutin_id->Sortable = TRUE; // Allow sort
+		$this->rutin_id->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectInteger");
+		$this->fields['rutin_id'] = &$this->rutin_id;
+		$this->rutin_id->DateFilter = "";
+		$this->rutin_id->SqlSelect = "";
+		$this->rutin_id->SqlOrderBy = "";
 
 		// b_Nilai
-		$this->b_Nilai = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_b_Nilai', 'b_Nilai', '`b_Nilai`', 4, EWR_DATATYPE_NUMBER, -1);
+		$this->b_Nilai = new crField('r02_siswabayar', 'r02_siswabayar', 'x_b_Nilai', 'b_Nilai', '`b_Nilai`', 4, EWR_DATATYPE_NUMBER, -1);
 		$this->b_Nilai->Sortable = TRUE; // Allow sort
 		$this->b_Nilai->GroupingFieldId = 2;
 		$this->b_Nilai->ShowGroupHeaderAsRow = $this->ShowGroupHeaderAsRow;
@@ -82,112 +143,8 @@ class crr01_siswarutinbayar extends crTableBase {
 		$this->b_Nilai->FldGroupInt = "0";
 		$this->b_Nilai->FldGroupSql = "";
 
-		// Periode_Text
-		$this->Periode_Text = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_Periode_Text', 'Periode_Text', '`Periode_Text`', 200, EWR_DATATYPE_STRING, -1);
-		$this->Periode_Text->Sortable = TRUE; // Allow sort
-		$this->fields['Periode_Text'] = &$this->Periode_Text;
-		$this->Periode_Text->DateFilter = "";
-		$this->Periode_Text->SqlSelect = "";
-		$this->Periode_Text->SqlOrderBy = "";
-
-		// Tanggal_Bayar
-		$this->Tanggal_Bayar = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_Tanggal_Bayar', 'Tanggal_Bayar', '`Tanggal_Bayar`', 133, EWR_DATATYPE_DATE, 7);
-		$this->Tanggal_Bayar->Sortable = TRUE; // Allow sort
-		$this->Tanggal_Bayar->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectField");
-		$this->fields['Tanggal_Bayar'] = &$this->Tanggal_Bayar;
-		$this->Tanggal_Bayar->DateFilter = "";
-		$this->Tanggal_Bayar->SqlSelect = "";
-		$this->Tanggal_Bayar->SqlOrderBy = "";
-
-		// Nilai_Bayar
-		$this->Nilai_Bayar = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_Nilai_Bayar', 'Nilai_Bayar', '`Nilai_Bayar`', 4, EWR_DATATYPE_NUMBER, -1);
-		$this->Nilai_Bayar->Sortable = TRUE; // Allow sort
-		$this->Nilai_Bayar->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectFloat");
-		$this->fields['Nilai_Bayar'] = &$this->Nilai_Bayar;
-		$this->Nilai_Bayar->DateFilter = "";
-		$this->Nilai_Bayar->SqlSelect = "";
-		$this->Nilai_Bayar->SqlOrderBy = "";
-
-		// Periode_Tahun_Bulan
-		$this->Periode_Tahun_Bulan = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_Periode_Tahun_Bulan', 'Periode_Tahun_Bulan', '`Periode_Tahun_Bulan`', 200, EWR_DATATYPE_STRING, -1);
-		$this->Periode_Tahun_Bulan->Sortable = TRUE; // Allow sort
-		$this->fields['Periode_Tahun_Bulan'] = &$this->Periode_Tahun_Bulan;
-		$this->Periode_Tahun_Bulan->DateFilter = "";
-		$this->Periode_Tahun_Bulan->SqlSelect = "";
-		$this->Periode_Tahun_Bulan->SqlOrderBy = "";
-
-		// NIS
-		$this->NIS = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_NIS', 'NIS', '`NIS`', 200, EWR_DATATYPE_STRING, -1);
-		$this->NIS->Sortable = TRUE; // Allow sort
-		$this->fields['NIS'] = &$this->NIS;
-		$this->NIS->DateFilter = "";
-		$this->NIS->SqlSelect = "";
-		$this->NIS->SqlOrderBy = "";
-
-		// Nama
-		$this->Nama = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_Nama', 'Nama', '`Nama`', 200, EWR_DATATYPE_STRING, -1);
-		$this->Nama->Sortable = TRUE; // Allow sort
-		$this->fields['Nama'] = &$this->Nama;
-		$this->Nama->DateFilter = "";
-		$this->Nama->SqlSelect = "";
-		$this->Nama->SqlOrderBy = "";
-
-		// rutin_id
-		$this->rutin_id = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_rutin_id', 'rutin_id', '`rutin_id`', 3, EWR_DATATYPE_NUMBER, -1);
-		$this->rutin_id->Sortable = TRUE; // Allow sort
-		$this->rutin_id->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectInteger");
-		$this->fields['rutin_id'] = &$this->rutin_id;
-		$this->rutin_id->DateFilter = "";
-		$this->rutin_id->SqlSelect = "";
-		$this->rutin_id->SqlOrderBy = "";
-
-		// siswa_id
-		$this->siswa_id = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_siswa_id', 'siswa_id', '`siswa_id`', 3, EWR_DATATYPE_NUMBER, -1);
-		$this->siswa_id->Sortable = TRUE; // Allow sort
-		$this->siswa_id->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectInteger");
-		$this->fields['siswa_id'] = &$this->siswa_id;
-		$this->siswa_id->DateFilter = "";
-		$this->siswa_id->SqlSelect = "";
-		$this->siswa_id->SqlOrderBy = "";
-
-		// a_id
-		$this->a_id = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_a_id', 'a_id', '`a_id`', 3, EWR_DATATYPE_NUMBER, -1);
-		$this->a_id->Sortable = TRUE; // Allow sort
-		$this->a_id->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectInteger");
-		$this->fields['a_id'] = &$this->a_id;
-		$this->a_id->DateFilter = "";
-		$this->a_id->SqlSelect = "";
-		$this->a_id->SqlOrderBy = "";
-
-		// sekolah_id
-		$this->sekolah_id = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_sekolah_id', 'sekolah_id', '`sekolah_id`', 3, EWR_DATATYPE_NUMBER, -1);
-		$this->sekolah_id->Sortable = TRUE; // Allow sort
-		$this->sekolah_id->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectInteger");
-		$this->fields['sekolah_id'] = &$this->sekolah_id;
-		$this->sekolah_id->DateFilter = "";
-		$this->sekolah_id->SqlSelect = "";
-		$this->sekolah_id->SqlOrderBy = "";
-
-		// kelas_id
-		$this->kelas_id = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_kelas_id', 'kelas_id', '`kelas_id`', 3, EWR_DATATYPE_NUMBER, -1);
-		$this->kelas_id->Sortable = TRUE; // Allow sort
-		$this->kelas_id->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectInteger");
-		$this->fields['kelas_id'] = &$this->kelas_id;
-		$this->kelas_id->DateFilter = "";
-		$this->kelas_id->SqlSelect = "";
-		$this->kelas_id->SqlOrderBy = "";
-
-		// b_id
-		$this->b_id = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_b_id', 'b_id', '`b_id`', 3, EWR_DATATYPE_NUMBER, -1);
-		$this->b_id->Sortable = TRUE; // Allow sort
-		$this->b_id->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectInteger");
-		$this->fields['b_id'] = &$this->b_id;
-		$this->b_id->DateFilter = "";
-		$this->b_id->SqlSelect = "";
-		$this->b_id->SqlOrderBy = "";
-
 		// c_id
-		$this->c_id = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_c_id', 'c_id', '`c_id`', 3, EWR_DATATYPE_NUMBER, -1);
+		$this->c_id = new crField('r02_siswabayar', 'r02_siswabayar', 'x_c_id', 'c_id', '`c_id`', 3, EWR_DATATYPE_NUMBER, -1);
 		$this->c_id->Sortable = TRUE; // Allow sort
 		$this->c_id->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectInteger");
 		$this->fields['c_id'] = &$this->c_id;
@@ -196,7 +153,7 @@ class crr01_siswarutinbayar extends crTableBase {
 		$this->c_id->SqlOrderBy = "";
 
 		// siswarutin_id
-		$this->siswarutin_id = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_siswarutin_id', 'siswarutin_id', '`siswarutin_id`', 3, EWR_DATATYPE_NUMBER, -1);
+		$this->siswarutin_id = new crField('r02_siswabayar', 'r02_siswabayar', 'x_siswarutin_id', 'siswarutin_id', '`siswarutin_id`', 3, EWR_DATATYPE_NUMBER, -1);
 		$this->siswarutin_id->Sortable = TRUE; // Allow sort
 		$this->siswarutin_id->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectInteger");
 		$this->fields['siswarutin_id'] = &$this->siswarutin_id;
@@ -205,25 +162,23 @@ class crr01_siswarutinbayar extends crTableBase {
 		$this->siswarutin_id->SqlOrderBy = "";
 
 		// Bulan
-		$this->Bulan = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_Bulan', 'Bulan', '`Bulan`', 16, EWR_DATATYPE_NUMBER, -1);
+		$this->Bulan = new crField('r02_siswabayar', 'r02_siswabayar', 'x_Bulan', 'Bulan', '`Bulan`', 200, EWR_DATATYPE_STRING, -1);
 		$this->Bulan->Sortable = TRUE; // Allow sort
-		$this->Bulan->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectInteger");
 		$this->fields['Bulan'] = &$this->Bulan;
 		$this->Bulan->DateFilter = "";
 		$this->Bulan->SqlSelect = "";
 		$this->Bulan->SqlOrderBy = "";
 
 		// Tahun
-		$this->Tahun = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_Tahun', 'Tahun', '`Tahun`', 2, EWR_DATATYPE_NUMBER, -1);
+		$this->Tahun = new crField('r02_siswabayar', 'r02_siswabayar', 'x_Tahun', 'Tahun', '`Tahun`', 200, EWR_DATATYPE_STRING, -1);
 		$this->Tahun->Sortable = TRUE; // Allow sort
-		$this->Tahun->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectInteger");
 		$this->fields['Tahun'] = &$this->Tahun;
 		$this->Tahun->DateFilter = "";
 		$this->Tahun->SqlSelect = "";
 		$this->Tahun->SqlOrderBy = "";
 
 		// c_Nilai
-		$this->c_Nilai = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_c_Nilai', 'c_Nilai', '`c_Nilai`', 4, EWR_DATATYPE_NUMBER, -1);
+		$this->c_Nilai = new crField('r02_siswabayar', 'r02_siswabayar', 'x_c_Nilai', 'c_Nilai', '`c_Nilai`', 4, EWR_DATATYPE_NUMBER, -1);
 		$this->c_Nilai->Sortable = TRUE; // Allow sort
 		$this->c_Nilai->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectFloat");
 		$this->fields['c_Nilai'] = &$this->c_Nilai;
@@ -231,8 +186,51 @@ class crr01_siswarutinbayar extends crTableBase {
 		$this->c_Nilai->SqlSelect = "";
 		$this->c_Nilai->SqlOrderBy = "";
 
+		// Tanggal_Bayar
+		$this->Tanggal_Bayar = new crField('r02_siswabayar', 'r02_siswabayar', 'x_Tanggal_Bayar', 'Tanggal_Bayar', '`Tanggal_Bayar`', 133, EWR_DATATYPE_DATE, 0);
+		$this->Tanggal_Bayar->Sortable = TRUE; // Allow sort
+		$this->Tanggal_Bayar->FldDefaultErrMsg = str_replace("%s", $GLOBALS["EWR_DATE_FORMAT"], $ReportLanguage->Phrase("IncorrectDate"));
+		$this->fields['Tanggal_Bayar'] = &$this->Tanggal_Bayar;
+		$this->Tanggal_Bayar->DateFilter = "";
+		$this->Tanggal_Bayar->SqlSelect = "";
+		$this->Tanggal_Bayar->SqlOrderBy = "";
+
+		// Nilai_Bayar
+		$this->Nilai_Bayar = new crField('r02_siswabayar', 'r02_siswabayar', 'x_Nilai_Bayar', 'Nilai_Bayar', '`Nilai_Bayar`', 4, EWR_DATATYPE_NUMBER, -1);
+		$this->Nilai_Bayar->Sortable = TRUE; // Allow sort
+		$this->Nilai_Bayar->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectFloat");
+		$this->fields['Nilai_Bayar'] = &$this->Nilai_Bayar;
+		$this->Nilai_Bayar->DateFilter = "";
+		$this->Nilai_Bayar->SqlSelect = "";
+		$this->Nilai_Bayar->SqlOrderBy = "";
+
+		// Sisa
+		$this->Sisa = new crField('r02_siswabayar', 'r02_siswabayar', 'x_Sisa', 'Sisa', '`Sisa`', 5, EWR_DATATYPE_NUMBER, -1);
+		$this->Sisa->Sortable = TRUE; // Allow sort
+		$this->Sisa->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectFloat");
+		$this->fields['Sisa'] = &$this->Sisa;
+		$this->Sisa->DateFilter = "";
+		$this->Sisa->SqlSelect = "";
+		$this->Sisa->SqlOrderBy = "";
+
+		// Periode_Tahun_Bulan
+		$this->Periode_Tahun_Bulan = new crField('r02_siswabayar', 'r02_siswabayar', 'x_Periode_Tahun_Bulan', 'Periode_Tahun_Bulan', '`Periode_Tahun_Bulan`', 200, EWR_DATATYPE_STRING, -1);
+		$this->Periode_Tahun_Bulan->Sortable = TRUE; // Allow sort
+		$this->fields['Periode_Tahun_Bulan'] = &$this->Periode_Tahun_Bulan;
+		$this->Periode_Tahun_Bulan->DateFilter = "";
+		$this->Periode_Tahun_Bulan->SqlSelect = "";
+		$this->Periode_Tahun_Bulan->SqlOrderBy = "";
+
+		// Periode_Text
+		$this->Periode_Text = new crField('r02_siswabayar', 'r02_siswabayar', 'x_Periode_Text', 'Periode_Text', '`Periode_Text`', 200, EWR_DATATYPE_STRING, -1);
+		$this->Periode_Text->Sortable = TRUE; // Allow sort
+		$this->fields['Periode_Text'] = &$this->Periode_Text;
+		$this->Periode_Text->DateFilter = "";
+		$this->Periode_Text->SqlSelect = "";
+		$this->Periode_Text->SqlOrderBy = "";
+
 		// Per_Thn_Bln_Byr
-		$this->Per_Thn_Bln_Byr = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_Per_Thn_Bln_Byr', 'Per_Thn_Bln_Byr', '`Per_Thn_Bln_Byr`', 200, EWR_DATATYPE_STRING, -1);
+		$this->Per_Thn_Bln_Byr = new crField('r02_siswabayar', 'r02_siswabayar', 'x_Per_Thn_Bln_Byr', 'Per_Thn_Bln_Byr', '`Per_Thn_Bln_Byr`', 200, EWR_DATATYPE_STRING, -1);
 		$this->Per_Thn_Bln_Byr->Sortable = TRUE; // Allow sort
 		$this->fields['Per_Thn_Bln_Byr'] = &$this->Per_Thn_Bln_Byr;
 		$this->Per_Thn_Bln_Byr->DateFilter = "";
@@ -240,21 +238,12 @@ class crr01_siswarutinbayar extends crTableBase {
 		$this->Per_Thn_Bln_Byr->SqlOrderBy = "";
 
 		// Per_Thn_Bln_Byr_Text
-		$this->Per_Thn_Bln_Byr_Text = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_Per_Thn_Bln_Byr_Text', 'Per_Thn_Bln_Byr_Text', '`Per_Thn_Bln_Byr_Text`', 200, EWR_DATATYPE_STRING, -1);
+		$this->Per_Thn_Bln_Byr_Text = new crField('r02_siswabayar', 'r02_siswabayar', 'x_Per_Thn_Bln_Byr_Text', 'Per_Thn_Bln_Byr_Text', '`Per_Thn_Bln_Byr_Text`', 200, EWR_DATATYPE_STRING, -1);
 		$this->Per_Thn_Bln_Byr_Text->Sortable = TRUE; // Allow sort
 		$this->fields['Per_Thn_Bln_Byr_Text'] = &$this->Per_Thn_Bln_Byr_Text;
 		$this->Per_Thn_Bln_Byr_Text->DateFilter = "";
 		$this->Per_Thn_Bln_Byr_Text->SqlSelect = "";
 		$this->Per_Thn_Bln_Byr_Text->SqlOrderBy = "";
-
-		// Sisa
-		$this->Sisa = new crField('r01_siswarutinbayar', 'r01_siswarutinbayar', 'x_Sisa', 'Sisa', '`Sisa`', 20, EWR_DATATYPE_NUMBER, -1);
-		$this->Sisa->Sortable = TRUE; // Allow sort
-		$this->Sisa->FldDefaultErrMsg = $ReportLanguage->Phrase("IncorrectInteger");
-		$this->fields['Sisa'] = &$this->Sisa;
-		$this->Sisa->DateFilter = "";
-		$this->Sisa->SqlSelect = "";
-		$this->Sisa->SqlOrderBy = "";
 	}
 
 	// Set Field Visibility
@@ -314,7 +303,7 @@ class crr01_siswarutinbayar extends crTableBase {
 	var $_SqlFrom = "";
 
 	function getSqlFrom() {
-		return ($this->_SqlFrom <> "") ? $this->_SqlFrom : "`v07_siswarutinbayar`";
+		return ($this->_SqlFrom <> "") ? $this->_SqlFrom : "`v09_siswabayar`";
 	}
 
 	function SqlFrom() { // For backward compatibility
@@ -329,7 +318,7 @@ class crr01_siswarutinbayar extends crTableBase {
 	var $_SqlSelect = "";
 
 	function getSqlSelect() {
-		return ($this->_SqlSelect <> "") ? $this->_SqlSelect : "SELECT *, concat((select Sekolah from t02_sekolah where t02_sekolah.id = sekolah_id),' - ',(select Kelas from t03_kelas where t03_kelas.id = kelas_id), ' - ', NIS, ' - ', Nama, ' - ', b_Nilai) AS `SekolahKelas` FROM " . $this->getSqlFrom();
+		return ($this->_SqlSelect <> "") ? $this->_SqlSelect : "SELECT * FROM " . $this->getSqlFrom();
 	}
 
 	function SqlSelect() { // For backward compatibility

@@ -1,3 +1,4 @@
+<?php if (@$gsExport == "" || @$gsExport == "print" || @$gsExport == "email" && @$gsEmailContentType == "url") { ?>
 <script type="text/javascript">
 var EWR_RELATIVE_PATH = "<?php echo $EWR_RELATIVE_PATH ?>";
 
@@ -30,6 +31,7 @@ var EWR_PDF_STYLESHEET_FILENAME = "<?php echo (EWR_PDF_STYLESHEET_FILENAME == ""
 var EWR_TOKEN = "<?php echo @$gsToken ?>";
 var EWR_CSS_FLIP = <?php echo ($EWR_CSS_FLIP) ? "true" : "false" ?>;
 </script>
+<?php } ?>
 <?php if (@$gsExport == "" || @$gsExport == "print") { ?>
 <script type="text/javascript">
 if (!window.jQuery || !jQuery.fn.alert) {
@@ -50,7 +52,12 @@ ewr_GetCss("<?php echo ewr_CssFile(EWR_PROJECT_STYLESHEET_FILENAME) ?>");
 <?php echo file_get_contents($cssfile) ?>
 </style>
 <?php } ?>
+<?php if (@$gsExport == "") { ?>
+<?php } ?>
+<?php if (@$gsExport == "" || @$gsExport == "print" || @$gsExport == "email" && @$gsEmailContentType == "url") { ?>
 <script type="text/javascript">if (!window.jQuery) ewr_GetScript("jquery/jquery-1.12.4.min.js");</script>
+<?php } ?>
+<?php if (@$gsExport == "" || @$gsExport == "print" || @$gsExport == "email" && @$gsEmailContentType == "url") { ?>
 <?php if (@$gsCustomExport == "") { ?>
 <script type="text/javascript" src="<?php echo $EWR_RELATIVE_PATH . EWR_FUSIONCHARTS_PATH ?>fusioncharts.js"></script>
 <script type="text/javascript" src="<?php echo $EWR_RELATIVE_PATH . EWR_FUSIONCHARTS_PATH ?>fusioncharts.ssgrid.js"></script>
@@ -77,6 +84,8 @@ if (window._jQuery) ewr_Extend(jQuery);
 if (window.jQuery && !jQuery.fn.alert) ewr_GetScript("bootstrap3/js/bootstrap.min.js");
 if (window.jQuery && !jQuery.typeahead) ewr_GetScript("phprptjs/typeahead.bundle.min.js");
 </script>
+<?php } ?>
+<?php if (@$gsExport == "" || @$gsExport == "print") { ?>
 <script type="text/javascript">
 var EWR_MOBILE_DETECT = new MobileDetect(window.navigator.userAgent);
 var EWR_IS_MOBILE = EWR_MOBILE_DETECT.mobile() ? true : false;
@@ -88,3 +97,4 @@ var ewrVar = <?php echo json_encode($EWR_CLIENT_VAR); ?>;
 
 // Write your client script here, no need to add script tags.
 </script>
+<?php } ?>

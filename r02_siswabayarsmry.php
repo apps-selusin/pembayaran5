@@ -6,16 +6,16 @@ ob_start();
 <?php include_once ((EW_USE_ADODB) ? "adodb5/adodb.inc.php" : "phprptinc/ewmysql.php") ?>
 <?php include_once "phprptinc/ewrfn10.php" ?>
 <?php include_once "phprptinc/ewrusrfn10.php" ?>
-<?php include_once "r01_siswarutinbayarsmryinfo.php" ?>
+<?php include_once "r02_siswabayarsmryinfo.php" ?>
 <?php
 
 //
 // Page class
 //
 
-$r01_siswarutinbayar_summary = NULL; // Initialize page object first
+$r02_siswabayar_summary = NULL; // Initialize page object first
 
-class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
+class crr02_siswabayar_summary extends crr02_siswabayar {
 
 	// Page ID
 	var $PageID = 'summary';
@@ -24,7 +24,7 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 	var $ProjectID = "{371AB69E-83C7-4715-818D-BAEB6D2CFBF4}";
 
 	// Page object name
-	var $PageObjName = 'r01_siswarutinbayar_summary';
+	var $PageObjName = 'r02_siswabayar_summary';
 
 	// Page name
 	function PageName() {
@@ -202,10 +202,10 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 		// Parent constuctor
 		parent::__construct();
 
-		// Table object (r01_siswarutinbayar)
-		if (!isset($GLOBALS["r01_siswarutinbayar"])) {
-			$GLOBALS["r01_siswarutinbayar"] = &$this;
-			$GLOBALS["Table"] = &$GLOBALS["r01_siswarutinbayar"];
+		// Table object (r02_siswabayar)
+		if (!isset($GLOBALS["r02_siswabayar"])) {
+			$GLOBALS["r02_siswabayar"] = &$this;
+			$GLOBALS["Table"] = &$GLOBALS["r02_siswabayar"];
 		}
 
 		// Initialize URLs
@@ -220,7 +220,7 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 
 		// Table name (for backward compatibility)
 		if (!defined("EWR_TABLE_NAME"))
-			define("EWR_TABLE_NAME", 'r01_siswarutinbayar', TRUE);
+			define("EWR_TABLE_NAME", 'r02_siswabayar', TRUE);
 
 		// Start timer
 		$GLOBALS["gsTimer"] = new crTimer();
@@ -241,7 +241,7 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 		// Filter options
 		$this->FilterOptions = new crListOptions();
 		$this->FilterOptions->Tag = "div";
-		$this->FilterOptions->TagClassName = "ewFilterOption fr01_siswarutinbayarsummary";
+		$this->FilterOptions->TagClassName = "ewFilterOption fr02_siswabayarsummary";
 
 		// Generate report options
 		$this->GenerateOptions = new crListOptions();
@@ -328,7 +328,7 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 		// Export to Email
 		$item = &$this->ExportOptions->Add("email");
 		$url = $this->PageUrl() . "export=email";
-		$item->Body = "<a title=\"" . ewr_HtmlEncode($ReportLanguage->Phrase("ExportToEmail", TRUE)) . "\" data-caption=\"" . ewr_HtmlEncode($ReportLanguage->Phrase("ExportToEmail", TRUE)) . "\" id=\"emf_r01_siswarutinbayar\" href=\"javascript:void(0);\" onclick=\"ewr_EmailDialogShow({lnk:'emf_r01_siswarutinbayar',hdr:ewLanguage.Phrase('ExportToEmail'),url:'$url',exportid:'$exportid',el:this});\">" . $ReportLanguage->Phrase("ExportToEmail") . "</a>";
+		$item->Body = "<a title=\"" . ewr_HtmlEncode($ReportLanguage->Phrase("ExportToEmail", TRUE)) . "\" data-caption=\"" . ewr_HtmlEncode($ReportLanguage->Phrase("ExportToEmail", TRUE)) . "\" id=\"emf_r02_siswabayar\" href=\"javascript:void(0);\" onclick=\"ewr_EmailDialogShow({lnk:'emf_r02_siswabayar',hdr:ewLanguage.Phrase('ExportToEmail'),url:'$url',exportid:'$exportid',el:this});\">" . $ReportLanguage->Phrase("ExportToEmail") . "</a>";
 		$item->Visible = FALSE;
 		$ReportTypes["email"] = $item->Visible ? $ReportLanguage->Phrase("ReportFormEmail") : "";
 		$ReportOptions["ReportTypes"] = $ReportTypes;
@@ -346,10 +346,10 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 
 		// Filter button
 		$item = &$this->FilterOptions->Add("savecurrentfilter");
-		$item->Body = "<a class=\"ewSaveFilter\" data-form=\"fr01_siswarutinbayarsummary\" href=\"#\">" . $ReportLanguage->Phrase("SaveCurrentFilter") . "</a>";
+		$item->Body = "<a class=\"ewSaveFilter\" data-form=\"fr02_siswabayarsummary\" href=\"#\">" . $ReportLanguage->Phrase("SaveCurrentFilter") . "</a>";
 		$item->Visible = TRUE;
 		$item = &$this->FilterOptions->Add("deletefilter");
-		$item->Body = "<a class=\"ewDeleteFilter\" data-form=\"fr01_siswarutinbayarsummary\" href=\"#\">" . $ReportLanguage->Phrase("DeleteFilter") . "</a>";
+		$item->Body = "<a class=\"ewDeleteFilter\" data-form=\"fr02_siswabayarsummary\" href=\"#\">" . $ReportLanguage->Phrase("DeleteFilter") . "</a>";
 		$item->Visible = TRUE;
 		$this->FilterOptions->UseDropDownButton = TRUE;
 		$this->FilterOptions->UseButtonGroup = !$this->FilterOptions->UseDropDownButton; // v8
@@ -383,7 +383,7 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 		// Filter panel button
 		$item = &$this->SearchOptions->Add("searchtoggle");
 		$SearchToggleClass = $this->FilterApplied ? " active" : " active";
-		$item->Body = "<button type=\"button\" class=\"btn btn-default ewSearchToggle" . $SearchToggleClass . "\" title=\"" . $ReportLanguage->Phrase("SearchBtn", TRUE) . "\" data-caption=\"" . $ReportLanguage->Phrase("SearchBtn", TRUE) . "\" data-toggle=\"button\" data-form=\"fr01_siswarutinbayarsummary\">" . $ReportLanguage->Phrase("SearchBtn") . "</button>";
+		$item->Body = "<button type=\"button\" class=\"btn btn-default ewSearchToggle" . $SearchToggleClass . "\" title=\"" . $ReportLanguage->Phrase("SearchBtn", TRUE) . "\" data-caption=\"" . $ReportLanguage->Phrase("SearchBtn", TRUE) . "\" data-toggle=\"button\" data-form=\"fr02_siswabayarsummary\">" . $ReportLanguage->Phrase("SearchBtn") . "</button>";
 		$item->Visible = TRUE;
 
 		// Reset filter
@@ -512,13 +512,13 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 		global $ReportLanguage;
 
 		// Set field visibility for detail fields
-		$this->Periode_Text->SetVisibility();
-		$this->Tanggal_Bayar->SetVisibility();
-		$this->Nilai_Bayar->SetVisibility();
-		$this->Periode_Tahun_Bulan->SetVisibility();
 		$this->NIS->SetVisibility();
 		$this->Nama->SetVisibility();
+		$this->Tanggal_Bayar->SetVisibility();
+		$this->Nilai_Bayar->SetVisibility();
 		$this->Sisa->SetVisibility();
+		$this->Periode_Tahun_Bulan->SetVisibility();
+		$this->Periode_Text->SetVisibility();
 
 		// Aggregate variables
 		// 1st dimension = no of groups (level 0 used for grand total)
@@ -537,7 +537,7 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 		$this->GrandMx = &ewr_InitArray($nDtls, NULL);
 
 		// Set up array if accumulation required: array(Accum, SkipNullOrZero)
-		$this->Col = array(array(FALSE, FALSE), array(FALSE,FALSE), array(FALSE,FALSE), array(TRUE,FALSE), array(FALSE,FALSE), array(FALSE,FALSE), array(FALSE,FALSE), array(FALSE,FALSE));
+		$this->Col = array(array(FALSE, FALSE), array(FALSE,FALSE), array(FALSE,FALSE), array(FALSE,FALSE), array(TRUE,FALSE), array(FALSE,FALSE), array(FALSE,FALSE), array(FALSE,FALSE));
 
 		// Set up groups per page dynamically
 		$this->SetUpDisplayGrps();
@@ -832,27 +832,27 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 			if ($this->GrpCount == 1) {
 				$this->FirstRowData = array();
 				$this->FirstRowData['Jenis'] = ewr_Conv($rs->fields('Jenis'), 200);
-				$this->FirstRowData['b_Nilai'] = ewr_Conv($rs->fields('b_Nilai'), 4);
-				$this->FirstRowData['Periode_Text'] = ewr_Conv($rs->fields('Periode_Text'), 200);
-				$this->FirstRowData['Tanggal_Bayar'] = ewr_Conv($rs->fields('Tanggal_Bayar'), 133);
-				$this->FirstRowData['Nilai_Bayar'] = ewr_Conv($rs->fields('Nilai_Bayar'), 4);
-				$this->FirstRowData['Periode_Tahun_Bulan'] = ewr_Conv($rs->fields('Periode_Tahun_Bulan'), 200);
-				$this->FirstRowData['NIS'] = ewr_Conv($rs->fields('NIS'), 200);
-				$this->FirstRowData['Nama'] = ewr_Conv($rs->fields('Nama'), 200);
-				$this->FirstRowData['rutin_id'] = ewr_Conv($rs->fields('rutin_id'), 3);
-				$this->FirstRowData['siswa_id'] = ewr_Conv($rs->fields('siswa_id'), 3);
 				$this->FirstRowData['a_id'] = ewr_Conv($rs->fields('a_id'), 3);
 				$this->FirstRowData['sekolah_id'] = ewr_Conv($rs->fields('sekolah_id'), 3);
 				$this->FirstRowData['kelas_id'] = ewr_Conv($rs->fields('kelas_id'), 3);
+				$this->FirstRowData['NIS'] = ewr_Conv($rs->fields('NIS'), 200);
+				$this->FirstRowData['Nama'] = ewr_Conv($rs->fields('Nama'), 200);
 				$this->FirstRowData['b_id'] = ewr_Conv($rs->fields('b_id'), 3);
+				$this->FirstRowData['siswa_id'] = ewr_Conv($rs->fields('siswa_id'), 3);
+				$this->FirstRowData['rutin_id'] = ewr_Conv($rs->fields('rutin_id'), 3);
+				$this->FirstRowData['b_Nilai'] = ewr_Conv($rs->fields('b_Nilai'), 4);
 				$this->FirstRowData['c_id'] = ewr_Conv($rs->fields('c_id'), 3);
 				$this->FirstRowData['siswarutin_id'] = ewr_Conv($rs->fields('siswarutin_id'), 3);
-				$this->FirstRowData['Bulan'] = ewr_Conv($rs->fields('Bulan'), 16);
-				$this->FirstRowData['Tahun'] = ewr_Conv($rs->fields('Tahun'), 2);
+				$this->FirstRowData['Bulan'] = ewr_Conv($rs->fields('Bulan'), 200);
+				$this->FirstRowData['Tahun'] = ewr_Conv($rs->fields('Tahun'), 200);
 				$this->FirstRowData['c_Nilai'] = ewr_Conv($rs->fields('c_Nilai'), 4);
+				$this->FirstRowData['Tanggal_Bayar'] = ewr_Conv($rs->fields('Tanggal_Bayar'), 133);
+				$this->FirstRowData['Nilai_Bayar'] = ewr_Conv($rs->fields('Nilai_Bayar'), 4);
+				$this->FirstRowData['Sisa'] = ewr_Conv($rs->fields('Sisa'), 5);
+				$this->FirstRowData['Periode_Tahun_Bulan'] = ewr_Conv($rs->fields('Periode_Tahun_Bulan'), 200);
+				$this->FirstRowData['Periode_Text'] = ewr_Conv($rs->fields('Periode_Text'), 200);
 				$this->FirstRowData['Per_Thn_Bln_Byr'] = ewr_Conv($rs->fields('Per_Thn_Bln_Byr'), 200);
 				$this->FirstRowData['Per_Thn_Bln_Byr_Text'] = ewr_Conv($rs->fields('Per_Thn_Bln_Byr_Text'), 200);
-				$this->FirstRowData['Sisa'] = ewr_Conv($rs->fields('Sisa'), 20);
 			}
 		} else { // Get next row
 			$rs->MoveNext();
@@ -864,59 +864,57 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 				else
 					$this->Jenis->setDbValue(ewr_GroupValue($this->Jenis, $rs->fields('Jenis')));
 			}
-			$this->SekolahKelas->setDbValue($rs->fields('SekolahKelas'));
-			$this->b_Nilai->setDbValue($rs->fields('b_Nilai'));
-			$this->Periode_Text->setDbValue($rs->fields('Periode_Text'));
-			$this->Tanggal_Bayar->setDbValue($rs->fields('Tanggal_Bayar'));
-			$this->Nilai_Bayar->setDbValue($rs->fields('Nilai_Bayar'));
-			$this->Periode_Tahun_Bulan->setDbValue($rs->fields('Periode_Tahun_Bulan'));
-			$this->NIS->setDbValue($rs->fields('NIS'));
-			$this->Nama->setDbValue($rs->fields('Nama'));
-			$this->rutin_id->setDbValue($rs->fields('rutin_id'));
-			$this->siswa_id->setDbValue($rs->fields('siswa_id'));
 			$this->a_id->setDbValue($rs->fields('a_id'));
 			$this->sekolah_id->setDbValue($rs->fields('sekolah_id'));
 			$this->kelas_id->setDbValue($rs->fields('kelas_id'));
+			$this->NIS->setDbValue($rs->fields('NIS'));
+			$this->Nama->setDbValue($rs->fields('Nama'));
 			$this->b_id->setDbValue($rs->fields('b_id'));
+			$this->siswa_id->setDbValue($rs->fields('siswa_id'));
+			$this->rutin_id->setDbValue($rs->fields('rutin_id'));
+			$this->b_Nilai->setDbValue($rs->fields('b_Nilai'));
 			$this->c_id->setDbValue($rs->fields('c_id'));
 			$this->siswarutin_id->setDbValue($rs->fields('siswarutin_id'));
 			$this->Bulan->setDbValue($rs->fields('Bulan'));
 			$this->Tahun->setDbValue($rs->fields('Tahun'));
 			$this->c_Nilai->setDbValue($rs->fields('c_Nilai'));
+			$this->Tanggal_Bayar->setDbValue($rs->fields('Tanggal_Bayar'));
+			$this->Nilai_Bayar->setDbValue($rs->fields('Nilai_Bayar'));
+			$this->Sisa->setDbValue($rs->fields('Sisa'));
+			$this->Periode_Tahun_Bulan->setDbValue($rs->fields('Periode_Tahun_Bulan'));
+			$this->Periode_Text->setDbValue($rs->fields('Periode_Text'));
 			$this->Per_Thn_Bln_Byr->setDbValue($rs->fields('Per_Thn_Bln_Byr'));
 			$this->Per_Thn_Bln_Byr_Text->setDbValue($rs->fields('Per_Thn_Bln_Byr_Text'));
-			$this->Sisa->setDbValue($rs->fields('Sisa'));
-			$this->Val[1] = $this->Periode_Text->CurrentValue;
-			$this->Val[2] = $this->Tanggal_Bayar->CurrentValue;
-			$this->Val[3] = $this->Nilai_Bayar->CurrentValue;
-			$this->Val[4] = $this->Periode_Tahun_Bulan->CurrentValue;
-			$this->Val[5] = $this->NIS->CurrentValue;
-			$this->Val[6] = $this->Nama->CurrentValue;
-			$this->Val[7] = $this->Sisa->CurrentValue;
+			$this->Val[1] = $this->NIS->CurrentValue;
+			$this->Val[2] = $this->Nama->CurrentValue;
+			$this->Val[3] = $this->Tanggal_Bayar->CurrentValue;
+			$this->Val[4] = $this->Nilai_Bayar->CurrentValue;
+			$this->Val[5] = $this->Sisa->CurrentValue;
+			$this->Val[6] = $this->Periode_Tahun_Bulan->CurrentValue;
+			$this->Val[7] = $this->Periode_Text->CurrentValue;
 		} else {
 			$this->Jenis->setDbValue("");
-			$this->SekolahKelas->setDbValue("");
-			$this->b_Nilai->setDbValue("");
-			$this->Periode_Text->setDbValue("");
-			$this->Tanggal_Bayar->setDbValue("");
-			$this->Nilai_Bayar->setDbValue("");
-			$this->Periode_Tahun_Bulan->setDbValue("");
-			$this->NIS->setDbValue("");
-			$this->Nama->setDbValue("");
-			$this->rutin_id->setDbValue("");
-			$this->siswa_id->setDbValue("");
 			$this->a_id->setDbValue("");
 			$this->sekolah_id->setDbValue("");
 			$this->kelas_id->setDbValue("");
+			$this->NIS->setDbValue("");
+			$this->Nama->setDbValue("");
 			$this->b_id->setDbValue("");
+			$this->siswa_id->setDbValue("");
+			$this->rutin_id->setDbValue("");
+			$this->b_Nilai->setDbValue("");
 			$this->c_id->setDbValue("");
 			$this->siswarutin_id->setDbValue("");
 			$this->Bulan->setDbValue("");
 			$this->Tahun->setDbValue("");
 			$this->c_Nilai->setDbValue("");
+			$this->Tanggal_Bayar->setDbValue("");
+			$this->Nilai_Bayar->setDbValue("");
+			$this->Sisa->setDbValue("");
+			$this->Periode_Tahun_Bulan->setDbValue("");
+			$this->Periode_Text->setDbValue("");
 			$this->Per_Thn_Bln_Byr->setDbValue("");
 			$this->Per_Thn_Bln_Byr_Text->setDbValue("");
-			$this->Sisa->setDbValue("");
 		}
 	}
 
@@ -1092,8 +1090,8 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 				$this->GrandCnt[1] = $this->TotCount;
 				$this->GrandCnt[2] = $this->TotCount;
 				$this->GrandCnt[3] = $this->TotCount;
-				$this->GrandSmry[3] = $rsagg->fields("sum_nilai_bayar");
 				$this->GrandCnt[4] = $this->TotCount;
+				$this->GrandSmry[4] = $rsagg->fields("sum_nilai_bayar");
 				$this->GrandCnt[5] = $this->TotCount;
 				$this->GrandCnt[6] = $this->TotCount;
 				$this->GrandCnt[7] = $this->TotCount;
@@ -1139,9 +1137,8 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 
 			// b_Nilai
 			$this->b_Nilai->GroupViewValue = $this->b_Nilai->GroupOldValue();
-			$this->b_Nilai->GroupViewValue = ewr_FormatNumber($this->b_Nilai->GroupViewValue, 2, -2, -2, -2);
+			$this->b_Nilai->GroupViewValue = ewr_FormatNumber($this->b_Nilai->GroupViewValue, $this->b_Nilai->DefaultDecimalPrecision, -1, 0, 0);
 			$this->b_Nilai->CellAttrs["class"] = ($this->RowGroupLevel == 2) ? "ewRptGrpSummary2" : "ewRptGrpField2";
-			$this->b_Nilai->CellAttrs["style"] = "text-align:right;";
 			$this->b_Nilai->GroupViewValue = ewr_DisplayGroupValue($this->b_Nilai, $this->b_Nilai->GroupViewValue);
 			$this->b_Nilai->GroupSummaryOldValue = $this->b_Nilai->GroupSummaryValue;
 			$this->b_Nilai->GroupSummaryValue = $this->b_Nilai->GroupViewValue;
@@ -1149,8 +1146,7 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 
 			// Nilai_Bayar
 			$this->Nilai_Bayar->SumViewValue = $this->Nilai_Bayar->SumValue;
-			$this->Nilai_Bayar->SumViewValue = ewr_FormatNumber($this->Nilai_Bayar->SumViewValue, 2, -2, -2, -2);
-			$this->Nilai_Bayar->CellAttrs["style"] = "text-align:right;";
+			$this->Nilai_Bayar->SumViewValue = ewr_FormatNumber($this->Nilai_Bayar->SumViewValue, $this->Nilai_Bayar->DefaultDecimalPrecision, -1, 0, 0);
 			$this->Nilai_Bayar->CellAttrs["class"] = ($this->RowTotalType == EWR_ROWTOTAL_PAGE || $this->RowTotalType == EWR_ROWTOTAL_GRAND) ? "ewRptGrpAggregate" : "ewRptGrpSummary" . $this->RowGroupLevel;
 
 			// Jenis
@@ -1159,8 +1155,11 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 			// b_Nilai
 			$this->b_Nilai->HrefValue = "";
 
-			// Periode_Text
-			$this->Periode_Text->HrefValue = "";
+			// NIS
+			$this->NIS->HrefValue = "";
+
+			// Nama
+			$this->Nama->HrefValue = "";
 
 			// Tanggal_Bayar
 			$this->Tanggal_Bayar->HrefValue = "";
@@ -1168,17 +1167,14 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 			// Nilai_Bayar
 			$this->Nilai_Bayar->HrefValue = "";
 
+			// Sisa
+			$this->Sisa->HrefValue = "";
+
 			// Periode_Tahun_Bulan
 			$this->Periode_Tahun_Bulan->HrefValue = "";
 
-			// NIS
-			$this->NIS->HrefValue = "";
-
-			// Nama
-			$this->Nama->HrefValue = "";
-
-			// Sisa
-			$this->Sisa->HrefValue = "";
+			// Periode_Text
+			$this->Periode_Text->HrefValue = "";
 		} else {
 			if ($this->RowTotalType == EWR_ROWTOTAL_GROUP && $this->RowTotalSubType == EWR_ROWTOTAL_HEADER) {
 			$this->RowAttrs["data-group"] = $this->Jenis->GroupValue(); // Set up group attribute
@@ -1197,31 +1193,11 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 
 			// b_Nilai
 			$this->b_Nilai->GroupViewValue = $this->b_Nilai->GroupValue();
-			$this->b_Nilai->GroupViewValue = ewr_FormatNumber($this->b_Nilai->GroupViewValue, 2, -2, -2, -2);
+			$this->b_Nilai->GroupViewValue = ewr_FormatNumber($this->b_Nilai->GroupViewValue, $this->b_Nilai->DefaultDecimalPrecision, -1, 0, 0);
 			$this->b_Nilai->CellAttrs["class"] = "ewRptGrpField2";
-			$this->b_Nilai->CellAttrs["style"] = "text-align:right;";
 			$this->b_Nilai->GroupViewValue = ewr_DisplayGroupValue($this->b_Nilai, $this->b_Nilai->GroupViewValue);
 			if ($this->b_Nilai->GroupValue() == $this->b_Nilai->GroupOldValue() && !$this->ChkLvlBreak(2))
 				$this->b_Nilai->GroupViewValue = "&nbsp;";
-
-			// Periode_Text
-			$this->Periode_Text->ViewValue = $this->Periode_Text->CurrentValue;
-			$this->Periode_Text->CellAttrs["class"] = ($this->RecCount % 2 <> 1) ? "ewTableAltRow" : "ewTableRow";
-
-			// Tanggal_Bayar
-			$this->Tanggal_Bayar->ViewValue = $this->Tanggal_Bayar->CurrentValue;
-			$this->Tanggal_Bayar->ViewValue = ewr_FormatDateTime($this->Tanggal_Bayar->ViewValue, 7);
-			$this->Tanggal_Bayar->CellAttrs["class"] = ($this->RecCount % 2 <> 1) ? "ewTableAltRow" : "ewTableRow";
-
-			// Nilai_Bayar
-			$this->Nilai_Bayar->ViewValue = $this->Nilai_Bayar->CurrentValue;
-			$this->Nilai_Bayar->ViewValue = ewr_FormatNumber($this->Nilai_Bayar->ViewValue, 2, -2, -2, -2);
-			$this->Nilai_Bayar->CellAttrs["class"] = ($this->RecCount % 2 <> 1) ? "ewTableAltRow" : "ewTableRow";
-			$this->Nilai_Bayar->CellAttrs["style"] = "text-align:right;";
-
-			// Periode_Tahun_Bulan
-			$this->Periode_Tahun_Bulan->ViewValue = $this->Periode_Tahun_Bulan->CurrentValue;
-			$this->Periode_Tahun_Bulan->CellAttrs["class"] = ($this->RecCount % 2 <> 1) ? "ewTableAltRow" : "ewTableRow";
 
 			// NIS
 			$this->NIS->ViewValue = $this->NIS->CurrentValue;
@@ -1231,9 +1207,28 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 			$this->Nama->ViewValue = $this->Nama->CurrentValue;
 			$this->Nama->CellAttrs["class"] = ($this->RecCount % 2 <> 1) ? "ewTableAltRow" : "ewTableRow";
 
+			// Tanggal_Bayar
+			$this->Tanggal_Bayar->ViewValue = $this->Tanggal_Bayar->CurrentValue;
+			$this->Tanggal_Bayar->ViewValue = ewr_FormatDateTime($this->Tanggal_Bayar->ViewValue, 0);
+			$this->Tanggal_Bayar->CellAttrs["class"] = ($this->RecCount % 2 <> 1) ? "ewTableAltRow" : "ewTableRow";
+
+			// Nilai_Bayar
+			$this->Nilai_Bayar->ViewValue = $this->Nilai_Bayar->CurrentValue;
+			$this->Nilai_Bayar->ViewValue = ewr_FormatNumber($this->Nilai_Bayar->ViewValue, $this->Nilai_Bayar->DefaultDecimalPrecision, -1, 0, 0);
+			$this->Nilai_Bayar->CellAttrs["class"] = ($this->RecCount % 2 <> 1) ? "ewTableAltRow" : "ewTableRow";
+
 			// Sisa
 			$this->Sisa->ViewValue = $this->Sisa->CurrentValue;
+			$this->Sisa->ViewValue = ewr_FormatNumber($this->Sisa->ViewValue, $this->Sisa->DefaultDecimalPrecision, -1, 0, 0);
 			$this->Sisa->CellAttrs["class"] = ($this->RecCount % 2 <> 1) ? "ewTableAltRow" : "ewTableRow";
+
+			// Periode_Tahun_Bulan
+			$this->Periode_Tahun_Bulan->ViewValue = $this->Periode_Tahun_Bulan->CurrentValue;
+			$this->Periode_Tahun_Bulan->CellAttrs["class"] = ($this->RecCount % 2 <> 1) ? "ewTableAltRow" : "ewTableRow";
+
+			// Periode_Text
+			$this->Periode_Text->ViewValue = $this->Periode_Text->CurrentValue;
+			$this->Periode_Text->CellAttrs["class"] = ($this->RecCount % 2 <> 1) ? "ewTableAltRow" : "ewTableRow";
 
 			// Jenis
 			$this->Jenis->HrefValue = "";
@@ -1241,8 +1236,11 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 			// b_Nilai
 			$this->b_Nilai->HrefValue = "";
 
-			// Periode_Text
-			$this->Periode_Text->HrefValue = "";
+			// NIS
+			$this->NIS->HrefValue = "";
+
+			// Nama
+			$this->Nama->HrefValue = "";
 
 			// Tanggal_Bayar
 			$this->Tanggal_Bayar->HrefValue = "";
@@ -1250,17 +1248,14 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 			// Nilai_Bayar
 			$this->Nilai_Bayar->HrefValue = "";
 
+			// Sisa
+			$this->Sisa->HrefValue = "";
+
 			// Periode_Tahun_Bulan
 			$this->Periode_Tahun_Bulan->HrefValue = "";
 
-			// NIS
-			$this->NIS->HrefValue = "";
-
-			// Nama
-			$this->Nama->HrefValue = "";
-
-			// Sisa
-			$this->Sisa->HrefValue = "";
+			// Periode_Text
+			$this->Periode_Text->HrefValue = "";
 		}
 
 		// Call Cell_Rendered event
@@ -1312,14 +1307,23 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 			$LinkAttrs = &$this->b_Nilai->LinkAttrs;
 			$this->Cell_Rendered($this->b_Nilai, $CurrentValue, $ViewValue, $ViewAttrs, $CellAttrs, $HrefValue, $LinkAttrs);
 
-			// Periode_Text
-			$CurrentValue = $this->Periode_Text->CurrentValue;
-			$ViewValue = &$this->Periode_Text->ViewValue;
-			$ViewAttrs = &$this->Periode_Text->ViewAttrs;
-			$CellAttrs = &$this->Periode_Text->CellAttrs;
-			$HrefValue = &$this->Periode_Text->HrefValue;
-			$LinkAttrs = &$this->Periode_Text->LinkAttrs;
-			$this->Cell_Rendered($this->Periode_Text, $CurrentValue, $ViewValue, $ViewAttrs, $CellAttrs, $HrefValue, $LinkAttrs);
+			// NIS
+			$CurrentValue = $this->NIS->CurrentValue;
+			$ViewValue = &$this->NIS->ViewValue;
+			$ViewAttrs = &$this->NIS->ViewAttrs;
+			$CellAttrs = &$this->NIS->CellAttrs;
+			$HrefValue = &$this->NIS->HrefValue;
+			$LinkAttrs = &$this->NIS->LinkAttrs;
+			$this->Cell_Rendered($this->NIS, $CurrentValue, $ViewValue, $ViewAttrs, $CellAttrs, $HrefValue, $LinkAttrs);
+
+			// Nama
+			$CurrentValue = $this->Nama->CurrentValue;
+			$ViewValue = &$this->Nama->ViewValue;
+			$ViewAttrs = &$this->Nama->ViewAttrs;
+			$CellAttrs = &$this->Nama->CellAttrs;
+			$HrefValue = &$this->Nama->HrefValue;
+			$LinkAttrs = &$this->Nama->LinkAttrs;
+			$this->Cell_Rendered($this->Nama, $CurrentValue, $ViewValue, $ViewAttrs, $CellAttrs, $HrefValue, $LinkAttrs);
 
 			// Tanggal_Bayar
 			$CurrentValue = $this->Tanggal_Bayar->CurrentValue;
@@ -1339,6 +1343,15 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 			$LinkAttrs = &$this->Nilai_Bayar->LinkAttrs;
 			$this->Cell_Rendered($this->Nilai_Bayar, $CurrentValue, $ViewValue, $ViewAttrs, $CellAttrs, $HrefValue, $LinkAttrs);
 
+			// Sisa
+			$CurrentValue = $this->Sisa->CurrentValue;
+			$ViewValue = &$this->Sisa->ViewValue;
+			$ViewAttrs = &$this->Sisa->ViewAttrs;
+			$CellAttrs = &$this->Sisa->CellAttrs;
+			$HrefValue = &$this->Sisa->HrefValue;
+			$LinkAttrs = &$this->Sisa->LinkAttrs;
+			$this->Cell_Rendered($this->Sisa, $CurrentValue, $ViewValue, $ViewAttrs, $CellAttrs, $HrefValue, $LinkAttrs);
+
 			// Periode_Tahun_Bulan
 			$CurrentValue = $this->Periode_Tahun_Bulan->CurrentValue;
 			$ViewValue = &$this->Periode_Tahun_Bulan->ViewValue;
@@ -1348,32 +1361,14 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 			$LinkAttrs = &$this->Periode_Tahun_Bulan->LinkAttrs;
 			$this->Cell_Rendered($this->Periode_Tahun_Bulan, $CurrentValue, $ViewValue, $ViewAttrs, $CellAttrs, $HrefValue, $LinkAttrs);
 
-			// NIS
-			$CurrentValue = $this->NIS->CurrentValue;
-			$ViewValue = &$this->NIS->ViewValue;
-			$ViewAttrs = &$this->NIS->ViewAttrs;
-			$CellAttrs = &$this->NIS->CellAttrs;
-			$HrefValue = &$this->NIS->HrefValue;
-			$LinkAttrs = &$this->NIS->LinkAttrs;
-			$this->Cell_Rendered($this->NIS, $CurrentValue, $ViewValue, $ViewAttrs, $CellAttrs, $HrefValue, $LinkAttrs);
-
-			// Nama
-			$CurrentValue = $this->Nama->CurrentValue;
-			$ViewValue = &$this->Nama->ViewValue;
-			$ViewAttrs = &$this->Nama->ViewAttrs;
-			$CellAttrs = &$this->Nama->CellAttrs;
-			$HrefValue = &$this->Nama->HrefValue;
-			$LinkAttrs = &$this->Nama->LinkAttrs;
-			$this->Cell_Rendered($this->Nama, $CurrentValue, $ViewValue, $ViewAttrs, $CellAttrs, $HrefValue, $LinkAttrs);
-
-			// Sisa
-			$CurrentValue = $this->Sisa->CurrentValue;
-			$ViewValue = &$this->Sisa->ViewValue;
-			$ViewAttrs = &$this->Sisa->ViewAttrs;
-			$CellAttrs = &$this->Sisa->CellAttrs;
-			$HrefValue = &$this->Sisa->HrefValue;
-			$LinkAttrs = &$this->Sisa->LinkAttrs;
-			$this->Cell_Rendered($this->Sisa, $CurrentValue, $ViewValue, $ViewAttrs, $CellAttrs, $HrefValue, $LinkAttrs);
+			// Periode_Text
+			$CurrentValue = $this->Periode_Text->CurrentValue;
+			$ViewValue = &$this->Periode_Text->ViewValue;
+			$ViewAttrs = &$this->Periode_Text->ViewAttrs;
+			$CellAttrs = &$this->Periode_Text->CellAttrs;
+			$HrefValue = &$this->Periode_Text->HrefValue;
+			$LinkAttrs = &$this->Periode_Text->LinkAttrs;
+			$this->Cell_Rendered($this->Periode_Text, $CurrentValue, $ViewValue, $ViewAttrs, $CellAttrs, $HrefValue, $LinkAttrs);
 		}
 
 		// Call Row_Rendered event
@@ -1388,13 +1383,13 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 		$this->DtlColumnCount = 0;
 		if ($this->Jenis->Visible) $this->GrpColumnCount += 1;
 		if ($this->b_Nilai->Visible) { $this->GrpColumnCount += 1; $this->SubGrpColumnCount += 1; }
-		if ($this->Periode_Text->Visible) $this->DtlColumnCount += 1;
-		if ($this->Tanggal_Bayar->Visible) $this->DtlColumnCount += 1;
-		if ($this->Nilai_Bayar->Visible) $this->DtlColumnCount += 1;
-		if ($this->Periode_Tahun_Bulan->Visible) $this->DtlColumnCount += 1;
 		if ($this->NIS->Visible) $this->DtlColumnCount += 1;
 		if ($this->Nama->Visible) $this->DtlColumnCount += 1;
+		if ($this->Tanggal_Bayar->Visible) $this->DtlColumnCount += 1;
+		if ($this->Nilai_Bayar->Visible) $this->DtlColumnCount += 1;
 		if ($this->Sisa->Visible) $this->DtlColumnCount += 1;
+		if ($this->Periode_Tahun_Bulan->Visible) $this->DtlColumnCount += 1;
+		if ($this->Periode_Text->Visible) $this->DtlColumnCount += 1;
 	}
 
 	// Set up Breadcrumb
@@ -1670,18 +1665,18 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 	// Get dropdown value from session
 	function GetSessionDropDownValue(&$fld) {
 		$parm = substr($fld->FldVar, 2);
-		$this->GetSessionValue($fld->DropDownValue, 'sv_r01_siswarutinbayar_' . $parm);
-		$this->GetSessionValue($fld->SearchOperator, 'so_r01_siswarutinbayar_' . $parm);
+		$this->GetSessionValue($fld->DropDownValue, 'sv_r02_siswabayar_' . $parm);
+		$this->GetSessionValue($fld->SearchOperator, 'so_r02_siswabayar_' . $parm);
 	}
 
 	// Get filter values from session
 	function GetSessionFilterValues(&$fld) {
 		$parm = substr($fld->FldVar, 2);
-		$this->GetSessionValue($fld->SearchValue, 'sv_r01_siswarutinbayar_' . $parm);
-		$this->GetSessionValue($fld->SearchOperator, 'so_r01_siswarutinbayar_' . $parm);
-		$this->GetSessionValue($fld->SearchCondition, 'sc_r01_siswarutinbayar_' . $parm);
-		$this->GetSessionValue($fld->SearchValue2, 'sv2_r01_siswarutinbayar_' . $parm);
-		$this->GetSessionValue($fld->SearchOperator2, 'so2_r01_siswarutinbayar_' . $parm);
+		$this->GetSessionValue($fld->SearchValue, 'sv_r02_siswabayar_' . $parm);
+		$this->GetSessionValue($fld->SearchOperator, 'so_r02_siswabayar_' . $parm);
+		$this->GetSessionValue($fld->SearchCondition, 'sc_r02_siswabayar_' . $parm);
+		$this->GetSessionValue($fld->SearchValue2, 'sv2_r02_siswabayar_' . $parm);
+		$this->GetSessionValue($fld->SearchOperator2, 'so2_r02_siswabayar_' . $parm);
 	}
 
 	// Get value from session
@@ -1692,17 +1687,17 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 
 	// Set dropdown value to session
 	function SetSessionDropDownValue($sv, $so, $parm) {
-		$_SESSION['sv_r01_siswarutinbayar_' . $parm] = $sv;
-		$_SESSION['so_r01_siswarutinbayar_' . $parm] = $so;
+		$_SESSION['sv_r02_siswabayar_' . $parm] = $sv;
+		$_SESSION['so_r02_siswabayar_' . $parm] = $so;
 	}
 
 	// Set filter values to session
 	function SetSessionFilterValues($sv1, $so1, $sc, $sv2, $so2, $parm) {
-		$_SESSION['sv_r01_siswarutinbayar_' . $parm] = $sv1;
-		$_SESSION['so_r01_siswarutinbayar_' . $parm] = $so1;
-		$_SESSION['sc_r01_siswarutinbayar_' . $parm] = $sc;
-		$_SESSION['sv2_r01_siswarutinbayar_' . $parm] = $sv2;
-		$_SESSION['so2_r01_siswarutinbayar_' . $parm] = $so2;
+		$_SESSION['sv_r02_siswabayar_' . $parm] = $sv1;
+		$_SESSION['so_r02_siswabayar_' . $parm] = $so1;
+		$_SESSION['sc_r02_siswabayar_' . $parm] = $sc;
+		$_SESSION['sv2_r02_siswabayar_' . $parm] = $sv2;
+		$_SESSION['so2_r02_siswabayar_' . $parm] = $so2;
 	}
 
 	// Check if has Session filter values
@@ -1752,17 +1747,17 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 
 	// Clear selection stored in session
 	function ClearSessionSelection($parm) {
-		$_SESSION["sel_r01_siswarutinbayar_$parm"] = "";
-		$_SESSION["rf_r01_siswarutinbayar_$parm"] = "";
-		$_SESSION["rt_r01_siswarutinbayar_$parm"] = "";
+		$_SESSION["sel_r02_siswabayar_$parm"] = "";
+		$_SESSION["rf_r02_siswabayar_$parm"] = "";
+		$_SESSION["rt_r02_siswabayar_$parm"] = "";
 	}
 
 	// Load selection from session
 	function LoadSelectionFromSession($parm) {
 		$fld = &$this->FieldByParm($parm);
-		$fld->SelectionList = @$_SESSION["sel_r01_siswarutinbayar_$parm"];
-		$fld->RangeFrom = @$_SESSION["rf_r01_siswarutinbayar_$parm"];
-		$fld->RangeTo = @$_SESSION["rt_r01_siswarutinbayar_$parm"];
+		$fld->SelectionList = @$_SESSION["sel_r02_siswabayar_$parm"];
+		$fld->RangeFrom = @$_SESSION["rf_r02_siswabayar_$parm"];
+		$fld->RangeTo = @$_SESSION["rt_r02_siswabayar_$parm"];
 	}
 
 	// Load default value for filters
@@ -1960,13 +1955,13 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 			$this->setStartGroup(1);
 			$this->Jenis->setSort("");
 			$this->b_Nilai->setSort("");
-			$this->Periode_Text->setSort("");
-			$this->Tanggal_Bayar->setSort("");
-			$this->Nilai_Bayar->setSort("");
-			$this->Periode_Tahun_Bulan->setSort("");
 			$this->NIS->setSort("");
 			$this->Nama->setSort("");
+			$this->Tanggal_Bayar->setSort("");
+			$this->Nilai_Bayar->setSort("");
 			$this->Sisa->setSort("");
+			$this->Periode_Tahun_Bulan->setSort("");
+			$this->Periode_Text->setSort("");
 
 		// Check for an Order parameter
 		} elseif ($orderBy <> "") {
@@ -2068,9 +2063,9 @@ class crr01_siswarutinbayar_summary extends crr01_siswarutinbayar {
 <?php
 
 // Create page object
-if (!isset($r01_siswarutinbayar_summary)) $r01_siswarutinbayar_summary = new crr01_siswarutinbayar_summary();
+if (!isset($r02_siswabayar_summary)) $r02_siswabayar_summary = new crr02_siswabayar_summary();
 if (isset($Page)) $OldPage = $Page;
-$Page = &$r01_siswarutinbayar_summary;
+$Page = &$r02_siswabayar_summary;
 
 // Page init
 $Page->Page_Init();
@@ -2090,21 +2085,21 @@ $Page->Page_Render();
 <script type="text/javascript">
 
 // Create page object
-var r01_siswarutinbayar_summary = new ewr_Page("r01_siswarutinbayar_summary");
+var r02_siswabayar_summary = new ewr_Page("r02_siswabayar_summary");
 
 // Page properties
-r01_siswarutinbayar_summary.PageID = "summary"; // Page ID
-var EWR_PAGE_ID = r01_siswarutinbayar_summary.PageID;
+r02_siswabayar_summary.PageID = "summary"; // Page ID
+var EWR_PAGE_ID = r02_siswabayar_summary.PageID;
 
 // Extend page with Chart_Rendering function
-r01_siswarutinbayar_summary.Chart_Rendering = 
+r02_siswabayar_summary.Chart_Rendering = 
  function(chart, chartid) { // DO NOT CHANGE THIS LINE!
 
  	//alert(chartid);
  }
 
 // Extend page with Chart_Rendered function
-r01_siswarutinbayar_summary.Chart_Rendered = 
+r02_siswabayar_summary.Chart_Rendered = 
  function(chart, chartid) { // DO NOT CHANGE THIS LINE!
 
  	//alert(chartid);
@@ -2115,10 +2110,10 @@ r01_siswarutinbayar_summary.Chart_Rendered =
 <script type="text/javascript">
 
 // Form object
-var CurrentForm = fr01_siswarutinbayarsummary = new ewr_Form("fr01_siswarutinbayarsummary");
+var CurrentForm = fr02_siswabayarsummary = new ewr_Form("fr02_siswabayarsummary");
 
 // Validate method
-fr01_siswarutinbayarsummary.Validate = function() {
+fr02_siswabayarsummary.Validate = function() {
 	if (!this.ValidateRequired)
 		return true; // Ignore validation
 	var $ = jQuery, fobj = this.GetForm(), $fobj = $(fobj);
@@ -2130,16 +2125,16 @@ fr01_siswarutinbayarsummary.Validate = function() {
 }
 
 // Form_CustomValidate method
-fr01_siswarutinbayarsummary.Form_CustomValidate = 
+fr02_siswabayarsummary.Form_CustomValidate = 
  function(fobj) { // DO NOT CHANGE THIS LINE!
 
  	// Your custom validation code here, return false if invalid.
  	return true;
  }
 <?php if (EWR_CLIENT_VALIDATE) { ?>
-fr01_siswarutinbayarsummary.ValidateRequired = true; // Uses JavaScript validation
+fr02_siswabayarsummary.ValidateRequired = true; // Uses JavaScript validation
 <?php } else { ?>
-fr01_siswarutinbayarsummary.ValidateRequired = false; // No JavaScript validation
+fr02_siswabayarsummary.ValidateRequired = false; // No JavaScript validation
 <?php } ?>
 
 // Use Ajax
@@ -2199,9 +2194,9 @@ if (!$Page->DrillDownInPanel) {
 <div id="report_summary">
 <?php if ($Page->Export == "" && !$Page->DrillDown) { ?>
 <!-- Search form (begin) -->
-<form name="fr01_siswarutinbayarsummary" id="fr01_siswarutinbayarsummary" class="form-inline ewForm ewExtFilterForm" action="<?php echo ewr_CurrentPage() ?>">
+<form name="fr02_siswabayarsummary" id="fr02_siswabayarsummary" class="form-inline ewForm ewExtFilterForm" action="<?php echo ewr_CurrentPage() ?>">
 <?php $SearchPanelClass = ($Page->Filter <> "") ? " in" : " in"; ?>
-<div id="fr01_siswarutinbayarsummary_SearchPanel" class="ewSearchPanel collapse<?php echo $SearchPanelClass ?>">
+<div id="fr02_siswabayarsummary_SearchPanel" class="ewSearchPanel collapse<?php echo $SearchPanelClass ?>">
 <input type="hidden" name="cmd" value="search">
 <div id="r_1" class="ewRow">
 <div id="c_NIS" class="ewCell form-group">
@@ -2209,7 +2204,7 @@ if (!$Page->DrillDownInPanel) {
 	<span class="ewSearchOperator"><?php echo $ReportLanguage->Phrase("LIKE"); ?><input type="hidden" name="so_NIS" id="so_NIS" value="LIKE"></span>
 	<span class="control-group ewSearchField">
 <?php ewr_PrependClass($Page->NIS->EditAttrs["class"], "form-control"); // PR8 ?>
-<input type="text" data-table="r01_siswarutinbayar" data-field="x_NIS" id="sv_NIS" name="sv_NIS" size="30" maxlength="100" placeholder="<?php echo $Page->NIS->PlaceHolder ?>" value="<?php echo ewr_HtmlEncode($Page->NIS->SearchValue) ?>"<?php echo $Page->NIS->EditAttributes() ?>>
+<input type="text" data-table="r02_siswabayar" data-field="x_NIS" id="sv_NIS" name="sv_NIS" size="30" maxlength="100" placeholder="<?php echo $Page->NIS->PlaceHolder ?>" value="<?php echo ewr_HtmlEncode($Page->NIS->SearchValue) ?>"<?php echo $Page->NIS->EditAttributes() ?>>
 </span>
 </div>
 </div>
@@ -2219,7 +2214,7 @@ if (!$Page->DrillDownInPanel) {
 	<span class="ewSearchOperator"><?php echo $ReportLanguage->Phrase("LIKE"); ?><input type="hidden" name="so_Nama" id="so_Nama" value="LIKE"></span>
 	<span class="control-group ewSearchField">
 <?php ewr_PrependClass($Page->Nama->EditAttrs["class"], "form-control"); // PR8 ?>
-<input type="text" data-table="r01_siswarutinbayar" data-field="x_Nama" id="sv_Nama" name="sv_Nama" size="30" maxlength="100" placeholder="<?php echo $Page->Nama->PlaceHolder ?>" value="<?php echo ewr_HtmlEncode($Page->Nama->SearchValue) ?>"<?php echo $Page->Nama->EditAttributes() ?>>
+<input type="text" data-table="r02_siswabayar" data-field="x_Nama" id="sv_Nama" name="sv_Nama" size="30" maxlength="100" placeholder="<?php echo $Page->Nama->PlaceHolder ?>" value="<?php echo ewr_HtmlEncode($Page->Nama->SearchValue) ?>"<?php echo $Page->Nama->EditAttributes() ?>>
 </span>
 </div>
 </div>
@@ -2228,8 +2223,8 @@ if (!$Page->DrillDownInPanel) {
 </div>
 </form>
 <script type="text/javascript">
-fr01_siswarutinbayarsummary.Init();
-fr01_siswarutinbayarsummary.FilterList = <?php echo $Page->GetFilterList() ?>;
+fr02_siswabayarsummary.Init();
+fr02_siswabayarsummary.FilterList = <?php echo $Page->GetFilterList() ?>;
 </script>
 <!-- Search form (end) -->
 <?php } ?>
@@ -2271,12 +2266,12 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 </div>
 <?php if ($Page->Export == "" && !($Page->DrillDown && $Page->TotalGrps > 0)) { ?>
 <div class="panel-footer ewGridLowerPanel">
-<?php include "r01_siswarutinbayarsmrypager.php" ?>
+<?php include "r02_siswabayarsmrypager.php" ?>
 <div class="clearfix"></div>
 </div>
 <?php } ?>
 </div>
-<span data-class="tpb<?php echo $Page->GrpCount-1 ?>_r01_siswarutinbayar"><?php echo $Page->PageBreakContent ?></span>
+<span data-class="tpb<?php echo $Page->GrpCount-1 ?>_r02_siswabayar"><?php echo $Page->PageBreakContent ?></span>
 <?php } ?>
 <?php if ($Page->Export == "word" || $Page->Export == "excel") { ?>
 <div class="ewGrid"<?php echo $Page->ReportTableStyle ?>>
@@ -2294,15 +2289,15 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 	<td data-field="Jenis">&nbsp;</td>
 	<?php } else { ?>
 <?php if ($Page->Export <> "" || $Page->DrillDown) { ?>
-	<td data-field="Jenis"><div class="r01_siswarutinbayar_Jenis"><span class="ewTableHeaderCaption"><?php echo $Page->Jenis->FldCaption() ?></span></div></td>
+	<td data-field="Jenis"><div class="r02_siswabayar_Jenis"><span class="ewTableHeaderCaption"><?php echo $Page->Jenis->FldCaption() ?></span></div></td>
 <?php } else { ?>
 	<td data-field="Jenis">
 <?php if ($Page->SortUrl($Page->Jenis) == "") { ?>
-		<div class="ewTableHeaderBtn r01_siswarutinbayar_Jenis">
+		<div class="ewTableHeaderBtn r02_siswabayar_Jenis">
 			<span class="ewTableHeaderCaption"><?php echo $Page->Jenis->FldCaption() ?></span>
 		</div>
 <?php } else { ?>
-		<div class="ewTableHeaderBtn ewPointer r01_siswarutinbayar_Jenis" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->Jenis) ?>',0);">
+		<div class="ewTableHeaderBtn ewPointer r02_siswabayar_Jenis" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->Jenis) ?>',0);">
 			<span class="ewTableHeaderCaption"><?php echo $Page->Jenis->FldCaption() ?></span>
 			<span class="ewTableHeaderSort"><?php if ($Page->Jenis->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($Page->Jenis->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span>
 		</div>
@@ -2316,15 +2311,15 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 	<td data-field="b_Nilai">&nbsp;</td>
 	<?php } else { ?>
 <?php if ($Page->Export <> "" || $Page->DrillDown) { ?>
-	<td data-field="b_Nilai"><div class="r01_siswarutinbayar_b_Nilai" style="text-align: right;"><span class="ewTableHeaderCaption"><?php echo $Page->b_Nilai->FldCaption() ?></span></div></td>
+	<td data-field="b_Nilai"><div class="r02_siswabayar_b_Nilai"><span class="ewTableHeaderCaption"><?php echo $Page->b_Nilai->FldCaption() ?></span></div></td>
 <?php } else { ?>
 	<td data-field="b_Nilai">
 <?php if ($Page->SortUrl($Page->b_Nilai) == "") { ?>
-		<div class="ewTableHeaderBtn r01_siswarutinbayar_b_Nilai" style="text-align: right;">
+		<div class="ewTableHeaderBtn r02_siswabayar_b_Nilai">
 			<span class="ewTableHeaderCaption"><?php echo $Page->b_Nilai->FldCaption() ?></span>
 		</div>
 <?php } else { ?>
-		<div class="ewTableHeaderBtn ewPointer r01_siswarutinbayar_b_Nilai" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->b_Nilai) ?>',0);" style="text-align: right;">
+		<div class="ewTableHeaderBtn ewPointer r02_siswabayar_b_Nilai" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->b_Nilai) ?>',0);">
 			<span class="ewTableHeaderCaption"><?php echo $Page->b_Nilai->FldCaption() ?></span>
 			<span class="ewTableHeaderSort"><?php if ($Page->b_Nilai->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($Page->b_Nilai->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span>
 		</div>
@@ -2333,89 +2328,17 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 <?php } ?>
 	<?php } ?>
 <?php } ?>
-<?php if ($Page->Periode_Text->Visible) { ?>
-<?php if ($Page->Export <> "" || $Page->DrillDown) { ?>
-	<td data-field="Periode_Text"><div class="r01_siswarutinbayar_Periode_Text"><span class="ewTableHeaderCaption"><?php echo $Page->Periode_Text->FldCaption() ?></span></div></td>
-<?php } else { ?>
-	<td data-field="Periode_Text">
-<?php if ($Page->SortUrl($Page->Periode_Text) == "") { ?>
-		<div class="ewTableHeaderBtn r01_siswarutinbayar_Periode_Text">
-			<span class="ewTableHeaderCaption"><?php echo $Page->Periode_Text->FldCaption() ?></span>
-		</div>
-<?php } else { ?>
-		<div class="ewTableHeaderBtn ewPointer r01_siswarutinbayar_Periode_Text" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->Periode_Text) ?>',0);">
-			<span class="ewTableHeaderCaption"><?php echo $Page->Periode_Text->FldCaption() ?></span>
-			<span class="ewTableHeaderSort"><?php if ($Page->Periode_Text->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($Page->Periode_Text->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span>
-		</div>
-<?php } ?>
-	</td>
-<?php } ?>
-<?php } ?>
-<?php if ($Page->Tanggal_Bayar->Visible) { ?>
-<?php if ($Page->Export <> "" || $Page->DrillDown) { ?>
-	<td data-field="Tanggal_Bayar"><div class="r01_siswarutinbayar_Tanggal_Bayar"><span class="ewTableHeaderCaption"><?php echo $Page->Tanggal_Bayar->FldCaption() ?></span></div></td>
-<?php } else { ?>
-	<td data-field="Tanggal_Bayar">
-<?php if ($Page->SortUrl($Page->Tanggal_Bayar) == "") { ?>
-		<div class="ewTableHeaderBtn r01_siswarutinbayar_Tanggal_Bayar">
-			<span class="ewTableHeaderCaption"><?php echo $Page->Tanggal_Bayar->FldCaption() ?></span>
-		</div>
-<?php } else { ?>
-		<div class="ewTableHeaderBtn ewPointer r01_siswarutinbayar_Tanggal_Bayar" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->Tanggal_Bayar) ?>',0);">
-			<span class="ewTableHeaderCaption"><?php echo $Page->Tanggal_Bayar->FldCaption() ?></span>
-			<span class="ewTableHeaderSort"><?php if ($Page->Tanggal_Bayar->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($Page->Tanggal_Bayar->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span>
-		</div>
-<?php } ?>
-	</td>
-<?php } ?>
-<?php } ?>
-<?php if ($Page->Nilai_Bayar->Visible) { ?>
-<?php if ($Page->Export <> "" || $Page->DrillDown) { ?>
-	<td data-field="Nilai_Bayar"><div class="r01_siswarutinbayar_Nilai_Bayar" style="text-align: right;"><span class="ewTableHeaderCaption"><?php echo $Page->Nilai_Bayar->FldCaption() ?></span></div></td>
-<?php } else { ?>
-	<td data-field="Nilai_Bayar">
-<?php if ($Page->SortUrl($Page->Nilai_Bayar) == "") { ?>
-		<div class="ewTableHeaderBtn r01_siswarutinbayar_Nilai_Bayar" style="text-align: right;">
-			<span class="ewTableHeaderCaption"><?php echo $Page->Nilai_Bayar->FldCaption() ?></span>
-		</div>
-<?php } else { ?>
-		<div class="ewTableHeaderBtn ewPointer r01_siswarutinbayar_Nilai_Bayar" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->Nilai_Bayar) ?>',0);" style="text-align: right;">
-			<span class="ewTableHeaderCaption"><?php echo $Page->Nilai_Bayar->FldCaption() ?></span>
-			<span class="ewTableHeaderSort"><?php if ($Page->Nilai_Bayar->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($Page->Nilai_Bayar->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span>
-		</div>
-<?php } ?>
-	</td>
-<?php } ?>
-<?php } ?>
-<?php if ($Page->Periode_Tahun_Bulan->Visible) { ?>
-<?php if ($Page->Export <> "" || $Page->DrillDown) { ?>
-	<td data-field="Periode_Tahun_Bulan"><div class="r01_siswarutinbayar_Periode_Tahun_Bulan"><span class="ewTableHeaderCaption"><?php echo $Page->Periode_Tahun_Bulan->FldCaption() ?></span></div></td>
-<?php } else { ?>
-	<td data-field="Periode_Tahun_Bulan">
-<?php if ($Page->SortUrl($Page->Periode_Tahun_Bulan) == "") { ?>
-		<div class="ewTableHeaderBtn r01_siswarutinbayar_Periode_Tahun_Bulan">
-			<span class="ewTableHeaderCaption"><?php echo $Page->Periode_Tahun_Bulan->FldCaption() ?></span>
-		</div>
-<?php } else { ?>
-		<div class="ewTableHeaderBtn ewPointer r01_siswarutinbayar_Periode_Tahun_Bulan" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->Periode_Tahun_Bulan) ?>',0);">
-			<span class="ewTableHeaderCaption"><?php echo $Page->Periode_Tahun_Bulan->FldCaption() ?></span>
-			<span class="ewTableHeaderSort"><?php if ($Page->Periode_Tahun_Bulan->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($Page->Periode_Tahun_Bulan->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span>
-		</div>
-<?php } ?>
-	</td>
-<?php } ?>
-<?php } ?>
 <?php if ($Page->NIS->Visible) { ?>
 <?php if ($Page->Export <> "" || $Page->DrillDown) { ?>
-	<td data-field="NIS"><div class="r01_siswarutinbayar_NIS"><span class="ewTableHeaderCaption"><?php echo $Page->NIS->FldCaption() ?></span></div></td>
+	<td data-field="NIS"><div class="r02_siswabayar_NIS"><span class="ewTableHeaderCaption"><?php echo $Page->NIS->FldCaption() ?></span></div></td>
 <?php } else { ?>
 	<td data-field="NIS">
 <?php if ($Page->SortUrl($Page->NIS) == "") { ?>
-		<div class="ewTableHeaderBtn r01_siswarutinbayar_NIS">
+		<div class="ewTableHeaderBtn r02_siswabayar_NIS">
 			<span class="ewTableHeaderCaption"><?php echo $Page->NIS->FldCaption() ?></span>
 		</div>
 <?php } else { ?>
-		<div class="ewTableHeaderBtn ewPointer r01_siswarutinbayar_NIS" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->NIS) ?>',0);">
+		<div class="ewTableHeaderBtn ewPointer r02_siswabayar_NIS" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->NIS) ?>',0);">
 			<span class="ewTableHeaderCaption"><?php echo $Page->NIS->FldCaption() ?></span>
 			<span class="ewTableHeaderSort"><?php if ($Page->NIS->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($Page->NIS->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span>
 		</div>
@@ -2425,15 +2348,15 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 <?php } ?>
 <?php if ($Page->Nama->Visible) { ?>
 <?php if ($Page->Export <> "" || $Page->DrillDown) { ?>
-	<td data-field="Nama"><div class="r01_siswarutinbayar_Nama"><span class="ewTableHeaderCaption"><?php echo $Page->Nama->FldCaption() ?></span></div></td>
+	<td data-field="Nama"><div class="r02_siswabayar_Nama"><span class="ewTableHeaderCaption"><?php echo $Page->Nama->FldCaption() ?></span></div></td>
 <?php } else { ?>
 	<td data-field="Nama">
 <?php if ($Page->SortUrl($Page->Nama) == "") { ?>
-		<div class="ewTableHeaderBtn r01_siswarutinbayar_Nama">
+		<div class="ewTableHeaderBtn r02_siswabayar_Nama">
 			<span class="ewTableHeaderCaption"><?php echo $Page->Nama->FldCaption() ?></span>
 		</div>
 <?php } else { ?>
-		<div class="ewTableHeaderBtn ewPointer r01_siswarutinbayar_Nama" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->Nama) ?>',0);">
+		<div class="ewTableHeaderBtn ewPointer r02_siswabayar_Nama" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->Nama) ?>',0);">
 			<span class="ewTableHeaderCaption"><?php echo $Page->Nama->FldCaption() ?></span>
 			<span class="ewTableHeaderSort"><?php if ($Page->Nama->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($Page->Nama->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span>
 		</div>
@@ -2441,19 +2364,91 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 	</td>
 <?php } ?>
 <?php } ?>
+<?php if ($Page->Tanggal_Bayar->Visible) { ?>
+<?php if ($Page->Export <> "" || $Page->DrillDown) { ?>
+	<td data-field="Tanggal_Bayar"><div class="r02_siswabayar_Tanggal_Bayar"><span class="ewTableHeaderCaption"><?php echo $Page->Tanggal_Bayar->FldCaption() ?></span></div></td>
+<?php } else { ?>
+	<td data-field="Tanggal_Bayar">
+<?php if ($Page->SortUrl($Page->Tanggal_Bayar) == "") { ?>
+		<div class="ewTableHeaderBtn r02_siswabayar_Tanggal_Bayar">
+			<span class="ewTableHeaderCaption"><?php echo $Page->Tanggal_Bayar->FldCaption() ?></span>
+		</div>
+<?php } else { ?>
+		<div class="ewTableHeaderBtn ewPointer r02_siswabayar_Tanggal_Bayar" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->Tanggal_Bayar) ?>',0);">
+			<span class="ewTableHeaderCaption"><?php echo $Page->Tanggal_Bayar->FldCaption() ?></span>
+			<span class="ewTableHeaderSort"><?php if ($Page->Tanggal_Bayar->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($Page->Tanggal_Bayar->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span>
+		</div>
+<?php } ?>
+	</td>
+<?php } ?>
+<?php } ?>
+<?php if ($Page->Nilai_Bayar->Visible) { ?>
+<?php if ($Page->Export <> "" || $Page->DrillDown) { ?>
+	<td data-field="Nilai_Bayar"><div class="r02_siswabayar_Nilai_Bayar"><span class="ewTableHeaderCaption"><?php echo $Page->Nilai_Bayar->FldCaption() ?></span></div></td>
+<?php } else { ?>
+	<td data-field="Nilai_Bayar">
+<?php if ($Page->SortUrl($Page->Nilai_Bayar) == "") { ?>
+		<div class="ewTableHeaderBtn r02_siswabayar_Nilai_Bayar">
+			<span class="ewTableHeaderCaption"><?php echo $Page->Nilai_Bayar->FldCaption() ?></span>
+		</div>
+<?php } else { ?>
+		<div class="ewTableHeaderBtn ewPointer r02_siswabayar_Nilai_Bayar" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->Nilai_Bayar) ?>',0);">
+			<span class="ewTableHeaderCaption"><?php echo $Page->Nilai_Bayar->FldCaption() ?></span>
+			<span class="ewTableHeaderSort"><?php if ($Page->Nilai_Bayar->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($Page->Nilai_Bayar->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span>
+		</div>
+<?php } ?>
+	</td>
+<?php } ?>
+<?php } ?>
 <?php if ($Page->Sisa->Visible) { ?>
 <?php if ($Page->Export <> "" || $Page->DrillDown) { ?>
-	<td data-field="Sisa"><div class="r01_siswarutinbayar_Sisa"><span class="ewTableHeaderCaption"><?php echo $Page->Sisa->FldCaption() ?></span></div></td>
+	<td data-field="Sisa"><div class="r02_siswabayar_Sisa"><span class="ewTableHeaderCaption"><?php echo $Page->Sisa->FldCaption() ?></span></div></td>
 <?php } else { ?>
 	<td data-field="Sisa">
 <?php if ($Page->SortUrl($Page->Sisa) == "") { ?>
-		<div class="ewTableHeaderBtn r01_siswarutinbayar_Sisa">
+		<div class="ewTableHeaderBtn r02_siswabayar_Sisa">
 			<span class="ewTableHeaderCaption"><?php echo $Page->Sisa->FldCaption() ?></span>
 		</div>
 <?php } else { ?>
-		<div class="ewTableHeaderBtn ewPointer r01_siswarutinbayar_Sisa" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->Sisa) ?>',0);">
+		<div class="ewTableHeaderBtn ewPointer r02_siswabayar_Sisa" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->Sisa) ?>',0);">
 			<span class="ewTableHeaderCaption"><?php echo $Page->Sisa->FldCaption() ?></span>
 			<span class="ewTableHeaderSort"><?php if ($Page->Sisa->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($Page->Sisa->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span>
+		</div>
+<?php } ?>
+	</td>
+<?php } ?>
+<?php } ?>
+<?php if ($Page->Periode_Tahun_Bulan->Visible) { ?>
+<?php if ($Page->Export <> "" || $Page->DrillDown) { ?>
+	<td data-field="Periode_Tahun_Bulan"><div class="r02_siswabayar_Periode_Tahun_Bulan"><span class="ewTableHeaderCaption"><?php echo $Page->Periode_Tahun_Bulan->FldCaption() ?></span></div></td>
+<?php } else { ?>
+	<td data-field="Periode_Tahun_Bulan">
+<?php if ($Page->SortUrl($Page->Periode_Tahun_Bulan) == "") { ?>
+		<div class="ewTableHeaderBtn r02_siswabayar_Periode_Tahun_Bulan">
+			<span class="ewTableHeaderCaption"><?php echo $Page->Periode_Tahun_Bulan->FldCaption() ?></span>
+		</div>
+<?php } else { ?>
+		<div class="ewTableHeaderBtn ewPointer r02_siswabayar_Periode_Tahun_Bulan" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->Periode_Tahun_Bulan) ?>',0);">
+			<span class="ewTableHeaderCaption"><?php echo $Page->Periode_Tahun_Bulan->FldCaption() ?></span>
+			<span class="ewTableHeaderSort"><?php if ($Page->Periode_Tahun_Bulan->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($Page->Periode_Tahun_Bulan->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span>
+		</div>
+<?php } ?>
+	</td>
+<?php } ?>
+<?php } ?>
+<?php if ($Page->Periode_Text->Visible) { ?>
+<?php if ($Page->Export <> "" || $Page->DrillDown) { ?>
+	<td data-field="Periode_Text"><div class="r02_siswabayar_Periode_Text"><span class="ewTableHeaderCaption"><?php echo $Page->Periode_Text->FldCaption() ?></span></div></td>
+<?php } else { ?>
+	<td data-field="Periode_Text">
+<?php if ($Page->SortUrl($Page->Periode_Text) == "") { ?>
+		<div class="ewTableHeaderBtn r02_siswabayar_Periode_Text">
+			<span class="ewTableHeaderCaption"><?php echo $Page->Periode_Text->FldCaption() ?></span>
+		</div>
+<?php } else { ?>
+		<div class="ewTableHeaderBtn ewPointer r02_siswabayar_Periode_Text" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->Periode_Text) ?>',0);">
+			<span class="ewTableHeaderCaption"><?php echo $Page->Periode_Text->FldCaption() ?></span>
+			<span class="ewTableHeaderSort"><?php if ($Page->Periode_Text->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($Page->Periode_Text->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span>
 		</div>
 <?php } ?>
 	</td>
@@ -2501,21 +2496,21 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 <?php } ?>
 		<td data-field="Jenis" colspan="<?php echo ($Page->GrpColumnCount + $Page->DtlColumnCount - 1) ?>"<?php echo $Page->Jenis->CellAttributes() ?>>
 <?php if ($Page->Export <> "" || $Page->DrillDown) { ?>
-		<span class="ewSummaryCaption r01_siswarutinbayar_Jenis"><span class="ewTableHeaderCaption"><?php echo $Page->Jenis->FldCaption() ?></span></span>
+		<span class="ewSummaryCaption r02_siswabayar_Jenis"><span class="ewTableHeaderCaption"><?php echo $Page->Jenis->FldCaption() ?></span></span>
 <?php } else { ?>
 	<?php if ($Page->SortUrl($Page->Jenis) == "") { ?>
-		<span class="ewSummaryCaption r01_siswarutinbayar_Jenis">
+		<span class="ewSummaryCaption r02_siswabayar_Jenis">
 			<span class="ewTableHeaderCaption"><?php echo $Page->Jenis->FldCaption() ?></span>
 		</span>
 	<?php } else { ?>
-		<span class="ewTableHeaderBtn ewPointer ewSummaryCaption r01_siswarutinbayar_Jenis" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->Jenis) ?>',0);">
+		<span class="ewTableHeaderBtn ewPointer ewSummaryCaption r02_siswabayar_Jenis" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->Jenis) ?>',0);">
 			<span class="ewTableHeaderCaption"><?php echo $Page->Jenis->FldCaption() ?></span>
 			<span class="ewTableHeaderSort"><?php if ($Page->Jenis->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($Page->Jenis->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span>
 		</span>
 	<?php } ?>
 <?php } ?>
 		<?php echo $ReportLanguage->Phrase("SummaryColon") ?>
-<span data-class="tpx<?php echo $Page->GrpCount ?>_r01_siswarutinbayar_Jenis"<?php echo $Page->Jenis->ViewAttributes() ?>><?php echo $Page->Jenis->GroupViewValue ?></span>
+<span data-class="tpx<?php echo $Page->GrpCount ?>_r02_siswabayar_Jenis"<?php echo $Page->Jenis->ViewAttributes() ?>><?php echo $Page->Jenis->GroupViewValue ?></span>
 		<span class="ewSummaryCount">(<span class="ewAggregateCaption"><?php echo $ReportLanguage->Phrase("RptCnt") ?></span><?php echo $ReportLanguage->Phrase("AggregateEqual") ?><span class="ewAggregateValue"><?php echo ewr_FormatNumber($Page->Jenis->Count,0,-2,-2,-2) ?></span>)</span>
 		</td>
 	</tr>
@@ -2541,21 +2536,21 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 <?php } ?>
 		<td data-field="b_Nilai" colspan="<?php echo ($Page->GrpColumnCount + $Page->DtlColumnCount - 2) ?>"<?php echo $Page->b_Nilai->CellAttributes() ?>>
 <?php if ($Page->Export <> "" || $Page->DrillDown) { ?>
-		<span class="ewSummaryCaption r01_siswarutinbayar_b_Nilai"><span class="ewTableHeaderCaption"><?php echo $Page->b_Nilai->FldCaption() ?></span></span>
+		<span class="ewSummaryCaption r02_siswabayar_b_Nilai"><span class="ewTableHeaderCaption"><?php echo $Page->b_Nilai->FldCaption() ?></span></span>
 <?php } else { ?>
 	<?php if ($Page->SortUrl($Page->b_Nilai) == "") { ?>
-		<span class="ewSummaryCaption r01_siswarutinbayar_b_Nilai">
+		<span class="ewSummaryCaption r02_siswabayar_b_Nilai">
 			<span class="ewTableHeaderCaption"><?php echo $Page->b_Nilai->FldCaption() ?></span>
 		</span>
 	<?php } else { ?>
-		<span class="ewTableHeaderBtn ewPointer ewSummaryCaption r01_siswarutinbayar_b_Nilai" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->b_Nilai) ?>',0);">
+		<span class="ewTableHeaderBtn ewPointer ewSummaryCaption r02_siswabayar_b_Nilai" onclick="ewr_Sort(event,'<?php echo $Page->SortUrl($Page->b_Nilai) ?>',0);">
 			<span class="ewTableHeaderCaption"><?php echo $Page->b_Nilai->FldCaption() ?></span>
 			<span class="ewTableHeaderSort"><?php if ($Page->b_Nilai->getSort() == "ASC") { ?><span class="caret ewSortUp"></span><?php } elseif ($Page->b_Nilai->getSort() == "DESC") { ?><span class="caret"></span><?php } ?></span>
 		</span>
 	<?php } ?>
 <?php } ?>
 		<?php echo $ReportLanguage->Phrase("SummaryColon") ?>
-<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_r01_siswarutinbayar_b_Nilai"<?php echo $Page->b_Nilai->ViewAttributes() ?>><?php echo $Page->b_Nilai->GroupViewValue ?></span>
+<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_r02_siswabayar_b_Nilai"<?php echo $Page->b_Nilai->ViewAttributes() ?>><?php echo $Page->b_Nilai->GroupViewValue ?></span>
 		<span class="ewSummaryCount">(<span class="ewAggregateCaption"><?php echo $ReportLanguage->Phrase("RptCnt") ?></span><?php echo $ReportLanguage->Phrase("AggregateEqual") ?><span class="ewAggregateValue"><?php echo ewr_FormatNumber($Page->b_Nilai->Count,0,-2,-2,-2) ?></span>)</span>
 		</td>
 	</tr>
@@ -2573,7 +2568,7 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 		<td data-field="Jenis"<?php echo $Page->Jenis->CellAttributes(); ?>>&nbsp;</td>
 	<?php } else { ?>
 		<td data-field="Jenis"<?php echo $Page->Jenis->CellAttributes(); ?>>
-<span data-class="tpx<?php echo $Page->GrpCount ?>_r01_siswarutinbayar_Jenis"<?php echo $Page->Jenis->ViewAttributes() ?>><?php echo $Page->Jenis->GroupViewValue ?></span></td>
+<span data-class="tpx<?php echo $Page->GrpCount ?>_r02_siswabayar_Jenis"<?php echo $Page->Jenis->ViewAttributes() ?>><?php echo $Page->Jenis->GroupViewValue ?></span></td>
 	<?php } ?>
 <?php } ?>
 <?php if ($Page->b_Nilai->Visible) { ?>
@@ -2581,36 +2576,36 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 		<td data-field="b_Nilai"<?php echo $Page->b_Nilai->CellAttributes(); ?>>&nbsp;</td>
 	<?php } else { ?>
 		<td data-field="b_Nilai"<?php echo $Page->b_Nilai->CellAttributes(); ?>>
-<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_r01_siswarutinbayar_b_Nilai"<?php echo $Page->b_Nilai->ViewAttributes() ?>><?php echo $Page->b_Nilai->GroupViewValue ?></span></td>
+<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_r02_siswabayar_b_Nilai"<?php echo $Page->b_Nilai->ViewAttributes() ?>><?php echo $Page->b_Nilai->GroupViewValue ?></span></td>
 	<?php } ?>
-<?php } ?>
-<?php if ($Page->Periode_Text->Visible) { ?>
-		<td data-field="Periode_Text"<?php echo $Page->Periode_Text->CellAttributes() ?>>
-<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_<?php echo $Page->RecCount ?>_r01_siswarutinbayar_Periode_Text"<?php echo $Page->Periode_Text->ViewAttributes() ?>><?php echo $Page->Periode_Text->ListViewValue() ?></span></td>
-<?php } ?>
-<?php if ($Page->Tanggal_Bayar->Visible) { ?>
-		<td data-field="Tanggal_Bayar"<?php echo $Page->Tanggal_Bayar->CellAttributes() ?>>
-<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_<?php echo $Page->RecCount ?>_r01_siswarutinbayar_Tanggal_Bayar"<?php echo $Page->Tanggal_Bayar->ViewAttributes() ?>><?php echo $Page->Tanggal_Bayar->ListViewValue() ?></span></td>
-<?php } ?>
-<?php if ($Page->Nilai_Bayar->Visible) { ?>
-		<td data-field="Nilai_Bayar"<?php echo $Page->Nilai_Bayar->CellAttributes() ?>>
-<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_<?php echo $Page->RecCount ?>_r01_siswarutinbayar_Nilai_Bayar"<?php echo $Page->Nilai_Bayar->ViewAttributes() ?>><?php echo $Page->Nilai_Bayar->ListViewValue() ?></span></td>
-<?php } ?>
-<?php if ($Page->Periode_Tahun_Bulan->Visible) { ?>
-		<td data-field="Periode_Tahun_Bulan"<?php echo $Page->Periode_Tahun_Bulan->CellAttributes() ?>>
-<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_<?php echo $Page->RecCount ?>_r01_siswarutinbayar_Periode_Tahun_Bulan"<?php echo $Page->Periode_Tahun_Bulan->ViewAttributes() ?>><?php echo $Page->Periode_Tahun_Bulan->ListViewValue() ?></span></td>
 <?php } ?>
 <?php if ($Page->NIS->Visible) { ?>
 		<td data-field="NIS"<?php echo $Page->NIS->CellAttributes() ?>>
-<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_<?php echo $Page->RecCount ?>_r01_siswarutinbayar_NIS"<?php echo $Page->NIS->ViewAttributes() ?>><?php echo $Page->NIS->ListViewValue() ?></span></td>
+<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_<?php echo $Page->RecCount ?>_r02_siswabayar_NIS"<?php echo $Page->NIS->ViewAttributes() ?>><?php echo $Page->NIS->ListViewValue() ?></span></td>
 <?php } ?>
 <?php if ($Page->Nama->Visible) { ?>
 		<td data-field="Nama"<?php echo $Page->Nama->CellAttributes() ?>>
-<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_<?php echo $Page->RecCount ?>_r01_siswarutinbayar_Nama"<?php echo $Page->Nama->ViewAttributes() ?>><?php echo $Page->Nama->ListViewValue() ?></span></td>
+<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_<?php echo $Page->RecCount ?>_r02_siswabayar_Nama"<?php echo $Page->Nama->ViewAttributes() ?>><?php echo $Page->Nama->ListViewValue() ?></span></td>
+<?php } ?>
+<?php if ($Page->Tanggal_Bayar->Visible) { ?>
+		<td data-field="Tanggal_Bayar"<?php echo $Page->Tanggal_Bayar->CellAttributes() ?>>
+<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_<?php echo $Page->RecCount ?>_r02_siswabayar_Tanggal_Bayar"<?php echo $Page->Tanggal_Bayar->ViewAttributes() ?>><?php echo $Page->Tanggal_Bayar->ListViewValue() ?></span></td>
+<?php } ?>
+<?php if ($Page->Nilai_Bayar->Visible) { ?>
+		<td data-field="Nilai_Bayar"<?php echo $Page->Nilai_Bayar->CellAttributes() ?>>
+<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_<?php echo $Page->RecCount ?>_r02_siswabayar_Nilai_Bayar"<?php echo $Page->Nilai_Bayar->ViewAttributes() ?>><?php echo $Page->Nilai_Bayar->ListViewValue() ?></span></td>
 <?php } ?>
 <?php if ($Page->Sisa->Visible) { ?>
 		<td data-field="Sisa"<?php echo $Page->Sisa->CellAttributes() ?>>
-<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_<?php echo $Page->RecCount ?>_r01_siswarutinbayar_Sisa"<?php echo $Page->Sisa->ViewAttributes() ?>><?php echo $Page->Sisa->ListViewValue() ?></span></td>
+<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_<?php echo $Page->RecCount ?>_r02_siswabayar_Sisa"<?php echo $Page->Sisa->ViewAttributes() ?>><?php echo $Page->Sisa->ListViewValue() ?></span></td>
+<?php } ?>
+<?php if ($Page->Periode_Tahun_Bulan->Visible) { ?>
+		<td data-field="Periode_Tahun_Bulan"<?php echo $Page->Periode_Tahun_Bulan->CellAttributes() ?>>
+<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_<?php echo $Page->RecCount ?>_r02_siswabayar_Periode_Tahun_Bulan"<?php echo $Page->Periode_Tahun_Bulan->ViewAttributes() ?>><?php echo $Page->Periode_Tahun_Bulan->ListViewValue() ?></span></td>
+<?php } ?>
+<?php if ($Page->Periode_Text->Visible) { ?>
+		<td data-field="Periode_Text"<?php echo $Page->Periode_Text->CellAttributes() ?>>
+<span data-class="tpx<?php echo $Page->GrpCount ?>_<?php echo $Page->GrpCounter[0] ?>_<?php echo $Page->RecCount ?>_r02_siswabayar_Periode_Text"<?php echo $Page->Periode_Text->ViewAttributes() ?>><?php echo $Page->Periode_Text->ListViewValue() ?></span></td>
 <?php } ?>
 	</tr>
 <?php
@@ -2632,8 +2627,8 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 <?php
 			$Page->Jenis->Count = $Page->GetSummaryCount(1, FALSE);
 			$Page->b_Nilai->Count = $Page->GetSummaryCount(2, FALSE);
-			$Page->Nilai_Bayar->Count = $Page->Cnt[1][3];
-			$Page->Nilai_Bayar->SumValue = $Page->Smry[1][3]; // Load SUM
+			$Page->Nilai_Bayar->Count = $Page->Cnt[1][4];
+			$Page->Nilai_Bayar->SumValue = $Page->Smry[1][4]; // Load SUM
 			$Page->ResetAttrs();
 			$Page->RowType = EWR_ROWTYPE_TOTAL;
 			$Page->RowTotalType = EWR_ROWTOTAL_GROUP;
@@ -2665,50 +2660,37 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 	<?php } ?>
 		</td>
 <?php } ?>
-<?php if ($Page->Periode_Text->Visible) { ?>
-		<td data-field="Periode_Text"<?php echo $Page->Jenis->CellAttributes() ?>></td>
-<?php } ?>
-<?php if ($Page->Tanggal_Bayar->Visible) { ?>
-		<td data-field="Tanggal_Bayar"<?php echo $Page->Jenis->CellAttributes() ?>></td>
-<?php } ?>
-<?php if ($Page->Nilai_Bayar->Visible) { ?>
-		<td data-field="Nilai_Bayar"<?php echo $Page->Jenis->CellAttributes() ?>><span class="ewAggregateCaption"><?php echo $ReportLanguage->Phrase("RptSum") ?></span><?php echo $ReportLanguage->Phrase("AggregateEqual") ?><span class="ewAggregateValue"><span data-class="tpgs<?php echo $Page->GrpCount ?>_r01_siswarutinbayar_Nilai_Bayar"<?php echo $Page->Nilai_Bayar->ViewAttributes() ?>><?php echo $Page->Nilai_Bayar->SumViewValue ?></span></span></td>
-<?php } ?>
-<?php if ($Page->Periode_Tahun_Bulan->Visible) { ?>
-		<td data-field="Periode_Tahun_Bulan"<?php echo $Page->Jenis->CellAttributes() ?>></td>
-<?php } ?>
 <?php if ($Page->NIS->Visible) { ?>
 		<td data-field="NIS"<?php echo $Page->Jenis->CellAttributes() ?>></td>
 <?php } ?>
 <?php if ($Page->Nama->Visible) { ?>
 		<td data-field="Nama"<?php echo $Page->Jenis->CellAttributes() ?>></td>
 <?php } ?>
+<?php if ($Page->Tanggal_Bayar->Visible) { ?>
+		<td data-field="Tanggal_Bayar"<?php echo $Page->Jenis->CellAttributes() ?>></td>
+<?php } ?>
+<?php if ($Page->Nilai_Bayar->Visible) { ?>
+		<td data-field="Nilai_Bayar"<?php echo $Page->Jenis->CellAttributes() ?>><span class="ewAggregateCaption"><?php echo $ReportLanguage->Phrase("RptSum") ?></span><?php echo $ReportLanguage->Phrase("AggregateEqual") ?><span class="ewAggregateValue"><span data-class="tpgs<?php echo $Page->GrpCount ?>_r02_siswabayar_Nilai_Bayar"<?php echo $Page->Nilai_Bayar->ViewAttributes() ?>><?php echo $Page->Nilai_Bayar->SumViewValue ?></span></span></td>
+<?php } ?>
 <?php if ($Page->Sisa->Visible) { ?>
 		<td data-field="Sisa"<?php echo $Page->Jenis->CellAttributes() ?>></td>
+<?php } ?>
+<?php if ($Page->Periode_Tahun_Bulan->Visible) { ?>
+		<td data-field="Periode_Tahun_Bulan"<?php echo $Page->Jenis->CellAttributes() ?>></td>
+<?php } ?>
+<?php if ($Page->Periode_Text->Visible) { ?>
+		<td data-field="Periode_Text"<?php echo $Page->Jenis->CellAttributes() ?>></td>
 <?php } ?>
 	</tr>
 <?php } else { ?>
 	<tr<?php echo $Page->RowAttributes(); ?>>
 <?php if ($Page->GrpColumnCount + $Page->DtlColumnCount > 0) { ?>
-		<td colspan="<?php echo ($Page->GrpColumnCount + $Page->DtlColumnCount) ?>"<?php echo $Page->Sisa->CellAttributes() ?>><?php echo str_replace(array("%v", "%c"), array($Page->Jenis->GroupViewValue, $Page->Jenis->FldCaption()), $ReportLanguage->Phrase("RptSumHead")) ?> <span class="ewDirLtr">(<?php echo ewr_FormatNumber($Page->Cnt[1][0],0,-2,-2,-2) ?><?php echo $ReportLanguage->Phrase("RptDtlRec") ?>)</span></td>
+		<td colspan="<?php echo ($Page->GrpColumnCount + $Page->DtlColumnCount) ?>"<?php echo $Page->Periode_Text->CellAttributes() ?>><?php echo str_replace(array("%v", "%c"), array($Page->Jenis->GroupViewValue, $Page->Jenis->FldCaption()), $ReportLanguage->Phrase("RptSumHead")) ?> <span class="ewDirLtr">(<?php echo ewr_FormatNumber($Page->Cnt[1][0],0,-2,-2,-2) ?><?php echo $ReportLanguage->Phrase("RptDtlRec") ?>)</span></td>
 <?php } ?>
 	</tr>
 	<tr<?php echo $Page->RowAttributes(); ?>>
 <?php if ($Page->GrpColumnCount > 0) { ?>
 		<td colspan="<?php echo ($Page->GrpColumnCount - 0) ?>"<?php echo $Page->Jenis->CellAttributes() ?>><?php echo $ReportLanguage->Phrase("RptSum") ?></td>
-<?php } ?>
-<?php if ($Page->Periode_Text->Visible) { ?>
-		<td data-field="Periode_Text"<?php echo $Page->Jenis->CellAttributes() ?>>&nbsp;</td>
-<?php } ?>
-<?php if ($Page->Tanggal_Bayar->Visible) { ?>
-		<td data-field="Tanggal_Bayar"<?php echo $Page->Jenis->CellAttributes() ?>>&nbsp;</td>
-<?php } ?>
-<?php if ($Page->Nilai_Bayar->Visible) { ?>
-		<td data-field="Nilai_Bayar"<?php echo $Page->Sisa->CellAttributes() ?>>
-<span data-class="tpgs<?php echo $Page->GrpCount ?>_r01_siswarutinbayar_Nilai_Bayar"<?php echo $Page->Nilai_Bayar->ViewAttributes() ?>><?php echo $Page->Nilai_Bayar->SumViewValue ?></span></td>
-<?php } ?>
-<?php if ($Page->Periode_Tahun_Bulan->Visible) { ?>
-		<td data-field="Periode_Tahun_Bulan"<?php echo $Page->Jenis->CellAttributes() ?>>&nbsp;</td>
 <?php } ?>
 <?php if ($Page->NIS->Visible) { ?>
 		<td data-field="NIS"<?php echo $Page->Jenis->CellAttributes() ?>>&nbsp;</td>
@@ -2716,8 +2698,21 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 <?php if ($Page->Nama->Visible) { ?>
 		<td data-field="Nama"<?php echo $Page->Jenis->CellAttributes() ?>>&nbsp;</td>
 <?php } ?>
+<?php if ($Page->Tanggal_Bayar->Visible) { ?>
+		<td data-field="Tanggal_Bayar"<?php echo $Page->Jenis->CellAttributes() ?>>&nbsp;</td>
+<?php } ?>
+<?php if ($Page->Nilai_Bayar->Visible) { ?>
+		<td data-field="Nilai_Bayar"<?php echo $Page->Periode_Text->CellAttributes() ?>>
+<span data-class="tpgs<?php echo $Page->GrpCount ?>_r02_siswabayar_Nilai_Bayar"<?php echo $Page->Nilai_Bayar->ViewAttributes() ?>><?php echo $Page->Nilai_Bayar->SumViewValue ?></span></td>
+<?php } ?>
 <?php if ($Page->Sisa->Visible) { ?>
 		<td data-field="Sisa"<?php echo $Page->Jenis->CellAttributes() ?>>&nbsp;</td>
+<?php } ?>
+<?php if ($Page->Periode_Tahun_Bulan->Visible) { ?>
+		<td data-field="Periode_Tahun_Bulan"<?php echo $Page->Jenis->CellAttributes() ?>>&nbsp;</td>
+<?php } ?>
+<?php if ($Page->Periode_Text->Visible) { ?>
+		<td data-field="Periode_Text"<?php echo $Page->Jenis->CellAttributes() ?>>&nbsp;</td>
 <?php } ?>
 	</tr>
 <?php } ?>
@@ -2751,8 +2746,8 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 </tbody>
 <tfoot>
 <?php
-	$Page->Nilai_Bayar->Count = $Page->GrandCnt[3];
-	$Page->Nilai_Bayar->SumValue = $Page->GrandSmry[3]; // Load SUM
+	$Page->Nilai_Bayar->Count = $Page->GrandCnt[4];
+	$Page->Nilai_Bayar->SumValue = $Page->GrandSmry[4]; // Load SUM
 	$Page->ResetAttrs();
 	$Page->RowType = EWR_ROWTYPE_TOTAL;
 	$Page->RowTotalType = EWR_ROWTOTAL_GRAND;
@@ -2766,26 +2761,26 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 <?php if ($Page->GrpColumnCount > 0) { ?>
 		<td colspan="<?php echo $Page->GrpColumnCount ?>" class="ewRptGrpAggregate">&nbsp;</td>
 <?php } ?>
-<?php if ($Page->Periode_Text->Visible) { ?>
-		<td data-field="Periode_Text"<?php echo $Page->Periode_Text->CellAttributes() ?>></td>
-<?php } ?>
-<?php if ($Page->Tanggal_Bayar->Visible) { ?>
-		<td data-field="Tanggal_Bayar"<?php echo $Page->Tanggal_Bayar->CellAttributes() ?>></td>
-<?php } ?>
-<?php if ($Page->Nilai_Bayar->Visible) { ?>
-		<td data-field="Nilai_Bayar"<?php echo $Page->Nilai_Bayar->CellAttributes() ?>><?php echo $ReportLanguage->Phrase("RptSum") ?>=<span data-class="tpts_r01_siswarutinbayar_Nilai_Bayar"<?php echo $Page->Nilai_Bayar->ViewAttributes() ?>><?php echo $Page->Nilai_Bayar->SumViewValue ?></span></td>
-<?php } ?>
-<?php if ($Page->Periode_Tahun_Bulan->Visible) { ?>
-		<td data-field="Periode_Tahun_Bulan"<?php echo $Page->Periode_Tahun_Bulan->CellAttributes() ?>></td>
-<?php } ?>
 <?php if ($Page->NIS->Visible) { ?>
 		<td data-field="NIS"<?php echo $Page->NIS->CellAttributes() ?>></td>
 <?php } ?>
 <?php if ($Page->Nama->Visible) { ?>
 		<td data-field="Nama"<?php echo $Page->Nama->CellAttributes() ?>></td>
 <?php } ?>
+<?php if ($Page->Tanggal_Bayar->Visible) { ?>
+		<td data-field="Tanggal_Bayar"<?php echo $Page->Tanggal_Bayar->CellAttributes() ?>></td>
+<?php } ?>
+<?php if ($Page->Nilai_Bayar->Visible) { ?>
+		<td data-field="Nilai_Bayar"<?php echo $Page->Nilai_Bayar->CellAttributes() ?>><?php echo $ReportLanguage->Phrase("RptSum") ?>=<span data-class="tpts_r02_siswabayar_Nilai_Bayar"<?php echo $Page->Nilai_Bayar->ViewAttributes() ?>><?php echo $Page->Nilai_Bayar->SumViewValue ?></span></td>
+<?php } ?>
 <?php if ($Page->Sisa->Visible) { ?>
 		<td data-field="Sisa"<?php echo $Page->Sisa->CellAttributes() ?>></td>
+<?php } ?>
+<?php if ($Page->Periode_Tahun_Bulan->Visible) { ?>
+		<td data-field="Periode_Tahun_Bulan"<?php echo $Page->Periode_Tahun_Bulan->CellAttributes() ?>></td>
+<?php } ?>
+<?php if ($Page->Periode_Text->Visible) { ?>
+		<td data-field="Periode_Text"<?php echo $Page->Periode_Text->CellAttributes() ?>></td>
 <?php } ?>
 	</tr>
 <?php } else { ?>
@@ -2794,27 +2789,27 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 <?php if ($Page->GrpColumnCount > 0) { ?>
 		<td colspan="<?php echo $Page->GrpColumnCount ?>" class="ewRptGrpAggregate"><?php echo $ReportLanguage->Phrase("RptSum") ?></td>
 <?php } ?>
-<?php if ($Page->Periode_Text->Visible) { ?>
-		<td data-field="Periode_Text"<?php echo $Page->Periode_Text->CellAttributes() ?>>&nbsp;</td>
-<?php } ?>
-<?php if ($Page->Tanggal_Bayar->Visible) { ?>
-		<td data-field="Tanggal_Bayar"<?php echo $Page->Tanggal_Bayar->CellAttributes() ?>>&nbsp;</td>
-<?php } ?>
-<?php if ($Page->Nilai_Bayar->Visible) { ?>
-		<td data-field="Nilai_Bayar"<?php echo $Page->Nilai_Bayar->CellAttributes() ?>>
-<span data-class="tpts_r01_siswarutinbayar_Nilai_Bayar"<?php echo $Page->Nilai_Bayar->ViewAttributes() ?>><?php echo $Page->Nilai_Bayar->SumViewValue ?></span></td>
-<?php } ?>
-<?php if ($Page->Periode_Tahun_Bulan->Visible) { ?>
-		<td data-field="Periode_Tahun_Bulan"<?php echo $Page->Periode_Tahun_Bulan->CellAttributes() ?>>&nbsp;</td>
-<?php } ?>
 <?php if ($Page->NIS->Visible) { ?>
 		<td data-field="NIS"<?php echo $Page->NIS->CellAttributes() ?>>&nbsp;</td>
 <?php } ?>
 <?php if ($Page->Nama->Visible) { ?>
 		<td data-field="Nama"<?php echo $Page->Nama->CellAttributes() ?>>&nbsp;</td>
 <?php } ?>
+<?php if ($Page->Tanggal_Bayar->Visible) { ?>
+		<td data-field="Tanggal_Bayar"<?php echo $Page->Tanggal_Bayar->CellAttributes() ?>>&nbsp;</td>
+<?php } ?>
+<?php if ($Page->Nilai_Bayar->Visible) { ?>
+		<td data-field="Nilai_Bayar"<?php echo $Page->Nilai_Bayar->CellAttributes() ?>>
+<span data-class="tpts_r02_siswabayar_Nilai_Bayar"<?php echo $Page->Nilai_Bayar->ViewAttributes() ?>><?php echo $Page->Nilai_Bayar->SumViewValue ?></span></td>
+<?php } ?>
 <?php if ($Page->Sisa->Visible) { ?>
 		<td data-field="Sisa"<?php echo $Page->Sisa->CellAttributes() ?>>&nbsp;</td>
+<?php } ?>
+<?php if ($Page->Periode_Tahun_Bulan->Visible) { ?>
+		<td data-field="Periode_Tahun_Bulan"<?php echo $Page->Periode_Tahun_Bulan->CellAttributes() ?>>&nbsp;</td>
+<?php } ?>
+<?php if ($Page->Periode_Text->Visible) { ?>
+		<td data-field="Periode_Text"<?php echo $Page->Periode_Text->CellAttributes() ?>>&nbsp;</td>
 <?php } ?>
 	</tr>
 <?php } ?>
@@ -2834,7 +2829,7 @@ while ($rsgrp && !$rsgrp->EOF && $Page->GrpCount <= $Page->DisplayGrps || $Page-
 </div>
 <?php if ($Page->Export == "" && !($Page->DrillDown && $Page->TotalGrps > 0)) { ?>
 <div class="panel-footer ewGridLowerPanel">
-<?php include "r01_siswarutinbayarsmrypager.php" ?>
+<?php include "r02_siswabayarsmrypager.php" ?>
 <div class="clearfix"></div>
 </div>
 <?php } ?>

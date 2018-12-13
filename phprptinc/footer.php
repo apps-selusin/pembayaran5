@@ -1,3 +1,4 @@
+<?php if (@$gsExport == "") { ?>
 <!-- message box -->
 <div id="ewrMsgBox" class="modal"><div class="modal-dialog"><div class="modal-content"><div class="modal-body"></div><div class="modal-footer"><button type="button" class="btn btn-primary ewButton" data-dismiss="modal" aria-hidden="true"><?php echo $ReportLanguage->Phrase("MessageOK") ?></button></div></div></div></div>
 <!-- prompt -->
@@ -11,5 +12,6 @@
 <!-- drill down -->
 <?php if (@!$gbDrillDownInPanel) { ?>
 <div id="ewrDrillDownPanel"></div>
+<?php } ?>
 <?php } ?>
 <script type="text/javascript">ewr_GetScript("phprptjs/ewrusrevt10.js");</script>

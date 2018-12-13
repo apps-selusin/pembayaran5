@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<ew-language date="2018/12/12" version="10.0.0" id="en" name="English" desc="English" author="e.World Technology Ltd.">
+<ew-language date="2018/12/13" version="10.0.0" id="en" name="English" desc="English" author="e.World Technology Ltd.">
   <!-- 
 	*** Important Notes:
 	1. Language ID should follow: https://developers.google.com/recaptcha/docs/language,
@@ -417,6 +417,12 @@
     </menu>
     <menu id="23">
       <phrase id="menutext" value="List Pembayaran" />
+    </menu>
+    <menu id="25">
+      <phrase id="menutext" value="List Pembayaran" />
+    </menu>
+    <menu id="26">
+      <phrase id="menutext" value="v 09 siswabayar" />
     </menu>
     <table id="t01_tahunajaran">
       <phrase id="tblcaption" value="t 01 tahunajaran" />
@@ -1002,6 +1008,9 @@
       <field id="jenis">
         <phrase id="fldcaption" value="Jenis" />
       </field>
+      <field id="sisa">
+        <phrase id="fldcaption" value="Sisa" />
+      </field>
     </table>
     <table id="r01_siswarutinbayar">
       <phrase id="tblcaption" value="List Pembayaran" />
@@ -1010,6 +1019,9 @@
       </field>
       <field id="sekolahkelas">
         <phrase id="fldcaption" value="Sekolah / Kelas" />
+      </field>
+      <field id="b_nilai">
+        <phrase id="fldcaption" value="Jumlah" />
       </field>
       <field id="periode_text">
         <phrase id="fldcaption" value="Periode" />
@@ -1022,9 +1034,6 @@
       </field>
       <field id="periode_tahun_bulan">
         <phrase id="fldcaption" value="Periode Tahun Bulan" />
-      </field>
-      <field id="b_nilai">
-        <phrase id="fldcaption" value="Jumlah" />
       </field>
       <field id="nis">
         <phrase id="fldcaption" value="NIS" />
@@ -1064,6 +1073,147 @@
       </field>
       <field id="c_nilai">
         <phrase id="fldcaption" value="c Nilai" />
+      </field>
+      <field id="per_thn_bln_byr">
+        <phrase id="fldcaption" value="Per Thn Bln Byr" />
+      </field>
+      <field id="per_thn_bln_byr_text">
+        <phrase id="fldcaption" value="Per Thn Bln Byr Text" />
+      </field>
+      <field id="sisa">
+        <phrase id="fldcaption" value="Sisa" />
+      </field>
+    </table>
+    <table id="r02_siswabayar">
+      <phrase id="tblcaption" value="List Pembayaran" />
+      <field id="jenis">
+        <phrase id="fldcaption" value="Jenis" />
+      </field>
+      <field id="a_id">
+        <phrase id="fldcaption" value="a id" />
+      </field>
+      <field id="sekolah_id">
+        <phrase id="fldcaption" value="sekolah id" />
+      </field>
+      <field id="kelas_id">
+        <phrase id="fldcaption" value="kelas id" />
+      </field>
+      <field id="nis">
+        <phrase id="fldcaption" value="NIS" />
+      </field>
+      <field id="nama">
+        <phrase id="fldcaption" value="Nama" />
+      </field>
+      <field id="b_id">
+        <phrase id="fldcaption" value="b id" />
+      </field>
+      <field id="siswa_id">
+        <phrase id="fldcaption" value="siswa id" />
+      </field>
+      <field id="rutin_id">
+        <phrase id="fldcaption" value="rutin id" />
+      </field>
+      <field id="b_nilai">
+        <phrase id="fldcaption" value="b Nilai" />
+      </field>
+      <field id="c_id">
+        <phrase id="fldcaption" value="c id" />
+      </field>
+      <field id="siswarutin_id">
+        <phrase id="fldcaption" value="siswarutin id" />
+      </field>
+      <field id="bulan">
+        <phrase id="fldcaption" value="Bulan" />
+      </field>
+      <field id="tahun">
+        <phrase id="fldcaption" value="Tahun" />
+      </field>
+      <field id="c_nilai">
+        <phrase id="fldcaption" value="c Nilai" />
+      </field>
+      <field id="tanggal_bayar">
+        <phrase id="fldcaption" value="Tanggal Bayar" />
+      </field>
+      <field id="nilai_bayar">
+        <phrase id="fldcaption" value="Nilai Bayar" />
+      </field>
+      <field id="sisa">
+        <phrase id="fldcaption" value="Sisa" />
+      </field>
+      <field id="periode_tahun_bulan">
+        <phrase id="fldcaption" value="Periode Tahun Bulan" />
+      </field>
+      <field id="periode_text">
+        <phrase id="fldcaption" value="Periode Text" />
+      </field>
+      <field id="per_thn_bln_byr">
+        <phrase id="fldcaption" value="Per Thn Bln Byr" />
+      </field>
+      <field id="per_thn_bln_byr_text">
+        <phrase id="fldcaption" value="Per Thn Bln Byr Text" />
+      </field>
+    </table>
+    <table id="v09_siswabayar">
+      <phrase id="tblcaption" value="v 09 siswabayar" />
+      <field id="jenis">
+        <phrase id="fldcaption" value="Jenis" />
+      </field>
+      <field id="a_id">
+        <phrase id="fldcaption" value="a id" />
+      </field>
+      <field id="sekolah_id">
+        <phrase id="fldcaption" value="sekolah id" />
+      </field>
+      <field id="kelas_id">
+        <phrase id="fldcaption" value="kelas id" />
+      </field>
+      <field id="nis">
+        <phrase id="fldcaption" value="NIS" />
+      </field>
+      <field id="nama">
+        <phrase id="fldcaption" value="Nama" />
+      </field>
+      <field id="b_id">
+        <phrase id="fldcaption" value="b id" />
+      </field>
+      <field id="siswa_id">
+        <phrase id="fldcaption" value="siswa id" />
+      </field>
+      <field id="rutin_id">
+        <phrase id="fldcaption" value="rutin id" />
+      </field>
+      <field id="b_nilai">
+        <phrase id="fldcaption" value="b Nilai" />
+      </field>
+      <field id="c_id">
+        <phrase id="fldcaption" value="c id" />
+      </field>
+      <field id="siswarutin_id">
+        <phrase id="fldcaption" value="siswarutin id" />
+      </field>
+      <field id="bulan">
+        <phrase id="fldcaption" value="Bulan" />
+      </field>
+      <field id="tahun">
+        <phrase id="fldcaption" value="Tahun" />
+      </field>
+      <field id="c_nilai">
+        <phrase id="fldcaption" value="c Nilai" />
+      </field>
+      <field id="tanggal_bayar">
+        <phrase id="fldcaption" value="Tanggal Bayar" />
+      </field>
+      <field id="nilai_bayar">
+        <phrase id="fldcaption" value="Nilai Bayar" />
+      </field>
+      <field id="sisa">
+        <phrase id="fldcaption" value="Sisa" />
+      </field>
+      <field id="periode_tahun_bulan">
+        <phrase id="fldcaption" value="Periode Tahun Bulan" />
+      </field>
+      <field id="periode_text">
+        <phrase id="fldcaption" value="Periode Text" />
       </field>
       <field id="per_thn_bln_byr">
         <phrase id="fldcaption" value="Per Thn Bln Byr" />

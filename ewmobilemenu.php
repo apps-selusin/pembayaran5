@@ -7,6 +7,7 @@ $RootMenu->AddMenuItem(21, "mmi_cf01_home_php", $Language->MenuPhrase("21", "Men
 $RootMenu->AddMenuItem(4, "mmi_t04_siswa", $Language->MenuPhrase("4", "MenuText"), "t04_siswalist.php", -1, "", TRUE, FALSE, FALSE);
 $RootMenu->AddMenuItem(16, "mmi_v01_siswa", $Language->MenuPhrase("16", "MenuText"), "v01_siswalist.php", -1, "", TRUE, FALSE, FALSE);
 $RootMenu->AddMenuItem(10023, "mmri_r015fsiswarutinbayar", $Language->MenuPhrase("10023", "MenuText"), "r01_siswarutinbayarsmry.php", -1, "{371AB69E-83C7-4715-818D-BAEB6D2CFBF4}", TRUE, FALSE, FALSE);
+$RootMenu->AddMenuItem(10025, "mmri_r025fsiswabayar", $Language->MenuPhrase("10025", "MenuText"), "r02_siswabayarsmry.php", -1, "{371AB69E-83C7-4715-818D-BAEB6D2CFBF4}", TRUE, FALSE, FALSE);
 $RootMenu->Render();
 ?>
 <!-- End Main Menu -->
